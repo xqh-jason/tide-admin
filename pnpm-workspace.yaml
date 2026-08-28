@@ -11,7 +11,6 @@ packages:
   - apps/*
   - scripts/*
   - docs
-  - playground
 
 publicHoistPattern:
   - lefthook
@@ -47,7 +46,6 @@ catalog:
   '@ctrl/tinycolor': ^4.2.0
   '@eslint-community/eslint-plugin-eslint-comments': ^4.7.2
   '@eslint/js': ^10.0.1
-  '@faker-js/faker': ^10.5.0
   '@iconify/json': ^2.2.504
   '@iconify/tailwind4': ^1.2.3
   '@iconify/vue': ^5.0.1
@@ -57,14 +55,12 @@ catalog:
   '@lucide/vue': ^1.26.0
   '@manypkg/get-packages': ^3.1.0
   '@nolebase/vitepress-plugin-git-changelog': ^2.18.2
-  '@playwright/test': ^1.61.1
   '@pnpm/workspace.read-manifest': ^1000.3.1
   '@stylistic/stylelint-plugin': ^5.2.1
   '@tailwindcss/typography': ^0.5.20
   '@tailwindcss/vite': ^4.3.3
   '@tanstack/store': ^0.11.0
   '@tanstack/vue-form': ^1.33.2
-  '@tanstack/vue-query': ^5.101.4
   '@tanstack/vue-store': ^0.11.0
   '@tiptap/core': ^3.28.0
   '@tiptap/extension-document': ^3.28.0
@@ -82,7 +78,6 @@ catalog:
   '@types/archiver': ^8.0.0
   '@types/html-minifier-terser': ^7.0.2
   '@types/json-bigint': ^1.0.4
-  '@types/jsonwebtoken': ^9.0.10
   '@types/lodash.clonedeep': ^4.5.9
   '@types/node': ^25.9.5
   '@types/nprogress': ^0.2.3
@@ -98,7 +93,6 @@ catalog:
   '@vueuse/core': ^14.4.0
   '@vueuse/integrations': ^14.3.0
   '@vueuse/motion': ^3.0.3
-  ant-design-vue: ^4.2.6
   antdv-next: ^1.4.5
   archiver: ^8.0.0
   axios: ^1.18.1
@@ -135,17 +129,14 @@ catalog:
   find-up: ^8.0.0
   get-port: ^7.2.0
   globals: ^17.7.0
-  h3: ^1.15.11
   happy-dom: ^20.11.6
   html-minifier-terser: ^7.2.0
   is-ci: ^4.1.0
   json-bigint: ^1.0.0
-  jsonwebtoken: ^9.0.3
   knip: ^6.29.0
   lefthook: ^2.1.10
   lodash.clonedeep: ^4.5.0
   medium-zoom: ^1.1.0
-  naive-ui: ^2.44.1
   nitropack: ^2.13.4
   nprogress: ^0.2.0
   ora: ^9.4.1
@@ -155,7 +146,6 @@ catalog:
   pinia: ^4.0.2
   pinia-plugin-persistedstate: ^4.7.1
   pkg-types: ^2.3.1
-  playwright: ^1.62.1
   postcss: ^8.5.22
   postcss-html: ^1.8.1
   postcss-scss: ^4.0.9
@@ -180,7 +170,6 @@ catalog:
   stylelint-scss: ^7.2.0
   tailwind-merge: ^3.6.0
   tailwindcss: ^4.3.3
-  tdesign-vue-next: ^1.20.3
   theme-colors: ^0.1.0
   tippy.js: ^6.3.7
   tsdown: ^0.22.14
