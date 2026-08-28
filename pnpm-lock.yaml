@@ -202,8 +202,8 @@ catalogs:
       specifier: ^7.0.0
       version: 7.0.0
     chalk:
-      specifier: ^5.6.2
-      version: 5.6.2
+      specifier: ^6.0.0
+      version: 6.0.0
     cheerio:
       specifier: ^1.2.0
       version: 1.2.0
@@ -1165,7 +1165,7 @@ importers:
         version: 3.1.0
       chalk:
         specifier: 'catalog:'
-        version: 5.6.2
+        version: 6.0.0
       consola:
         specifier: 'catalog:'
         version: 3.4.2
@@ -10901,6 +10901,9 @@ packages:
   vscode-uri@3.1.0:
     resolution: {integrity: sha512-/BpdSx+yCQGnCvecbyXdxHDkuk55/G3xwnC0GqY4gmQ3j+A+g8kzzgB4Nk/SINjqn6+waqw3EgbVF2QKExkRxQ==}
 
+  vscode-uri@3.2.0:
+    resolution: {integrity: sha512-m2gXo3bn0G1kT9InzMf07fTbqMbGtyckj3bH5ktLO+1Ssv+yiATZ4dhwaQv9UZWxJh6E9IFGnQyjgWVDWVBDrg==}
+
   vue-component-type-helpers@3.3.11:
     resolution: {integrity: sha512-LwcxzeliO9fkQcpJG0PoX8X5kmAhKmH9wkpDLxNabwzkQ9Zeib2YVHwFV4pcWmMLfXVfjr/dSV+DaJ3cIPgSNA==}
 
@@ -14880,7 +14883,7 @@ snapshots:
     dependencies:
       '@volar/language-core': 2.4.28
       path-browserify: 1.0.1
-      vscode-uri: 3.1.0
+      vscode-uri: 3.2.0
 
   '@vue-macros/common@3.1.4(vue@3.5.41(typescript@6.0.3))':
     dependencies:
@@ -20445,6 +20448,8 @@ snapshots:
   vscode-languageserver-textdocument@1.0.12: {}
 
   vscode-uri@3.1.0: {}
+
+  vscode-uri@3.2.0: {}
 
   vue-component-type-helpers@3.3.11: {}
 
