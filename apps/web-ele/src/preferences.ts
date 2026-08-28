@@ -11,6 +11,8 @@ import {
 export const overridesPreferences = defineOverridesPreferences({
   // overrides
   app: {
+    // 菜单/权限码全部由后端返回（学习计划 §3.1 硬性要求）
+    accessMode: 'backend',
     name: import.meta.env.VITE_APP_TITLE,
   },
   copyright: appCopyrightPreferences,
