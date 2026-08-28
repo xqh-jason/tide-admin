@@ -1,3 +1,5 @@
+import { useAccessStore } from '@vben/stores';
+
 import { baseRequestClient, requestClient } from '#/api/request';
 
 export namespace AuthApi {
@@ -22,7 +24,12 @@ export namespace AuthApi {
  * 登录
  */
 export async function loginApi(data: AuthApi.LoginParams) {
-  return requestClient.post<AuthApi.LoginResult>('/auth/login', data);
+  // 后端返回 { token }，vben store 层期望 { accessToken }，在此做字段适配
+  const { token } = await requestClient.post<{ token: string }>(
+    '/auth/login',
+    data,
+  );
+  return { accessToken: token };
 }
 
 /**
@@ -40,16 +47,23 @@ export async function refreshTokenApi() {
 
 /**
  * 退出登录
+ * 后端 logout 挂了认证中间件，必须携带 Bearer token；走 baseRequestClient
+ * 手动附加请求头，401 时直接 reject 由调用方吞掉，避免触发重新认证逻辑递归登出
  */
 export async function logoutApi() {
-  return baseRequestClient.post('/auth/logout', undefined, {
-    withCredentials: true,
-  });
+  const { accessToken } = useAccessStore();
+  return baseRequestClient.post(
+    '/auth/logout',
+    {},
+    {
+      headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
+    },
+  );
 }
 
 /**
  * 获取用户权限码
  */
 export async function getAccessCodesApi() {
-  return requestClient.get<string[]>('/auth/codes');
+  return requestClient.post<string[]>('/user/access-codes');
 }
