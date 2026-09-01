@@ -120,7 +120,6 @@ export function useColumns(
       title: $t('system.user.status'),
       width: 100,
     },
-    { field: 'created_at', title: $t('system.user.createTime'), width: 170 },
     {
       align: 'center',
       field: 'operation',

@@ -101,7 +101,6 @@ export function useColumns(
       width: 100,
     },
     { field: 'remark', minWidth: 160, title: $t('system.role.remark') },
-    { field: 'created_at', title: $t('system.role.createTime'), width: 170 },
     {
       align: 'center',
       cellRender: {

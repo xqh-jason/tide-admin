@@ -1,7 +1,31 @@
 {
   "title": "系统管理",
+  "api": {
+    "apiGroup": "分组",
+    "description": "描述",
+    "list": "API 列表",
+    "method": "请求方法",
+    "operation": "操作",
+    "path": "接口路径",
+    "pathTip": "如 /api/v1/user/list",
+    "roles": "授权角色",
+    "rolesPlaceholder": "选择可访问该接口的角色",
+    "status": "状态",
+    "title": "API 管理"
+  },
+  "dict": {
+    "label": "字典项名称",
+    "list": "字典列表",
+    "operation": "操作",
+    "remark": "备注",
+    "sort": "排序",
+    "status": "状态",
+    "title": "数据字典",
+    "typeCode": "字典类型",
+    "typeCodeTip": "如 sys_user_status，用于前端下拉枚举",
+    "value": "字典值"
+  },
   "user": {
-    "createTime": "创建时间",
     "email": "邮箱",
     "list": "用户列表",
     "nickname": "昵称",
@@ -16,7 +40,6 @@
     "username": "用户名"
   },
   "role": {
-    "createTime": "创建时间",
     "list": "角色列表",
     "menus": "菜单权限",
     "menusTip": "勾选目录/菜单/按钮，按钮节点即按钮权限码",
