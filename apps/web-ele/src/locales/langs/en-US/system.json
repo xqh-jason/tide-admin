@@ -1,7 +1,31 @@
 {
   "title": "System",
+  "api": {
+    "apiGroup": "Group",
+    "description": "Description",
+    "list": "API List",
+    "method": "Method",
+    "operation": "Operation",
+    "path": "Path",
+    "pathTip": "e.g. /api/v1/user/list",
+    "roles": "Authorized Roles",
+    "rolesPlaceholder": "Select roles that can access this API",
+    "status": "Status",
+    "title": "API Management"
+  },
+  "dict": {
+    "label": "Label",
+    "list": "Dict List",
+    "operation": "Operation",
+    "remark": "Remark",
+    "sort": "Sort",
+    "status": "Status",
+    "title": "Dict",
+    "typeCode": "Type Code",
+    "typeCodeTip": "e.g. sys_user_status, used for frontend dropdown enums",
+    "value": "Value"
+  },
   "user": {
-    "createTime": "Created At",
     "email": "Email",
     "list": "User List",
     "nickname": "Nickname",
@@ -16,7 +40,6 @@
     "username": "Username"
   },
   "role": {
-    "createTime": "Created At",
     "list": "Role List",
     "menus": "Menu Permissions",
     "menusTip": "Check catalogs/menus/buttons; button nodes grant access codes",

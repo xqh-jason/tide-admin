@@ -71,12 +71,12 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
     },
   });
 
-  // 处理返回的响应数据格式（后端统一契约：{ code: 200, data, message }）
+  // 处理返回的响应数据格式（后端统一契约：{ code: 1, data, message }，code=1 成功 / 0 失败）
   client.addResponseInterceptor(
     defaultResponseInterceptor({
       codeField: 'code',
       dataField: 'data',
-      successCode: 200,
+      successCode: 1,
     }),
   );
 
