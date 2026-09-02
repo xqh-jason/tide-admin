@@ -11,7 +11,7 @@ import { Plus } from '@vben/icons';
 import { ElButton, ElMessage } from 'element-plus';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteRole, getRoleList, updateRole } from '#/api';
+import { deleteRole, getRoleList, updateRoleStatus } from '#/api';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
@@ -29,7 +29,7 @@ async function onStatusChange(
   row: SystemRoleApi.SystemRole,
 ): Promise<boolean> {
   try {
-    await updateRole({ id: row.id, status: newVal as 0 | 1 });
+    await updateRoleStatus(row.id, newVal as 0 | 1);
     ElMessage.success($t('ui.actionMessage.operationSuccess'));
     return true;
   } catch {

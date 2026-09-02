@@ -35,7 +35,7 @@ export function useFormSchema(): VbenFormSchema[] {
       component: 'ApiTreeSelect',
       componentProps: {
         api: async () => {
-          const menus = await getMenuList();
+          const { items: menus } = await getMenuList();
           return [
             { id: 0, title: $t('system.menu.rootMenu') },
             ...buildMenuTree(menus),
@@ -117,7 +117,7 @@ export function useFormSchema(): VbenFormSchema[] {
         activeValue: 1,
         inactiveValue: 0,
       },
-      defaultValue: 0,
+      defaultValue: 1,
       dependencies: {
         show: (values) => values.menu_type === 2,
         triggerFields: ['menu_type'],

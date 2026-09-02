@@ -1,4 +1,4 @@
-import type { CommonStatus, IdRequest } from './types';
+import type { CommonStatus, IdRequest, PageParams, PageResult } from './types';
 
 import { requestClient } from '#/api/request';
 
@@ -31,7 +31,7 @@ export namespace SystemMenuApi {
     updated_at?: string;
   }
 
-  export interface ListParams {
+  export interface ListParams extends PageParams {
     /** 标题/路由名/路径模糊搜索 */
     keyword?: string;
     status?: CommonStatus;
@@ -72,9 +72,16 @@ export namespace SystemMenuApi {
 
 /**
  * 菜单平铺列表（含按钮节点，按 sort、id 升序）
+ * 后端为分页接口（默认 page_size=10）；菜单树需一次性取全量组树，
+ * 故默认以最大 page_size 拉全量，调用方可覆盖分页参数
  */
-export async function getMenuList(params: SystemMenuApi.ListParams = {}) {
-  return requestClient.post<SystemMenuApi.SystemMenu[]>('/menu/list', params);
+export async function getMenuList(
+  params: SystemMenuApi.ListParams = {},
+): Promise<PageResult<SystemMenuApi.SystemMenu>> {
+  return requestClient.post<PageResult<SystemMenuApi.SystemMenu>>(
+    '/menu/list',
+    { page: 1, page_size: 10_000, ...params },
+  );
 }
 
 /**
