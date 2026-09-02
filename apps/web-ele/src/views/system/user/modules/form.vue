@@ -42,11 +42,17 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemUserApi.SystemUser>({
     try {
       const save =
         editId.value > 0
-          ? updateUser({
-              ...values,
+          ? // 编辑态全量提交：所有字段都传给后端，空值以空字符串传（不省略字段）
+            updateUser({
+              email: values.email ?? '',
+              emp_no: values.emp_no ?? '',
               id: editId.value,
-              password: values.password || undefined,
-            } as SystemUserApi.UpdateParams)
+              nickname: values.nickname ?? '',
+              password: values.password ?? '',
+              phone: values.phone ?? '',
+              role_ids: values.role_ids ?? [],
+              status: values.status,
+            })
           : createUser(values as SystemUserApi.CreateParams);
       await save;
       ElMessage.success($t('ui.actionMessage.operationSuccess'));
@@ -61,9 +67,10 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemUserApi.SystemUser>({
     const data = drawerApi.getData();
     formApi.reset();
     editId.value = data?.id ?? 0;
-    // 用户名创建后不可修改
+    // 用户名和工号创建后不可修改
     formApi.updateSchema([
       { componentProps: { disabled: Boolean(data) }, fieldName: 'username' },
+      { componentProps: { disabled: Boolean(data) }, fieldName: 'emp_no' },
     ]);
     // 编辑态拉取详情以回显角色；后端未就绪时静默回退到行数据
     let base = data;

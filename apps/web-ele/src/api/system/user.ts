@@ -8,6 +8,7 @@ export namespace SystemUserApi {
     avatar?: string;
     created_at?: string;
     email: string;
+    emp_no: string;
     id: number;
     nickname: string;
     password?: string;
@@ -26,6 +27,7 @@ export namespace SystemUserApi {
 
   export interface CreateParams {
     email?: string;
+    emp_no: string;
     nickname: string;
     password: string;
     phone?: string;
@@ -36,12 +38,14 @@ export namespace SystemUserApi {
   }
 
   /**
-   * 更新用户：除 id 外全部可选，后端对未传字段不做修改；
-   * password 传空串视为不修改，role_ids 传入即全量替换
+   * 更新用户：字段可选（列表状态开关等局部更新只传部分字段）；
+   * 编辑抽屉提交时会显式带上全部字段（可为空字符串，空串表示清空），
+   * role_ids 传入即全量替换
    */
   export interface UpdateParams {
     avatar?: string;
     email?: string;
+    emp_no?: string;
     id: number;
     nickname?: string;
     password?: string;
@@ -82,6 +86,13 @@ export async function createUser(data: SystemUserApi.CreateParams) {
  */
 export async function updateUser(data: SystemUserApi.UpdateParams) {
   return requestClient.post<SystemUserApi.SystemUser>('/user/update', data);
+}
+
+/**
+ * 更新用户状态（仅切换启用/禁用，需权限码）
+ */
+export async function updateUserStatus(id: number, status: CommonStatus) {
+  return requestClient.post<boolean>('/user/update-status', { id, status });
 }
 
 /**

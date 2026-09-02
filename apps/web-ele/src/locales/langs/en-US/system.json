@@ -27,6 +27,7 @@
   },
   "user": {
     "email": "Email",
+    "empNo": "Employee No.",
     "list": "User List",
     "nickname": "Nickname",
     "operation": "Operation",
