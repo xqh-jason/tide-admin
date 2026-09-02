@@ -20,6 +20,12 @@ export function useFormSchema(getEditId: () => number): VbenFormSchema[] {
     },
     {
       component: 'Input',
+      fieldName: 'emp_no',
+      label: $t('system.user.empNo'),
+      rules: 'required',
+    },
+    {
+      component: 'Input',
       fieldName: 'nickname',
       label: $t('system.user.nickname'),
       rules: 'required',
@@ -58,9 +64,9 @@ export function useFormSchema(getEditId: () => number): VbenFormSchema[] {
           { label: $t('common.disabled'), value: 0 },
         ],
       },
-      defaultValue: 1,
       fieldName: 'status',
       label: $t('system.user.status'),
+      rules: 'selectRequired',
     },
     {
       component: 'ApiSelect',
@@ -108,6 +114,7 @@ export function useColumns(
 ): VxeTableGridColumns<SystemUserApi.SystemUser> {
   return [
     { field: 'username', title: $t('system.user.username'), width: 140 },
+    { field: 'emp_no', title: $t('system.user.empNo'), width: 120 },
     { field: 'nickname', title: $t('system.user.nickname'), width: 140 },
     { field: 'email', minWidth: 180, title: $t('system.user.email') },
     { field: 'phone', title: $t('system.user.phone'), width: 140 },

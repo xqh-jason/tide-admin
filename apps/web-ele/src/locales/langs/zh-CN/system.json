@@ -27,6 +27,7 @@
   },
   "user": {
     "email": "邮箱",
+    "empNo": "工号",
     "list": "用户列表",
     "nickname": "昵称",
     "operation": "操作",

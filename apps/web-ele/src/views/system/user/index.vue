@@ -11,7 +11,7 @@ import { Plus } from '@vben/icons';
 import { ElButton, ElMessage } from 'element-plus';
 
 import { useVbenVxeGrid, VbenTableAction } from '#/adapter/vxe-table';
-import { deleteUser, getUserList, updateUser } from '#/api';
+import { deleteUser, getUserList, updateUserStatus } from '#/api';
 import { $t } from '#/locales';
 
 import { useColumns, useGridFormSchema } from './data';
@@ -29,7 +29,7 @@ async function onStatusChange(
   row: SystemUserApi.SystemUser,
 ): Promise<boolean> {
   try {
-    await updateUser({ id: row.id, status: newVal as 0 | 1 });
+    await updateUserStatus(row.id, newVal as 0 | 1);
     ElMessage.success($t('ui.actionMessage.operationSuccess'));
     return true;
   } catch {
