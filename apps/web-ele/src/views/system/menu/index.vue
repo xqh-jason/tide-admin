@@ -64,8 +64,8 @@ const [Grid, gridApi] = useVbenVxeGrid({
     proxyConfig: {
       ajax: {
         query: async (_params, formValues) => {
-          const rows = await getMenuList(formValues ?? {});
-          return { items: rows, total: rows.length };
+          // getMenuList 内部已按全量分页拉取，树表不分页直接返回
+          return await getMenuList(formValues ?? {});
         },
       },
     },

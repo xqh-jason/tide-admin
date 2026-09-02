@@ -47,7 +47,7 @@ const treeStrictly = ref(false);
 
 async function loadMenuTree(checkedIds: number[] = []) {
   try {
-    const menus = await getMenuList();
+    const { items: menus } = await getMenuList();
     menuTree.value = buildTree(menus);
   } catch {
     menuTree.value = [];

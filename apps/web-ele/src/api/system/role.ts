@@ -86,6 +86,13 @@ export async function updateRole(data: SystemRoleApi.UpdateParams) {
 }
 
 /**
+ * 更新角色状态（仅切换启用/禁用，需权限码；超管角色不可改）
+ */
+export async function updateRoleStatus(id: number, status: CommonStatus) {
+  return requestClient.post<boolean>('/role/update-status', { id, status });
+}
+
+/**
  * 删除角色（软删除并清空关联，需权限码 system:role:delete）
  */
 export async function deleteRole(id: number) {
