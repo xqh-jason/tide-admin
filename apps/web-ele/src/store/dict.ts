@@ -65,7 +65,14 @@ export const useDictStore = defineStore('dict', () => {
     return list;
   }
 
-  return { getOptions, loadOptions, optionsMap };
+  function $reset() {
+    for (const key of Object.keys(optionsMap)) {
+      Reflect.deleteProperty(optionsMap, key);
+    }
+    pendingMap.clear();
+  }
+
+  return { $reset, getOptions, loadOptions, optionsMap };
 });
 
 /** 便捷入口：取某个字典类型的选项，如 useDictOptions('status') */
