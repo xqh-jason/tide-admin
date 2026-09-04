@@ -5,12 +5,14 @@ import type { SystemRoleApi, SystemUserApi } from '#/api';
 import { z } from '#/adapter/form';
 import { getRoleList } from '#/api';
 import { $t } from '#/locales';
+import { useDictOptions } from '#/store';
 
 /**
  * 新增/编辑用户表单 schema
  * @param getEditId 编辑态返回用户 id，密码可选；创建态密码必填
  */
 export function useFormSchema(getEditId: () => number): VbenFormSchema[] {
+  const statusOptions = useDictOptions('status');
   return [
     {
       component: 'Input',
@@ -59,14 +61,12 @@ export function useFormSchema(getEditId: () => number): VbenFormSchema[] {
       component: 'RadioGroup',
       componentProps: {
         isButton: true,
-        options: [
-          { label: $t('common.enabled'), value: 1 },
-          { label: $t('common.disabled'), value: 0 },
-        ],
+        options: statusOptions,
       },
       fieldName: 'status',
       label: $t('system.user.status'),
       rules: 'selectRequired',
+      defaultValue: 1,
     },
     {
       component: 'ApiSelect',
@@ -84,6 +84,7 @@ export function useFormSchema(getEditId: () => number): VbenFormSchema[] {
 
 /** 搜索表单 schema */
 export function useGridFormSchema(): VbenFormSchema[] {
+  const statusOptions = useDictOptions('status');
   return [
     {
       component: 'Input',
@@ -94,10 +95,7 @@ export function useGridFormSchema(): VbenFormSchema[] {
       component: 'Select',
       componentProps: {
         clearable: true,
-        options: [
-          { label: $t('common.enabled'), value: 1 },
-          { label: $t('common.disabled'), value: 0 },
-        ],
+        options: statusOptions,
       },
       fieldName: 'status',
       label: $t('system.user.status'),
@@ -112,6 +110,7 @@ export function useColumns(
     row: SystemUserApi.SystemUser,
   ) => Promise<boolean>,
 ): VxeTableGridColumns<SystemUserApi.SystemUser> {
+  const statusOptions = useDictOptions('status');
   return [
     { field: 'username', title: $t('system.user.username'), width: 140 },
     { field: 'emp_no', title: $t('system.user.empNo'), width: 120 },
@@ -122,6 +121,7 @@ export function useColumns(
       cellRender: {
         attrs: { beforeChange: onStatusChange },
         name: onStatusChange ? 'CellSwitch' : 'CellTag',
+        options: statusOptions,
       },
       field: 'status',
       title: $t('system.user.status'),

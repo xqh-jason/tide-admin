@@ -20,6 +20,7 @@ import { objectOmit } from '@vueuse/core';
 import { ElButton, ElImage, ElPopconfirm, ElSwitch, ElTag } from 'element-plus';
 
 import { $t } from '#/locales';
+import { useDictOptions } from '#/store';
 
 import { useVbenForm } from './form';
 
@@ -83,13 +84,11 @@ setupVbenVxeTable({
     });
 
     // 单元格渲染： ElTag，options 形如 [{ label, value, type }]
+    // 未传 options 时按 status 字典渲染
     vxeUI.renderer.add('CellTag', {
       renderTableDefault({ options, props }, { column, row }) {
         const value = get(row, column.field);
-        const tagOptions = options ?? [
-          { label: $t('common.enabled'), type: 'success', value: 1 },
-          { label: $t('common.disabled'), type: 'danger', value: 0 },
-        ];
+        const tagOptions = options ?? useDictOptions('status');
         const tagItem = tagOptions.find((item) => item.value === value);
         return h(
           ElTag,

@@ -4,6 +4,7 @@ import type { SystemMenuApi } from '#/api';
 
 import { buildMenuTree, getMenuList } from '#/api';
 import { $t } from '#/locales';
+import { useDictOptions } from '#/store';
 
 /** 菜单类型选项（1 目录 / 2 菜单 / 3 按钮，对齐 sys_menu.menu_type） */
 export function getMenuTypeOptions() {
@@ -20,6 +21,7 @@ export function getMenuTypeOptions() {
  * 菜单(2) 需要 component，按钮(3) 需要 permission
  */
 export function useFormSchema(): VbenFormSchema[] {
+  const statusOptions = useDictOptions('status');
   return [
     {
       component: 'RadioGroup',
@@ -156,10 +158,7 @@ export function useFormSchema(): VbenFormSchema[] {
       component: 'RadioGroup',
       componentProps: {
         isButton: true,
-        options: [
-          { label: $t('common.enabled'), value: 1 },
-          { label: $t('common.disabled'), value: 0 },
-        ],
+        options: statusOptions,
       },
       defaultValue: 1,
       fieldName: 'status',
@@ -170,6 +169,7 @@ export function useFormSchema(): VbenFormSchema[] {
 
 /** 搜索表单 schema */
 export function useGridFormSchema(): VbenFormSchema[] {
+  const statusOptions = useDictOptions('status');
   return [
     {
       component: 'Input',
@@ -180,10 +180,7 @@ export function useGridFormSchema(): VbenFormSchema[] {
       component: 'Select',
       componentProps: {
         clearable: true,
-        options: [
-          { label: $t('common.enabled'), value: 1 },
-          { label: $t('common.disabled'), value: 0 },
-        ],
+        options: statusOptions,
       },
       fieldName: 'status',
       label: $t('system.menu.status'),
@@ -195,6 +192,7 @@ export function useGridFormSchema(): VbenFormSchema[] {
 export function useColumns(
   onActionClick: OnActionClickFn<SystemMenuApi.SystemMenu>,
 ): VxeTableGridColumns<SystemMenuApi.SystemMenu> {
+  const statusOptions = useDictOptions('status');
   return [
     {
       align: 'left',
@@ -221,7 +219,7 @@ export function useColumns(
     },
     { field: 'sort', title: $t('system.menu.sort'), width: 70 },
     {
-      cellRender: { name: 'CellTag' },
+      cellRender: { name: 'CellTag', options: statusOptions },
       field: 'status',
       title: $t('system.menu.status'),
       width: 90,

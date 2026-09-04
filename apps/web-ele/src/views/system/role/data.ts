@@ -3,9 +3,11 @@ import type { OnActionClickFn, VxeTableGridColumns } from '#/adapter/vxe-table';
 import type { SystemRoleApi } from '#/api';
 
 import { $t } from '#/locales';
+import { useDictOptions } from '#/store';
 
 /** 新增/编辑角色表单 schema（menu_ids 由表单插槽内的授权树维护） */
 export function useFormSchema(): VbenFormSchema[] {
+  const statusOptions = useDictOptions('status');
   return [
     {
       component: 'Input',
@@ -32,10 +34,7 @@ export function useFormSchema(): VbenFormSchema[] {
       component: 'RadioGroup',
       componentProps: {
         isButton: true,
-        options: [
-          { label: $t('common.enabled'), value: 1 },
-          { label: $t('common.disabled'), value: 0 },
-        ],
+        options: statusOptions,
       },
       defaultValue: 1,
       fieldName: 'status',
@@ -58,6 +57,7 @@ export function useFormSchema(): VbenFormSchema[] {
 
 /** 搜索表单 schema */
 export function useGridFormSchema(): VbenFormSchema[] {
+  const statusOptions = useDictOptions('status');
   return [
     {
       component: 'Input',
@@ -68,10 +68,7 @@ export function useGridFormSchema(): VbenFormSchema[] {
       component: 'Select',
       componentProps: {
         clearable: true,
-        options: [
-          { label: $t('common.enabled'), value: 1 },
-          { label: $t('common.disabled'), value: 0 },
-        ],
+        options: statusOptions,
       },
       fieldName: 'status',
       label: $t('system.role.status'),
@@ -87,6 +84,7 @@ export function useColumns(
   ) => Promise<boolean>,
   onActionClick?: OnActionClickFn<SystemRoleApi.SystemRole>,
 ): VxeTableGridColumns<SystemRoleApi.SystemRole> {
+  const statusOptions = useDictOptions('status');
   return [
     { field: 'role_name', title: $t('system.role.roleName'), width: 160 },
     { field: 'role_key', title: $t('system.role.roleKey'), width: 160 },
@@ -95,6 +93,7 @@ export function useColumns(
       cellRender: {
         attrs: { beforeChange: onStatusChange },
         name: onStatusChange ? 'CellSwitch' : 'CellTag',
+        options: statusOptions,
       },
       field: 'status',
       title: $t('system.role.status'),
