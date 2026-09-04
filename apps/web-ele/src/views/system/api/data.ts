@@ -4,9 +4,11 @@ import type { SystemApiApi, SystemRoleApi } from '#/api';
 
 import { getRoleList } from '#/api';
 import { $t } from '#/locales';
+import { useDictOptions } from '#/store';
 
 /** 新增/编辑 API 表单 schema */
 export function useFormSchema(): VbenFormSchema[] {
+  const statusOptions = useDictOptions('status');
   return [
     {
       component: 'Input',
@@ -49,10 +51,7 @@ export function useFormSchema(): VbenFormSchema[] {
       component: 'RadioGroup',
       componentProps: {
         isButton: true,
-        options: [
-          { label: $t('common.enabled'), value: 1 },
-          { label: $t('common.disabled'), value: 0 },
-        ],
+        options: statusOptions,
       },
       defaultValue: 1,
       fieldName: 'status',
@@ -75,6 +74,7 @@ export function useFormSchema(): VbenFormSchema[] {
 
 /** 搜索表单 schema */
 export function useGridFormSchema(): VbenFormSchema[] {
+  const statusOptions = useDictOptions('status');
   return [
     {
       component: 'Input',
@@ -99,10 +99,7 @@ export function useGridFormSchema(): VbenFormSchema[] {
       component: 'Select',
       componentProps: {
         clearable: true,
-        options: [
-          { label: $t('common.enabled'), value: 1 },
-          { label: $t('common.disabled'), value: 0 },
-        ],
+        options: statusOptions,
       },
       fieldName: 'status',
       label: $t('system.api.status'),
@@ -114,6 +111,7 @@ export function useGridFormSchema(): VbenFormSchema[] {
 export function useColumns(
   onActionClick?: OnActionClickFn<SystemApiApi.SystemApi>,
 ): VxeTableGridColumns<SystemApiApi.SystemApi> {
+  const statusOptions = useDictOptions('status');
   return [
     { field: 'path', minWidth: 240, title: $t('system.api.path') },
     { field: 'method', title: $t('system.api.method'), width: 90 },
@@ -124,7 +122,7 @@ export function useColumns(
       title: $t('system.api.description'),
     },
     {
-      cellRender: { name: 'CellTag' },
+      cellRender: { name: 'CellTag', options: statusOptions },
       field: 'status',
       title: $t('system.api.status'),
       width: 100,
