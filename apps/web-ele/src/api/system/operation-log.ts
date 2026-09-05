@@ -1,10 +1,10 @@
-import type { AuditFields, IdRequest, PageParams, PageResult } from './types';
+import type { IdRequest, PageParams, PageResult } from './types';
 
 import { requestClient } from '#/api/request';
 
 export namespace OperationLogApi {
-  /** 操作日志列表项（不含 body / resp） */
-  export interface OperationLog extends AuditFields {
+  /** 操作日志列表项（不含 body / resp）；只追加记录，无更新人 / 更新时间 */
+  export interface OperationLog {
     id: number;
     /** 操作人 ID */
     user_id: number;
@@ -23,6 +23,8 @@ export namespace OperationLogApi {
 
   /** 操作日志详情：含脱敏截断后的请求体 / 响应体 */
   export interface OperationLogDetail extends OperationLog {
+    /** 操作人名称（仅详情接口返回） */
+    user_name: string;
     body: string;
     resp: string;
   }

@@ -50,16 +50,10 @@ defineExpose({ drawerApi });
           {{ detail.ip }}
         </ElDescriptionsItem>
         <ElDescriptionsItem :label="$t('system.common.createdBy')">
-          {{ detail.created_by_name || detail.user_id }}
+          {{ detail.user_name || detail.user_id }}
         </ElDescriptionsItem>
         <ElDescriptionsItem :label="$t('system.common.createdAt')">
           {{ detail.created_at ? formatDateTime(detail.created_at) : '-' }}
-        </ElDescriptionsItem>
-        <ElDescriptionsItem :label="$t('system.common.updatedBy')">
-          {{ detail.updated_by_name || '-' }}
-        </ElDescriptionsItem>
-        <ElDescriptionsItem :label="$t('system.common.updatedAt')">
-          {{ detail.updated_at ? formatDateTime(detail.updated_at) : '-' }}
         </ElDescriptionsItem>
         <ElDescriptionsItem
           v-if="detail.error_message"
