@@ -46,7 +46,8 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemUserApi.SystemUser>({
     try {
       const save =
         editId.value > 0
-          ? // 编辑态全量提交：所有字段都传给后端，空值以空字符串传（不省略字段）
+          ? // 编辑态全量提交：所有字段（含禁用不可改的 username/emp_no）都传给后端，
+            // 空值以空字符串传（不省略字段）
             updateUser({
               email: values.email ?? '',
               emp_no: values.emp_no ?? '',
@@ -56,6 +57,7 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemUserApi.SystemUser>({
               phone: values.phone ?? '',
               role_ids: values.role_ids ?? [],
               status: values.status,
+              username: values.username ?? '',
             })
           : createUser(values as SystemUserApi.CreateParams);
       await save;

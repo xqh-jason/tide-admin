@@ -80,10 +80,17 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemRoleApi.SystemRole>({
     try {
       const save =
         editId.value > 0
-          ? updateRole({
-              ...values,
+          ? // 后端更新为全量覆盖契约：api_ids 表单未维护但也必须回传（空数组），
+            // 其余字段空值以空串/0 兜底，避免缺字段被后端拒绝
+            updateRole({
+              api_ids: [],
               id: editId.value,
               menu_ids,
+              remark: values.remark ?? '',
+              role_key: values.role_key ?? '',
+              role_name: values.role_name ?? '',
+              sort: values.sort ?? 0,
+              status: values.status,
             } as SystemRoleApi.UpdateParams)
           : createRole({ ...values, menu_ids } as SystemRoleApi.CreateParams);
       await save;

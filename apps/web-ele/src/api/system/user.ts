@@ -56,6 +56,8 @@ export namespace SystemUserApi {
     phone?: string;
     role_ids?: number[];
     status?: CommonStatus;
+    /** 编辑态禁用不可改，但全量提交语义下仍需回传 */
+    username?: string;
   }
 }
 
