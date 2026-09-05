@@ -62,3 +62,14 @@ skills-lock.json
 datalog
 .playwright-mcp
 .zcode/
+
+# graphify 知识图谱产物
+graphify-out/
+src/graphify-out/
+.graphify-out/
+
+# codebuddy 技能目录
+.codebuddy/skills/
+
+# playwright-cli 会话产物
+.playwright-cli/
