@@ -48,10 +48,15 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemApiApi.SystemApi>({
     try {
       const save =
         editId.value > 0
-          ? updateApi({
-              ...values,
+          ? // 后端更新为全量覆盖契约：api_group/description 必填非空，空值以空串兜底
+            updateApi({
+              api_group: values.api_group ?? '',
+              description: values.description ?? '',
               id: editId.value,
+              method: values.method,
+              path: values.path,
               role_ids,
+              status: values.status,
             } as SystemApiApi.UpdateParams)
           : createApi({ ...values, role_ids } as SystemApiApi.CreateParams);
       await save;

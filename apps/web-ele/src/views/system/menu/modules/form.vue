@@ -48,9 +48,22 @@ const [Drawer, drawerApi] = useVbenDrawer<
     try {
       const save =
         editId.value > 0
-          ? updateMenu({
-              ...values,
+          ? // 后端更新为全量覆盖契约：13 个字段全部必填非空；按钮类型下
+            // path/name/component 等字段被隐藏不渲染，需以空值兜底回传
+            updateMenu({
+              component: values.component ?? '',
+              hidden: values.hidden ?? 0,
+              icon: values.icon ?? '',
               id: editId.value,
+              keep_alive: values.keep_alive ?? 0,
+              menu_type: values.menu_type,
+              name: values.name ?? '',
+              parent_id: values.parent_id ?? 0,
+              path: values.path ?? '',
+              permission: values.permission ?? '',
+              sort: values.sort ?? 0,
+              status: values.status,
+              title: values.title ?? '',
             } as SystemMenuApi.UpdateParams)
           : createMenu(values as SystemMenuApi.CreateParams);
       await save;

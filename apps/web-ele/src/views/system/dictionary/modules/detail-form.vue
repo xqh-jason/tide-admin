@@ -55,8 +55,10 @@ const [Drawer, drawerApi] =
       try {
         const save =
           editId.value > 0
-            ? updateDictionaryDetail({
+            ? // 全量覆盖契约：dictionary_id 也必须回传，避免所属字典被清空
+              updateDictionaryDetail({
                 ...values,
+                dictionary_id: dictionaryId,
                 id: editId.value,
               } as SystemDictionaryApi.UpdateDictionaryDetailParams)
             : createDictionaryDetail({
