@@ -1,4 +1,10 @@
-import type { CommonStatus, IdRequest, PageParams, PageResult } from './types';
+import type {
+  AuditFields,
+  CommonStatus,
+  IdRequest,
+  PageParams,
+  PageResult,
+} from './types';
 
 import { requestClient } from '#/api/request';
 
@@ -7,10 +13,9 @@ export namespace SystemMenuApi {
   export type MenuType = 1 | 2 | 3;
 
   /** 菜单节点（对齐 sys_menu 表字段，管理接口使用平铺列表） */
-  export interface SystemMenu {
+  export interface SystemMenu extends AuditFields {
     children?: SystemMenu[];
     component: string;
-    created_at?: string;
     /** 1 隐藏 / 0 显示，输出到 vben meta.hideInMenu */
     hidden: CommonStatus;
     icon: string;
@@ -28,7 +33,6 @@ export namespace SystemMenuApi {
     sort: number;
     status: CommonStatus;
     title: string;
-    updated_at?: string;
   }
 
   export interface ListParams extends PageParams {

@@ -1,10 +1,16 @@
-import type { CommonStatus, IdRequest, PageParams, PageResult } from './types';
+import type {
+  AuditFields,
+  CommonStatus,
+  IdRequest,
+  PageParams,
+  PageResult,
+} from './types';
 
 import { requestClient } from '#/api/request';
 
 export namespace SystemDictionaryApi {
   /** 字典类型（对齐后端 sys_dictionary 表契约 DictionaryResp） */
-  export interface Dictionary {
+  export interface Dictionary extends AuditFields {
     id: number;
     /** 字典名称（中文，展示用） */
     name: string;
@@ -15,7 +21,7 @@ export namespace SystemDictionaryApi {
   }
 
   /** 字典项（对齐后端 sys_dictionary_detail 表契约 DictionaryDetailResp） */
-  export interface DictionaryDetail {
+  export interface DictionaryDetail extends AuditFields {
     id: number;
     /** 所属字典类型 ID */
     dictionary_id: number;

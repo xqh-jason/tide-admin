@@ -5,6 +5,8 @@ import type { SystemDictionaryApi } from '#/api';
 import { $t } from '#/locales';
 import { useDictOptions } from '#/store';
 
+import { useAuditColumns } from '../audit-columns';
+
 /** 字典类型新增/编辑表单 schema */
 export function useTypeFormSchema(): VbenFormSchema[] {
   const statusOptions = useDictOptions('status');
@@ -79,6 +81,7 @@ export function useColumns(): VxeTableGridColumns<SystemDictionaryApi.Dictionary
       width: 100,
     },
     { field: 'remark', minWidth: 180, title: $t('system.dictionary.remark') },
+    ...useAuditColumns<SystemDictionaryApi.Dictionary>(),
     {
       align: 'center',
       field: 'operation',
@@ -171,6 +174,7 @@ export function useDetailColumns(): VxeTableGridColumns<SystemDictionaryApi.Dict
       title: $t('system.dictionary.status'),
       width: 100,
     },
+    ...useAuditColumns<SystemDictionaryApi.DictionaryDetail>(),
     {
       align: 'center',
       field: 'operation',

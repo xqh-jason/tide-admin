@@ -1,11 +1,16 @@
-import type { CommonStatus, IdRequest, PageParams, PageResult } from './types';
+import type {
+  AuditFields,
+  CommonStatus,
+  IdRequest,
+  PageParams,
+  PageResult,
+} from './types';
 
 import { requestClient } from '#/api/request';
 
 export namespace SystemRoleApi {
   /** 角色（对齐后端 w3-role-crud 契约 RoleResp；menu_ids 由 /role/get 返回用于编辑回显） */
-  export interface SystemRole {
-    created_at?: string;
+  export interface SystemRole extends AuditFields {
     id: number;
     /** 已授权菜单+按钮 id 列表，仅 /role/get 返回 */
     menu_ids?: number[];
@@ -14,7 +19,6 @@ export namespace SystemRoleApi {
     role_name: string;
     sort: number;
     status: CommonStatus;
-    updated_at?: string;
   }
 
   export interface ListParams extends PageParams {

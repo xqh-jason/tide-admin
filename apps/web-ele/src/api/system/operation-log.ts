@@ -1,10 +1,10 @@
-import type { IdRequest, PageParams, PageResult } from './types';
+import type { AuditFields, IdRequest, PageParams, PageResult } from './types';
 
 import { requestClient } from '#/api/request';
 
 export namespace OperationLogApi {
   /** 操作日志列表项（不含 body / resp） */
-  export interface OperationLog {
+  export interface OperationLog extends AuditFields {
     id: number;
     /** 操作人 ID */
     user_id: number;

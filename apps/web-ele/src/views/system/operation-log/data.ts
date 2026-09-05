@@ -4,6 +4,8 @@ import type { OperationLogApi } from '#/api';
 
 import { $t } from '#/locales';
 
+import { useAuditColumns } from '../audit-columns';
+
 /** 操作日志搜索表单 schema（keyword 命中接口路径） */
 export function useGridFormSchema(): VbenFormSchema[] {
   return [
@@ -47,11 +49,7 @@ export function useColumns(): VxeTableGridColumns<OperationLogApi.OperationLog> 
       width: 110,
     },
     { field: 'ip', title: $t('system.operationLog.ip'), width: 140 },
-    {
-      field: 'created_at',
-      minWidth: 170,
-      title: $t('system.operationLog.createdAt'),
-    },
+    ...useAuditColumns<OperationLogApi.OperationLog>(),
     {
       align: 'center',
       field: 'operation',

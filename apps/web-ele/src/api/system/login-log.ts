@@ -1,10 +1,16 @@
-import type { CommonStatus, IdRequest, PageParams, PageResult } from './types';
+import type {
+  AuditFields,
+  CommonStatus,
+  IdRequest,
+  PageParams,
+  PageResult,
+} from './types';
 
 import { requestClient } from '#/api/request';
 
 export namespace LoginLogApi {
   /** 登录日志（对齐后端 sys_login_log 契约 LoginLogResp） */
-  export interface LoginLog {
+  export interface LoginLog extends AuditFields {
     id: number;
     /** 登录成功后的用户 ID，失败为 0 */
     user_id: number;

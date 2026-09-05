@@ -13,6 +13,12 @@
     "status": "状态",
     "title": "API 管理"
   },
+  "common": {
+    "createdBy": "创建人",
+    "createdAt": "创建时间",
+    "updatedBy": "更新人",
+    "updatedAt": "更新时间"
+  },
   "dictionary": {
     "extend": "扩展值",
     "extendTip": "如 tag 颜色，可留空",
@@ -58,8 +64,7 @@
     "path": "接口路径",
     "resp": "响应体",
     "status": "HTTP 状态",
-    "title": "操作日志",
-    "userId": "操作人 ID"
+    "title": "操作日志"
   },
   "user": {
     "email": "邮箱",

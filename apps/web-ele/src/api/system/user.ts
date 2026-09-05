@@ -1,12 +1,17 @@
-import type { CommonStatus, IdRequest, PageParams, PageResult } from './types';
+import type {
+  AuditFields,
+  CommonStatus,
+  IdRequest,
+  PageParams,
+  PageResult,
+} from './types';
 
 import { requestClient } from '#/api/request';
 
 export namespace SystemUserApi {
   /** 用户（后端 UserResp + 管理页扩展字段；后端暂未返回的字段为可选） */
-  export interface SystemUser {
+  export interface SystemUser extends AuditFields {
     avatar?: string;
-    created_at?: string;
     email: string;
     emp_no: string;
     id: number;
@@ -15,7 +20,6 @@ export namespace SystemUserApi {
     phone?: string;
     role_ids?: number[];
     status: CommonStatus;
-    updated_at?: string;
     username: string;
   }
 

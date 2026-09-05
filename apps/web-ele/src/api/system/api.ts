@@ -1,12 +1,17 @@
-import type { CommonStatus, IdRequest, PageParams, PageResult } from './types';
+import type {
+  AuditFields,
+  CommonStatus,
+  IdRequest,
+  PageParams,
+  PageResult,
+} from './types';
 
 import { requestClient } from '#/api/request';
 
 export namespace SystemApiApi {
   /** API 权限点（对齐后端 sys_api 表契约 ApiResp） */
-  export interface SystemApi {
+  export interface SystemApi extends AuditFields {
     api_group: string;
-    created_at?: string;
     description: string;
     id: number;
     /** 请求方法，如 POST / GET / PUT / DELETE */
@@ -14,7 +19,6 @@ export namespace SystemApiApi {
     /** 接口路径，如 /api/v1/user/list */
     path: string;
     status: CommonStatus;
-    updated_at?: string;
   }
 
   export interface ListParams extends PageParams {

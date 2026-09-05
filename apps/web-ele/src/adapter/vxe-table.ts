@@ -14,7 +14,7 @@ import {
   setupVbenVxeTable,
   useVbenVxeGrid as useGrid,
 } from '@vben/plugins/vxe-table';
-import { get, isFunction, isString } from '@vben/utils';
+import { formatDateTime, get, isFunction, isString } from '@vben/utils';
 
 import { objectOmit } from '@vueuse/core';
 import { ElButton, ElImage, ElPopconfirm, ElSwitch, ElTag } from 'element-plus';
@@ -246,8 +246,10 @@ setupVbenVxeTable({
       },
     });
 
-    // 这里可以自行扩展 vxe-table 的全局配置，比如自定义格式化
-    // vxeUI.formats.add
+    // 全局时间格式化，列上用 formatter: 'formatDateTime' 引用
+    vxeUI.formats.add('formatDateTime', ({ cellValue }) =>
+      cellValue ? formatDateTime(cellValue) : '-',
+    );
   },
   useVbenForm,
 });
