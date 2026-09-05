@@ -61,6 +61,7 @@
     "list": "操作日志",
     "method": "请求方法",
     "operation": "操作",
+    "operator": "操作人",
     "path": "接口路径",
     "resp": "响应体",
     "status": "HTTP 状态",

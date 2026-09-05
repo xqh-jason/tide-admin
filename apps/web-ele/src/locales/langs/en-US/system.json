@@ -61,6 +61,7 @@
     "list": "Operation Logs",
     "method": "Method",
     "operation": "Operation",
+    "operator": "Operator",
     "path": "Path",
     "resp": "Response Body",
     "status": "HTTP Status",

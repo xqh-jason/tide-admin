@@ -4,8 +4,6 @@ import type { LoginLogApi } from '#/api';
 
 import { $t } from '#/locales';
 
-import { useAuditColumns } from '../audit-columns';
-
 /** 登录日志搜索表单 schema */
 export function useGridFormSchema(): VbenFormSchema[] {
   return [
@@ -63,7 +61,13 @@ export function useColumns(): VxeTableGridColumns<LoginLogApi.LoginLog> {
       showOverflow: true,
       title: $t('system.loginLog.agent'),
     },
-    ...useAuditColumns<LoginLogApi.LoginLog>($t('system.loginLog.createdAt')),
+    // 登录日志为只追加记录，无更新语义；用户名列已在前，故只保留登录时间
+    {
+      field: 'created_at',
+      formatter: 'formatDateTime',
+      title: $t('system.loginLog.createdAt'),
+      width: 170,
+    },
     {
       align: 'center',
       field: 'operation',
