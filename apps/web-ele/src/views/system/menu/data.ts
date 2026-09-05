@@ -6,6 +6,8 @@ import { buildMenuTree, getMenuList } from '#/api';
 import { $t } from '#/locales';
 import { useDictOptions } from '#/store';
 
+import { useAuditColumns } from '../audit-columns';
+
 /** 菜单类型选项（1 目录 / 2 菜单 / 3 按钮，对齐 sys_menu.menu_type） */
 export function getMenuTypeOptions() {
   return [
@@ -224,6 +226,7 @@ export function useColumns(
       title: $t('system.menu.status'),
       width: 90,
     },
+    ...useAuditColumns<SystemMenuApi.SystemMenu>(),
     {
       align: 'center',
       cellRender: {

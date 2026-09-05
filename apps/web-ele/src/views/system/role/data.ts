@@ -5,6 +5,8 @@ import type { SystemRoleApi } from '#/api';
 import { $t } from '#/locales';
 import { useDictOptions } from '#/store';
 
+import { useAuditColumns } from '../audit-columns';
+
 /** 新增/编辑角色表单 schema（menu_ids 由表单插槽内的授权树维护） */
 export function useFormSchema(): VbenFormSchema[] {
   const statusOptions = useDictOptions('status');
@@ -100,6 +102,7 @@ export function useColumns(
       width: 100,
     },
     { field: 'remark', minWidth: 160, title: $t('system.role.remark') },
+    ...useAuditColumns<SystemRoleApi.SystemRole>(),
     {
       align: 'center',
       cellRender: {

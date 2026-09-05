@@ -13,6 +13,12 @@
     "status": "Status",
     "title": "API Management"
   },
+  "common": {
+    "createdBy": "Created By",
+    "createdAt": "Created At",
+    "updatedBy": "Updated By",
+    "updatedAt": "Updated At"
+  },
   "dictionary": {
     "extend": "Extend",
     "extendTip": "e.g. tag color, can be left blank",
@@ -58,8 +64,7 @@
     "path": "Path",
     "resp": "Response Body",
     "status": "HTTP Status",
-    "title": "Operation Logs",
-    "userId": "User ID"
+    "title": "Operation Logs"
   },
   "user": {
     "email": "Email",

@@ -7,6 +7,8 @@ import { getRoleList } from '#/api';
 import { $t } from '#/locales';
 import { useDictOptions } from '#/store';
 
+import { useAuditColumns } from '../audit-columns';
+
 /**
  * 新增/编辑用户表单 schema
  * @param getEditId 编辑态返回用户 id，密码可选；创建态密码必填
@@ -127,6 +129,7 @@ export function useColumns(
       title: $t('system.user.status'),
       width: 100,
     },
+    ...useAuditColumns<SystemUserApi.SystemUser>(),
     {
       align: 'center',
       field: 'operation',

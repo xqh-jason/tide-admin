@@ -4,6 +4,8 @@ import type { LoginLogApi } from '#/api';
 
 import { $t } from '#/locales';
 
+import { useAuditColumns } from '../audit-columns';
+
 /** 登录日志搜索表单 schema */
 export function useGridFormSchema(): VbenFormSchema[] {
   return [
@@ -61,11 +63,7 @@ export function useColumns(): VxeTableGridColumns<LoginLogApi.LoginLog> {
       showOverflow: true,
       title: $t('system.loginLog.agent'),
     },
-    {
-      field: 'created_at',
-      minWidth: 170,
-      title: $t('system.loginLog.createdAt'),
-    },
+    ...useAuditColumns<LoginLogApi.LoginLog>($t('system.loginLog.createdAt')),
     {
       align: 'center',
       field: 'operation',

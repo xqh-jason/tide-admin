@@ -11,6 +11,7 @@ import { useVbenForm } from '#/adapter/form';
 import { createMenu, updateMenu } from '#/api';
 import { $t } from '#/locales';
 
+import AuditInfo from '../../components/audit-info.vue';
 import { useFormSchema } from '../data';
 
 defineOptions({ name: 'SystemMenuForm' });
@@ -18,6 +19,9 @@ defineOptions({ name: 'SystemMenuForm' });
 const emits = defineEmits(['success']);
 
 const editId = ref(0);
+
+/** 编辑态的行记录，供底部审计信息只读展示 */
+const auditRecord = ref<null | SystemMenuApi.SystemMenu>(null);
 
 const drawerTitle = computed(() =>
   $t(editId.value > 0 ? 'ui.actionTitle.edit' : 'ui.actionTitle.create', [
@@ -62,6 +66,8 @@ const [Drawer, drawerApi] = useVbenDrawer<
     const data = drawerApi.getData();
     formApi.reset();
     editId.value = data && 'id' in data && data.id ? data.id : 0;
+    auditRecord.value =
+      editId.value > 0 && data ? (data as SystemMenuApi.SystemMenu) : null;
     await formApi.setValues({ ...data });
   },
 });
@@ -72,5 +78,6 @@ defineExpose({ drawerApi });
 <template>
   <Drawer class="w-[560px]" :title="drawerTitle">
     <Form />
+    <AuditInfo :record="auditRecord" />
   </Drawer>
 </template>

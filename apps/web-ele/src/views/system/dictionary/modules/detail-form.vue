@@ -11,6 +11,7 @@ import { useVbenForm } from '#/adapter/form';
 import { createDictionaryDetail, updateDictionaryDetail } from '#/api';
 import { $t } from '#/locales';
 
+import AuditInfo from '../../components/audit-info.vue';
 import { useDetailFormSchema } from '../data';
 
 defineOptions({ name: 'SystemDictionaryDetailForm' });
@@ -18,6 +19,11 @@ defineOptions({ name: 'SystemDictionaryDetailForm' });
 const emits = defineEmits(['success']);
 
 const editId = ref(0);
+
+/** 编辑态的行记录，供底部审计信息只读展示 */
+const auditRecord = ref<null | Partial<SystemDictionaryApi.DictionaryDetail>>(
+  null,
+);
 
 const drawerTitle = computed(() =>
   $t(editId.value > 0 ? 'ui.actionTitle.edit' : 'ui.actionTitle.create', [
@@ -74,6 +80,7 @@ const [Drawer, drawerApi] =
       if (data?.id) {
         formApi.setValues(data);
       }
+      auditRecord.value = data?.id ? data : null;
     },
   });
 
@@ -83,5 +90,6 @@ defineExpose({ drawerApi });
 <template>
   <Drawer class="w-[560px]" :title="drawerTitle">
     <Form />
+    <AuditInfo :record="auditRecord" />
   </Drawer>
 </template>

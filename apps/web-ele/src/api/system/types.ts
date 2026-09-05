@@ -20,3 +20,13 @@ export interface PageResult<T> {
 export interface IdRequest {
   id: number;
 }
+
+/** 审计字段：后端各 Resp 统一返回（记录创建/更新人与时间） */
+export interface AuditFields {
+  created_at?: string;
+  /** 创建人姓名 */
+  created_by_name?: string;
+  updated_at?: string;
+  /** 更新人姓名 */
+  updated_by_name?: string;
+}

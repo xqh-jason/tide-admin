@@ -17,6 +17,7 @@ import {
 } from '#/api';
 import { $t } from '#/locales';
 
+import AuditInfo from '../../components/audit-info.vue';
 import { useFormSchema } from '../data';
 
 defineOptions({ name: 'SystemRoleForm' });
@@ -24,6 +25,9 @@ defineOptions({ name: 'SystemRoleForm' });
 const emits = defineEmits(['success']);
 
 const editId = ref(0);
+
+/** 编辑态的行记录，供底部审计信息只读展示 */
+const auditRecord = ref<null | SystemRoleApi.SystemRole>(null);
 
 const drawerTitle = computed(() =>
   $t(editId.value > 0 ? 'ui.actionTitle.edit' : 'ui.actionTitle.create', [
@@ -109,6 +113,7 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemRoleApi.SystemRole>({
     if (base) {
       formApi.setValues(base);
     }
+    auditRecord.value = editId.value > 0 ? (base ?? null) : null;
   },
 });
 
@@ -130,5 +135,6 @@ defineExpose({ drawerApi });
         />
       </template>
     </Form>
+    <AuditInfo :record="auditRecord" />
   </Drawer>
 </template>

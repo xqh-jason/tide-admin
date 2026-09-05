@@ -4,6 +4,7 @@ import type { OperationLogApi } from '#/api';
 import { computed, ref } from 'vue';
 
 import { useVbenDrawer } from '@vben/common-ui';
+import { formatDateTime } from '@vben/utils';
 
 import { ElDescriptions, ElDescriptionsItem } from 'element-plus';
 
@@ -48,14 +49,17 @@ defineExpose({ drawerApi });
         <ElDescriptionsItem :label="$t('system.operationLog.ip')">
           {{ detail.ip }}
         </ElDescriptionsItem>
-        <ElDescriptionsItem :label="$t('system.operationLog.userId')">
-          {{ detail.user_id }}
+        <ElDescriptionsItem :label="$t('system.common.createdBy')">
+          {{ detail.created_by_name || detail.user_id }}
         </ElDescriptionsItem>
-        <ElDescriptionsItem
-          :label="$t('system.operationLog.createdAt')"
-          :span="2"
-        >
-          {{ detail.created_at }}
+        <ElDescriptionsItem :label="$t('system.common.createdAt')">
+          {{ detail.created_at ? formatDateTime(detail.created_at) : '-' }}
+        </ElDescriptionsItem>
+        <ElDescriptionsItem :label="$t('system.common.updatedBy')">
+          {{ detail.updated_by_name || '-' }}
+        </ElDescriptionsItem>
+        <ElDescriptionsItem :label="$t('system.common.updatedAt')">
+          {{ detail.updated_at ? formatDateTime(detail.updated_at) : '-' }}
         </ElDescriptionsItem>
         <ElDescriptionsItem
           v-if="detail.error_message"

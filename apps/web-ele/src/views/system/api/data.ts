@@ -6,6 +6,8 @@ import { getRoleList } from '#/api';
 import { $t } from '#/locales';
 import { useDictOptions } from '#/store';
 
+import { useAuditColumns } from '../audit-columns';
+
 /** 新增/编辑 API 表单 schema */
 export function useFormSchema(): VbenFormSchema[] {
   const statusOptions = useDictOptions('status');
@@ -127,6 +129,7 @@ export function useColumns(
       title: $t('system.api.status'),
       width: 100,
     },
+    ...useAuditColumns<SystemApiApi.SystemApi>(),
     {
       align: 'center',
       cellRender: {
