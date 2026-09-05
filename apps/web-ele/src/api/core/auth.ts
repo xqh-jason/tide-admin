@@ -5,6 +5,10 @@ import { baseRequestClient, requestClient } from '#/api/request';
 export namespace AuthApi {
   /** 登录接口参数 */
   export interface LoginParams {
+    /** 验证码 id，来自 /captcha/generate */
+    captcha_id: string;
+    /** 图片上输入的验证码 */
+    captcha_value: string;
     password?: string;
     username?: string;
   }
