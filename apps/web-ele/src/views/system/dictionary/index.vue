@@ -14,6 +14,7 @@ import { useVbenVxeGrid, VbenTableAction } from '#/adapter/vxe-table';
 import { deleteDictionary, getDictionaryList } from '#/api';
 import { $t } from '#/locales';
 
+import { auditFieldMappingTime, useAuditSearchSchema } from '../audit-search';
 import { useColumns, useGridFormSchema } from './data';
 import ItemsPanel from './modules/items-panel.vue';
 import TypeForm from './modules/type-form.vue';
@@ -39,8 +40,8 @@ async function onDelete(row: SystemDictionaryApi.Dictionary) {
 
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: {
-    schema: useGridFormSchema(),
-    submitOnChange: true,
+    schema: [...useGridFormSchema(), ...useAuditSearchSchema()],
+    fieldMappingTime: auditFieldMappingTime,
   },
   gridOptions: {
     columns: useColumns(),

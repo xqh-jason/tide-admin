@@ -1,5 +1,6 @@
 import type {
   AuditFields,
+  AuditFilter,
   CommonStatus,
   IdRequest,
   PageParams,
@@ -35,7 +36,7 @@ export namespace SystemDictionaryApi {
     status: CommonStatus;
   }
 
-  export interface DictionaryListParams extends PageParams {
+  export interface DictionaryListParams extends AuditFilter, PageParams {
     /** 对 name / type 模糊搜索 */
     keyword?: string;
     status?: CommonStatus;
@@ -81,7 +82,7 @@ export namespace SystemDictionaryApi {
     type: string;
   }
 
-  export interface DictionaryDetailListParams extends PageParams {
+  export interface DictionaryDetailListParams extends AuditFilter, PageParams {
     dictionaryId?: number;
     /** 对 label / value 模糊搜索 */
     keyword?: string;

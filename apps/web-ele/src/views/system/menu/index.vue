@@ -14,6 +14,7 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { deleteMenu, getMenuList } from '#/api';
 import { $t } from '#/locales';
 
+import { auditFieldMappingTime, useAuditSearchSchema } from '../audit-search';
 import { useColumns, useGridFormSchema } from './data';
 import Form from './modules/form.vue';
 
@@ -52,8 +53,8 @@ function onActionClick({
 
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: {
-    schema: useGridFormSchema(),
-    submitOnChange: true,
+    schema: [...useGridFormSchema(), ...useAuditSearchSchema()],
+    fieldMappingTime: auditFieldMappingTime,
   },
   gridOptions: {
     columns: useColumns(onActionClick),

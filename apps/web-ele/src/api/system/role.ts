@@ -1,5 +1,6 @@
 import type {
   AuditFields,
+  AuditFilter,
   CommonStatus,
   IdRequest,
   PageParams,
@@ -21,7 +22,7 @@ export namespace SystemRoleApi {
     status: CommonStatus;
   }
 
-  export interface ListParams extends PageParams {
+  export interface ListParams extends AuditFilter, PageParams {
     /** 角色名/角色键模糊搜索 */
     keyword?: string;
     status?: CommonStatus;

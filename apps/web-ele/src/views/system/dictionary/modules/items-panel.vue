@@ -16,6 +16,10 @@ import { useVbenVxeGrid, VbenTableAction } from '#/adapter/vxe-table';
 import { deleteDictionaryDetail, getDictionaryDetailList } from '#/api';
 import { $t } from '#/locales';
 
+import {
+  auditFieldMappingTime,
+  useAuditSearchSchema,
+} from '../../audit-search';
 import { useDetailColumns, useDetailGridSearchSchema } from '../data';
 import DetailForm from './detail-form.vue';
 
@@ -53,8 +57,8 @@ function onActionClick({
 
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: {
-    schema: useDetailGridSearchSchema(),
-    submitOnChange: true,
+    schema: [...useDetailGridSearchSchema(), ...useAuditSearchSchema()],
+    fieldMappingTime: auditFieldMappingTime,
   },
   gridOptions: {
     columns: useDetailColumns(),
