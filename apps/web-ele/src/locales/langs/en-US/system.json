@@ -3,6 +3,7 @@
   "api": {
     "apiGroup": "Group",
     "description": "Description",
+    "keyword": "Keyword",
     "list": "API List",
     "method": "Method",
     "operation": "Operation",

@@ -3,6 +3,7 @@
   "api": {
     "apiGroup": "分组",
     "description": "描述",
+    "keyword": "关键词",
     "list": "API 列表",
     "method": "请求方法",
     "operation": "操作",
