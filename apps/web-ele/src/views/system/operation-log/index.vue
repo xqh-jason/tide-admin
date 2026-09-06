@@ -43,7 +43,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
         query: async ({ page }, formValues) => {
           return getOperationLogList({
             page: page.currentPage,
-            page_size: page.pageSize,
+            pageSize: page.pageSize,
             ...formValues,
           });
         },

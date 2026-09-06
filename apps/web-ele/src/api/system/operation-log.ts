@@ -7,7 +7,7 @@ export namespace OperationLogApi {
   export interface OperationLog {
     id: number;
     /** 操作人 ID */
-    user_id: number;
+    userId: number;
     ip: string;
     method: string;
     path: string;
@@ -17,14 +17,14 @@ export namespace OperationLogApi {
     latency: number;
     agent: string;
     /** 失败提示（业务 message 或传输层错误摘要） */
-    error_message: string;
-    created_at: string;
+    errorMessage: string;
+    createdAt: string;
   }
 
   /** 操作日志详情：含脱敏截断后的请求体 / 响应体 */
   export interface OperationLogDetail extends OperationLog {
     /** 操作人名称（仅详情接口返回） */
-    user_name: string;
+    userName: string;
     body: string;
     resp: string;
   }
@@ -33,7 +33,7 @@ export namespace OperationLogApi {
     /** 按路径模糊搜索 */
     keyword?: string;
     /** 操作人 ID 精确过滤 */
-    user_id?: number;
+    userId?: number;
     /** HTTP 状态码精确过滤 */
     status?: number;
   }

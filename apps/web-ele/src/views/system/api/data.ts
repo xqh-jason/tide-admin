@@ -38,7 +38,7 @@ export function useFormSchema(): VbenFormSchema[] {
     },
     {
       component: 'Input',
-      fieldName: 'api_group',
+      fieldName: 'apiGroup',
       label: $t('system.api.apiGroup'),
     },
     {
@@ -63,12 +63,12 @@ export function useFormSchema(): VbenFormSchema[] {
       component: 'ApiSelect',
       componentProps: {
         afterFetch: (items: SystemRoleApi.SystemRole[]) =>
-          items.map((role) => ({ label: role.role_name, value: role.id })),
-        api: () => getRoleList({ page: 1, page_size: 100 }),
+          items.map((role) => ({ label: role.roleName, value: role.id })),
+        api: () => getRoleList({ page: 1, pageSize: 100 }),
         multiple: true,
         placeholder: $t('system.api.rolesPlaceholder'),
       },
-      fieldName: 'role_ids',
+      fieldName: 'roleIds',
       label: $t('system.api.roles'),
     },
   ];
@@ -117,7 +117,7 @@ export function useColumns(
   return [
     { field: 'path', minWidth: 240, title: $t('system.api.path') },
     { field: 'method', title: $t('system.api.method'), width: 90 },
-    { field: 'api_group', title: $t('system.api.apiGroup'), width: 140 },
+    { field: 'apiGroup', title: $t('system.api.apiGroup'), width: 140 },
     {
       field: 'description',
       minWidth: 180,

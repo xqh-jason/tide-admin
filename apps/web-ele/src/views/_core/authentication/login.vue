@@ -47,7 +47,7 @@ const formSchema = computed((): VbenFormSchema[] => {
         image: captchaImage.value,
         onRefresh: refreshCaptcha,
       },
-      fieldName: 'captcha_value',
+      fieldName: 'captchaValue',
       label: $t('authentication.captcha'),
       rules: z
         .string()
@@ -58,10 +58,10 @@ const formSchema = computed((): VbenFormSchema[] => {
 
 /** 重新生成验证码；图一换，旧输入即失效，故一并清空 */
 async function refreshCaptcha() {
-  const { captcha_id, image } = await generateCaptchaApi();
-  captchaId.value = captcha_id;
+  const { captchaId: id, image } = await generateCaptchaApi();
+  captchaId.value = id;
   captchaImage.value = `data:image/png;base64,${image}`;
-  await loginRef.value?.getFormApi().setFieldValue('captcha_value', '');
+  await loginRef.value?.getFormApi().setFieldValue('captchaValue', '');
 }
 
 /**
@@ -70,8 +70,8 @@ async function refreshCaptcha() {
 async function handleLogin(values: Recordable<any>) {
   try {
     await authStore.authLogin({
-      captcha_id: captchaId.value,
-      captcha_value: values.captcha_value,
+      captchaId: captchaId.value,
+      captchaValue: values.captchaValue,
       password: values.password,
       username: values.username,
     });

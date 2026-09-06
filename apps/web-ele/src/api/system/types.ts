@@ -6,14 +6,14 @@ export interface PageParams {
   /** 页码，从 1 开始 */
   page?: number;
   /** 每页条数，1-100，缺省 10 */
-  page_size?: number;
+  pageSize?: number;
 }
 
 /** 后端统一分页响应结构 */
 export interface PageResult<T> {
   items: T[];
   total: number;
-  total_pages: number;
+  totalPages: number;
 }
 
 /** 按 id 操作的请求体 */
@@ -23,10 +23,10 @@ export interface IdRequest {
 
 /** 审计字段：后端各 Resp 统一返回（记录创建/更新人与时间） */
 export interface AuditFields {
-  created_at?: string;
+  createdAt?: string;
   /** 创建人姓名 */
-  created_by_name?: string;
-  updated_at?: string;
+  createdByName?: string;
+  updatedAt?: string;
   /** 更新人姓名 */
-  updated_by_name?: string;
+  updatedByName?: string;
 }

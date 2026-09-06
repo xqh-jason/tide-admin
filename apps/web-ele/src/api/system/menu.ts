@@ -21,12 +21,12 @@ export namespace SystemMenuApi {
     icon: string;
     id: number;
     /** 1 缓存 / 0 不缓存，输出到 vben meta.keepAlive */
-    keep_alive: CommonStatus;
-    menu_type: MenuType;
+    keepAlive: CommonStatus;
+    menuType: MenuType;
     /** 路由名，全局唯一 */
     name: string;
     /** 父菜单 id，0 为顶级 */
-    parent_id: number;
+    parentId: number;
     path: string;
     /** 按钮权限码，格式 模块:实体:动作 */
     permission: string;
@@ -45,10 +45,10 @@ export namespace SystemMenuApi {
     component?: string;
     hidden?: CommonStatus;
     icon?: string;
-    keep_alive?: CommonStatus;
-    menu_type: MenuType;
+    keepAlive?: CommonStatus;
+    menuType: MenuType;
     name?: string;
-    parent_id: number;
+    parentId: number;
     path?: string;
     permission?: string;
     sort?: number;
@@ -62,10 +62,10 @@ export namespace SystemMenuApi {
     hidden?: CommonStatus;
     icon?: string;
     id: number;
-    keep_alive?: CommonStatus;
-    menu_type?: MenuType;
+    keepAlive?: CommonStatus;
+    menuType?: MenuType;
     name?: string;
-    parent_id?: number;
+    parentId?: number;
     path?: string;
     permission?: string;
     sort?: number;
@@ -76,15 +76,15 @@ export namespace SystemMenuApi {
 
 /**
  * 菜单平铺列表（含按钮节点，按 sort、id 升序）
- * 后端为分页接口（默认 page_size=10）；菜单树需一次性取全量组树，
- * 故默认以最大 page_size 拉全量，调用方可覆盖分页参数
+ * 后端为分页接口（默认 pageSize=10）；菜单树需一次性取全量组树，
+ * 故默认以最大 pageSize 拉全量，调用方可覆盖分页参数
  */
 export async function getMenuList(
   params: SystemMenuApi.ListParams = {},
 ): Promise<PageResult<SystemMenuApi.SystemMenu>> {
   return requestClient.post<PageResult<SystemMenuApi.SystemMenu>>(
     '/menu/list',
-    { page: 1, page_size: 10_000, ...params },
+    { page: 1, pageSize: 10_000, ...params },
   );
 }
 
@@ -110,7 +110,7 @@ export async function deleteMenu(id: number) {
 }
 
 /**
- * 将平铺菜单列表按 parent_id 组装成树，同级按 sort、id 升序；
+ * 将平铺菜单列表按 parentId 组装成树，同级按 sort、id 升序；
  * 叶子节点不携带 children 字段
  */
 export function buildMenuTree(
@@ -118,9 +118,9 @@ export function buildMenuTree(
 ): SystemMenuApi.SystemMenu[] {
   const byParent = new Map<number, SystemMenuApi.SystemMenu[]>();
   for (const menu of menus) {
-    const list = byParent.get(menu.parent_id) ?? [];
+    const list = byParent.get(menu.parentId) ?? [];
     list.push(menu);
-    byParent.set(menu.parent_id, list);
+    byParent.set(menu.parentId, list);
   }
   const attach = (
     nodes: SystemMenuApi.SystemMenu[],

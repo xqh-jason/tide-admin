@@ -16,7 +16,7 @@ import { $t } from '#/locales';
 const props = defineProps<{ record?: null | Partial<AuditFields> }>();
 
 const visible = computed(() =>
-  Boolean(props.record?.created_at || props.record?.updated_at),
+  Boolean(props.record?.createdAt || props.record?.updatedAt),
 );
 
 const formatTime = (value?: string) => (value ? formatDateTime(value) : '-');
@@ -25,16 +25,16 @@ const formatTime = (value?: string) => (value ? formatDateTime(value) : '-');
 <template>
   <ElDescriptions v-if="visible" :column="2" border class="mt-4" size="small">
     <ElDescriptionsItem :label="$t('system.common.createdBy')">
-      {{ record?.created_by_name || '-' }}
+      {{ record?.createdByName || '-' }}
     </ElDescriptionsItem>
     <ElDescriptionsItem :label="$t('system.common.createdAt')">
-      {{ formatTime(record?.created_at) }}
+      {{ formatTime(record?.createdAt) }}
     </ElDescriptionsItem>
     <ElDescriptionsItem :label="$t('system.common.updatedBy')">
-      {{ record?.updated_by_name || '-' }}
+      {{ record?.updatedByName || '-' }}
     </ElDescriptionsItem>
     <ElDescriptionsItem :label="$t('system.common.updatedAt')">
-      {{ formatTime(record?.updated_at) }}
+      {{ formatTime(record?.updatedAt) }}
     </ElDescriptionsItem>
   </ElDescriptions>
 </template>

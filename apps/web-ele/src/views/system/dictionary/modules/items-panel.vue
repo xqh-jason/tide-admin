@@ -65,12 +65,12 @@ const [Grid, gridApi] = useVbenVxeGrid({
         query: async ({ page }, formValues) => {
           const type = currentType.value;
           if (!type) {
-            return { items: [], total: 0, total_pages: 0 };
+            return { items: [], total: 0, totalPages: 0 };
           }
           return getDictionaryDetailList({
             page: page.currentPage,
-            page_size: page.pageSize,
-            dictionary_id: type.id,
+            pageSize: page.pageSize,
+            dictionaryId: type.id,
             ...formValues,
           });
         },
@@ -89,7 +89,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
 function onCreate() {
   const type = currentType.value;
   if (!type) return;
-  detailFormDrawerApi.setData({ dictionary_id: type.id }).open();
+  detailFormDrawerApi.setData({ dictionaryId: type.id }).open();
 }
 
 const drawerTitle = computed(() =>

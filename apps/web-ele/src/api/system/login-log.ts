@@ -3,11 +3,11 @@ import type { CommonStatus, IdRequest, PageParams, PageResult } from './types';
 import { requestClient } from '#/api/request';
 
 export namespace LoginLogApi {
-  /** 登录日志（对齐后端 sys_login_log 契约 LoginLogResp）；只追加记录，无更新人 / 更新时间 */
+  /** 登录日志（对齐后端 sys_login_log 契约 LoginLogResp）；只追加记录，无更新人 */
   export interface LoginLog {
     id: number;
     /** 登录成功后的用户 ID，失败为 0 */
-    user_id: number;
+    userId: number;
     /** 本次尝试的用户名 */
     username: string;
     ip: string;
@@ -16,7 +16,8 @@ export namespace LoginLogApi {
     status: CommonStatus;
     /** 内部原因或成功提示 */
     msg: string;
-    created_at: string;
+    createdAt: string;
+    updatedAt?: string;
   }
 
   export interface ListParams extends PageParams {

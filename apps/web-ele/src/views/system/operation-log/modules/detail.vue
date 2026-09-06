@@ -50,17 +50,17 @@ defineExpose({ drawerApi });
           {{ detail.ip }}
         </ElDescriptionsItem>
         <ElDescriptionsItem :label="$t('system.common.createdBy')">
-          {{ detail.user_name || detail.user_id }}
+          {{ detail.userName || detail.userId }}
         </ElDescriptionsItem>
         <ElDescriptionsItem :label="$t('system.common.createdAt')">
-          {{ detail.created_at ? formatDateTime(detail.created_at) : '-' }}
+          {{ detail.createdAt ? formatDateTime(detail.createdAt) : '-' }}
         </ElDescriptionsItem>
         <ElDescriptionsItem
-          v-if="detail.error_message"
+          v-if="detail.errorMessage"
           :label="$t('system.operationLog.errorMessage')"
           :span="2"
         >
-          {{ detail.error_message }}
+          {{ detail.errorMessage }}
         </ElDescriptionsItem>
       </ElDescriptions>
 

@@ -7,13 +7,13 @@ import { useDictOptions } from '#/store';
 
 import { useAuditColumns } from '../audit-columns';
 
-/** 新增/编辑角色表单 schema（menu_ids 由表单插槽内的授权树维护） */
+/** 新增/编辑角色表单 schema（menuIds 由表单插槽内的授权树维护） */
 export function useFormSchema(): VbenFormSchema[] {
   const statusOptions = useDictOptions('status');
   return [
     {
       component: 'Input',
-      fieldName: 'role_name',
+      fieldName: 'roleName',
       label: $t('system.role.roleName'),
       rules: 'required',
     },
@@ -22,7 +22,7 @@ export function useFormSchema(): VbenFormSchema[] {
       componentProps: {
         placeholder: $t('system.role.roleKeyTip'),
       },
-      fieldName: 'role_key',
+      fieldName: 'roleKey',
       label: $t('system.role.roleKey'),
       rules: 'required',
     },
@@ -50,7 +50,7 @@ export function useFormSchema(): VbenFormSchema[] {
     {
       // 渲染被 list/form 中按 fieldName 命名的插槽接管
       component: 'Input',
-      fieldName: 'menu_ids',
+      fieldName: 'menuIds',
       formItemClass: 'items-start',
       label: $t('system.role.menus'),
     },
@@ -88,8 +88,8 @@ export function useColumns(
 ): VxeTableGridColumns<SystemRoleApi.SystemRole> {
   const statusOptions = useDictOptions('status');
   return [
-    { field: 'role_name', title: $t('system.role.roleName'), width: 160 },
-    { field: 'role_key', title: $t('system.role.roleKey'), width: 160 },
+    { field: 'roleName', title: $t('system.role.roleName'), width: 160 },
+    { field: 'roleKey', title: $t('system.role.roleKey'), width: 160 },
     { field: 'sort', title: $t('system.role.sort'), width: 90 },
     {
       cellRender: {
@@ -107,7 +107,7 @@ export function useColumns(
       align: 'center',
       cellRender: {
         attrs: {
-          nameField: 'role_name',
+          nameField: 'roleName',
           nameTitle: $t('system.role.roleName'),
           onClick: onActionClick,
         },
@@ -116,11 +116,11 @@ export function useColumns(
           // 超管角色（super）固定不可改
           {
             code: 'edit',
-            show: (row: SystemRoleApi.SystemRole) => row.role_key !== 'super',
+            show: (row: SystemRoleApi.SystemRole) => row.roleKey !== 'super',
           },
           {
             code: 'delete',
-            show: (row: SystemRoleApi.SystemRole) => row.role_key !== 'super',
+            show: (row: SystemRoleApi.SystemRole) => row.roleKey !== 'super',
           },
         ],
       },

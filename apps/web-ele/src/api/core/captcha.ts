@@ -4,7 +4,7 @@ export namespace CaptchaApi {
   /** 图形验证码 */
   export interface CaptchaResult {
     /** 本次验证码唯一 id，登录时原样回传 */
-    captcha_id: string;
+    captchaId: string;
     /** 裸 base64 PNG，不含 `data:` 前缀 */
     image: string;
   }

@@ -42,7 +42,7 @@ const [Form, formApi] = useVbenForm({
 /**
  * 打开数据：
  * - 编辑态：父组件 setData(整行 DictionaryDetail)，id 非空；
- * - 新增态：父组件 setData({ dictionary_id })，携带所属类型 id。
+ * - 新增态：父组件 setData({ dictionaryId })，携带所属类型 id。
  */
 const [Drawer, drawerApi] =
   useVbenDrawer<null | Partial<SystemDictionaryApi.DictionaryDetail>>({
@@ -50,20 +50,20 @@ const [Drawer, drawerApi] =
       const { valid } = await formApi.validate();
       if (!valid) return;
       const values = await formApi.getValues();
-      const dictionaryId = drawerApi.getData()?.dictionary_id ?? 0;
+      const dictionaryId = drawerApi.getData()?.dictionaryId ?? 0;
       drawerApi.lock();
       try {
         const save =
           editId.value > 0
-            ? // 全量覆盖契约：dictionary_id 也必须回传，避免所属字典被清空
+            ? // 全量覆盖契约：dictionaryId 也必须回传，避免所属字典被清空
               updateDictionaryDetail({
                 ...values,
-                dictionary_id: dictionaryId,
+                dictionaryId,
                 id: editId.value,
               } as SystemDictionaryApi.UpdateDictionaryDetailParams)
             : createDictionaryDetail({
                 ...values,
-                dictionary_id: dictionaryId,
+                dictionaryId,
               } as SystemDictionaryApi.CreateDictionaryDetailParams);
         await save;
         ElMessage.success($t('ui.actionMessage.operationSuccess'));
