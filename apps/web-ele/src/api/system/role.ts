@@ -9,14 +9,14 @@ import type {
 import { requestClient } from '#/api/request';
 
 export namespace SystemRoleApi {
-  /** 角色（对齐后端 w3-role-crud 契约 RoleResp；menu_ids 由 /role/get 返回用于编辑回显） */
+  /** 角色（对齐后端 w3-role-crud 契约 RoleResp；menuIds 由 /role/get 返回用于编辑回显） */
   export interface SystemRole extends AuditFields {
     id: number;
     /** 已授权菜单+按钮 id 列表，仅 /role/get 返回 */
-    menu_ids?: number[];
+    menuIds?: number[];
     remark: string;
-    role_key: string;
-    role_name: string;
+    roleKey: string;
+    roleName: string;
     sort: number;
     status: CommonStatus;
   }
@@ -29,28 +29,28 @@ export namespace SystemRoleApi {
 
   export interface CreateParams {
     /** 接口 id 列表（W3 第一版授权链路不使用，预留） */
-    api_ids?: number[];
+    apiIds?: number[];
     /** 菜单+按钮 id 列表，传入即全量替换 sys_role_menu */
-    menu_ids?: number[];
+    menuIds?: number[];
     remark?: string;
     /** 全局唯一，超管固定为 super */
-    role_key: string;
-    role_name: string;
+    roleKey: string;
+    roleName: string;
     sort?: number;
     status?: CommonStatus;
   }
 
   /**
    * 更新角色：除 id 外全部可选，后端对未传字段不做修改；
-   * menu_ids/api_ids 传 null 视为不修改，传数组即全量替换
+   * menuIds/apiIds 传 null 视为不修改，传数组即全量替换
    */
   export interface UpdateParams {
-    api_ids?: null | number[];
+    apiIds?: null | number[];
     id: number;
-    menu_ids?: null | number[];
+    menuIds?: null | number[];
     remark?: string;
-    role_key?: string;
-    role_name?: string;
+    roleKey?: string;
+    roleName?: string;
     sort?: number;
     status?: CommonStatus;
   }

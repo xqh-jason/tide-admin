@@ -36,7 +36,7 @@ function onActionClick({
 }: OnActionClickParams<SystemMenuApi.SystemMenu>) {
   switch (code) {
     case 'append': {
-      formDrawerApi.setData({ parent_id: row.id }).open();
+      formDrawerApi.setData({ parentId: row.id }).open();
       break;
     }
     case 'delete': {
@@ -59,7 +59,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
     columns: useColumns(onActionClick),
     height: 'auto',
     keepSource: true,
-    // 树表：不分页，由平铺数据按 parent_id 组树并默认展开
+    // 树表：不分页，由平铺数据按 parentId 组树并默认展开
     pagerConfig: { enabled: false },
     proxyConfig: {
       ajax: {
@@ -78,7 +78,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
     },
     treeConfig: {
       expandAll: true,
-      parentField: 'parent_id',
+      parentField: 'parentId',
       rowField: 'id',
       transform: true,
     },
@@ -108,7 +108,7 @@ function onCreate() {
         <div class="flex items-center gap-1">
           <IconifyIcon v-if="row.icon" :icon="row.icon" />
           <span>{{ row.title }}</span>
-          <ElTag v-if="row.menu_type === 3" size="small" type="warning">
+          <ElTag v-if="row.menuType === 3" size="small" type="warning">
             {{ $t('system.menu.permission') }}
           </ElTag>
         </div>

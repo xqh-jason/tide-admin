@@ -48,9 +48,9 @@ export function useColumns(): VxeTableGridColumns<OperationLogApi.OperationLog> 
     },
     { field: 'ip', title: $t('system.operationLog.ip'), width: 140 },
     // 操作日志为只追加记录，无更新语义；后端只回操作人 id，故不走通用审计列
-    { field: 'user_id', title: $t('system.operationLog.operator'), width: 110 },
+    { field: 'userId', title: $t('system.operationLog.operator'), width: 110 },
     {
-      field: 'created_at',
+      field: 'createdAt',
       formatter: 'formatDateTime',
       title: $t('system.operationLog.createdAt'),
       width: 170,

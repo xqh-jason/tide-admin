@@ -42,23 +42,23 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemApiApi.SystemApi>({
     const { valid } = await formApi.validate();
     if (!valid) return;
     const values = await formApi.getValues();
-    // role_ids 全量替换语义；未选择时传空数组（后端会清空授权）
-    const role_ids: number[] = values.role_ids ?? [];
+    // roleIds 全量替换语义；未选择时传空数组（后端会清空授权）
+    const roleIds: number[] = values.roleIds ?? [];
     drawerApi.lock();
     try {
       const save =
         editId.value > 0
-          ? // 后端更新为全量覆盖契约：api_group/description 必填非空，空值以空串兜底
+          ? // 后端更新为全量覆盖契约：apiGroup/description 必填非空，空值以空串兜底
             updateApi({
-              api_group: values.api_group ?? '',
+              apiGroup: values.apiGroup ?? '',
               description: values.description ?? '',
               id: editId.value,
               method: values.method,
               path: values.path,
-              role_ids,
+              roleIds,
               status: values.status,
             } as SystemApiApi.UpdateParams)
-          : createApi({ ...values, role_ids } as SystemApiApi.CreateParams);
+          : createApi({ ...values, roleIds } as SystemApiApi.CreateParams);
       await save;
       ElMessage.success($t('ui.actionMessage.operationSuccess'));
       emits('success');
@@ -73,9 +73,9 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemApiApi.SystemApi>({
     formApi.reset();
     editId.value = data?.id ?? 0;
     if (data) {
-      // 后端 /sys-api/get 不回传 role_ids，编辑时授权角色需重新选择
-      const { role_ids, ...rest } = data as SystemApiApi.SystemApi & {
-        role_ids?: number[];
+      // 后端 /sys-api/get 不回传 roleIds，编辑时授权角色需重新选择
+      const { roleIds, ...rest } = data as SystemApiApi.SystemApi & {
+        roleIds?: number[];
       };
       formApi.setValues(rest);
     }

@@ -24,7 +24,7 @@ export function useFormSchema(getEditId: () => number): VbenFormSchema[] {
     },
     {
       component: 'Input',
-      fieldName: 'emp_no',
+      fieldName: 'empNo',
       label: $t('system.user.empNo'),
       rules: 'required',
     },
@@ -74,11 +74,11 @@ export function useFormSchema(getEditId: () => number): VbenFormSchema[] {
       component: 'ApiSelect',
       componentProps: {
         afterFetch: (items: SystemRoleApi.SystemRole[]) =>
-          items.map((role) => ({ label: role.role_name, value: role.id })),
-        api: () => getRoleList({ page: 1, page_size: 100 }),
+          items.map((role) => ({ label: role.roleName, value: role.id })),
+        api: () => getRoleList({ page: 1, pageSize: 100 }),
         multiple: true,
       },
-      fieldName: 'role_ids',
+      fieldName: 'roleIds',
       label: $t('system.user.roles'),
     },
   ];
@@ -115,7 +115,7 @@ export function useColumns(
   const statusOptions = useDictOptions('status');
   return [
     { field: 'username', title: $t('system.user.username'), width: 140 },
-    { field: 'emp_no', title: $t('system.user.empNo'), width: 120 },
+    { field: 'empNo', title: $t('system.user.empNo'), width: 120 },
     { field: 'nickname', title: $t('system.user.nickname'), width: 140 },
     { field: 'email', minWidth: 180, title: $t('system.user.email') },
     { field: 'phone', title: $t('system.user.phone'), width: 140 },

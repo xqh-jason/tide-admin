@@ -11,7 +11,7 @@ import { requestClient } from '#/api/request';
 export namespace SystemApiApi {
   /** API 权限点（对齐后端 sys_api 表契约 ApiResp） */
   export interface SystemApi extends AuditFields {
-    api_group: string;
+    apiGroup: string;
     description: string;
     id: number;
     /** 请求方法，如 POST / GET / PUT / DELETE */
@@ -22,30 +22,30 @@ export namespace SystemApiApi {
   }
 
   export interface ListParams extends PageParams {
-    /** path/description/api_group 模糊搜索 */
+    /** path/description/apiGroup 模糊搜索 */
     keyword?: string;
     method?: string;
     status?: CommonStatus;
   }
 
   export interface CreateParams {
-    api_group?: string;
+    apiGroup?: string;
     description?: string;
     method: string;
     path: string;
     /** 授权角色 id 列表，传入即全量替换 sys_role_api */
-    role_ids?: number[];
+    roleIds?: number[];
     status?: CommonStatus;
   }
 
-  /** 更新 API：后端全量覆盖；role_ids 传数组即全量替换（空数组清空） */
+  /** 更新 API：后端全量覆盖；roleIds 传数组即全量替换（空数组清空） */
   export interface UpdateParams {
-    api_group: string;
+    apiGroup: string;
     description: string;
     id: number;
     method: string;
     path: string;
-    role_ids?: number[];
+    roleIds?: number[];
     status: CommonStatus;
   }
 }

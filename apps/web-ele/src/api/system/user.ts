@@ -13,12 +13,12 @@ export namespace SystemUserApi {
   export interface SystemUser extends AuditFields {
     avatar?: string;
     email: string;
-    emp_no: string;
+    empNo: string;
     id: number;
     nickname: string;
     password?: string;
     phone?: string;
-    role_ids?: number[];
+    roleIds?: number[];
     status: CommonStatus;
     username: string;
   }
@@ -31,12 +31,12 @@ export namespace SystemUserApi {
 
   export interface CreateParams {
     email?: string;
-    emp_no: string;
+    empNo: string;
     nickname: string;
     password: string;
     phone?: string;
     /** 可为空数组，后端校验角色存在且启用 */
-    role_ids: number[];
+    roleIds: number[];
     status?: CommonStatus;
     username: string;
   }
@@ -44,17 +44,17 @@ export namespace SystemUserApi {
   /**
    * 更新用户：字段可选（列表状态开关等局部更新只传部分字段）；
    * 编辑抽屉提交时会显式带上全部字段（可为空字符串，空串表示清空），
-   * role_ids 传入即全量替换
+   * roleIds 传入即全量替换
    */
   export interface UpdateParams {
     avatar?: string;
     email?: string;
-    emp_no?: string;
+    empNo?: string;
     id: number;
     nickname?: string;
     password?: string;
     phone?: string;
-    role_ids?: number[];
+    roleIds?: number[];
     status?: CommonStatus;
     /** 编辑态禁用不可改，但全量提交语义下仍需回传 */
     username?: string;

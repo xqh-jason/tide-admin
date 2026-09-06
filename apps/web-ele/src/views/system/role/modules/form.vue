@@ -75,24 +75,24 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemRoleApi.SystemRole>({
     const { valid } = await formApi.validate();
     if (!valid) return;
     const values = await formApi.getValues();
-    const menu_ids = collectMenuIds();
+    const menuIds = collectMenuIds();
     drawerApi.lock();
     try {
       const save =
         editId.value > 0
-          ? // 后端更新为全量覆盖契约：api_ids 表单未维护但也必须回传（空数组），
+          ? // 后端更新为全量覆盖契约：apiIds 表单未维护但也必须回传（空数组），
             // 其余字段空值以空串/0 兜底，避免缺字段被后端拒绝
             updateRole({
-              api_ids: [],
+              apiIds: [],
               id: editId.value,
-              menu_ids,
+              menuIds,
               remark: values.remark ?? '',
-              role_key: values.role_key ?? '',
-              role_name: values.role_name ?? '',
+              roleKey: values.roleKey ?? '',
+              roleName: values.roleName ?? '',
               sort: values.sort ?? 0,
               status: values.status,
             } as SystemRoleApi.UpdateParams)
-          : createRole({ ...values, menu_ids } as SystemRoleApi.CreateParams);
+          : createRole({ ...values, menuIds } as SystemRoleApi.CreateParams);
       await save;
       ElMessage.success($t('ui.actionMessage.operationSuccess'));
       emits('success');
@@ -115,7 +115,7 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemRoleApi.SystemRole>({
         base = data;
       }
     }
-    await loadMenuTree(base?.menu_ids ?? []);
+    await loadMenuTree(base?.menuIds ?? []);
     await nextTick();
     if (base) {
       formApi.setValues(base);
@@ -130,7 +130,7 @@ defineExpose({ drawerApi });
 <template>
   <Drawer class="w-[560px]" :title="drawerTitle">
     <Form>
-      <template #menu_ids>
+      <template #menuIds>
         <ElTree
           ref="treeRef"
           :check-strictly="treeStrictly"

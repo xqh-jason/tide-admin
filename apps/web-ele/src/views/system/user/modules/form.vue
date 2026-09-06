@@ -46,16 +46,16 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemUserApi.SystemUser>({
     try {
       const save =
         editId.value > 0
-          ? // 编辑态全量提交：所有字段（含禁用不可改的 username/emp_no）都传给后端，
+          ? // 编辑态全量提交：所有字段（含禁用不可改的 username/empNo）都传给后端，
             // 空值以空字符串传（不省略字段）
             updateUser({
               email: values.email ?? '',
-              emp_no: values.emp_no ?? '',
+              empNo: values.empNo ?? '',
               id: editId.value,
               nickname: values.nickname ?? '',
               password: values.password ?? '',
               phone: values.phone ?? '',
-              role_ids: values.role_ids ?? [],
+              roleIds: values.roleIds ?? [],
               status: values.status,
               username: values.username ?? '',
             })
@@ -76,7 +76,7 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemUserApi.SystemUser>({
     // 用户名和工号创建后不可修改
     formApi.updateSchema([
       { componentProps: { disabled: Boolean(data) }, fieldName: 'username' },
-      { componentProps: { disabled: Boolean(data) }, fieldName: 'emp_no' },
+      { componentProps: { disabled: Boolean(data) }, fieldName: 'empNo' },
     ]);
     // 编辑态拉取详情以回显角色；后端未就绪时静默回退到行数据
     let base = data;
@@ -88,7 +88,7 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemUserApi.SystemUser>({
       }
     }
     if (base) {
-      formApi.setValues({ ...base, role_ids: base.role_ids ?? [] });
+      formApi.setValues({ ...base, roleIds: base.roleIds ?? [] });
     }
     auditRecord.value = editId.value > 0 ? (base ?? null) : null;
   },

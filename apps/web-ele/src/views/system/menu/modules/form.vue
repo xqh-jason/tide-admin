@@ -38,7 +38,7 @@ const [Form, formApi] = useVbenForm({
 });
 
 const [Drawer, drawerApi] = useVbenDrawer<
-  null | SystemMenuApi.SystemMenu | { parent_id?: number }
+  null | SystemMenuApi.SystemMenu | { parentId?: number }
 >({
   async onConfirm() {
     const { valid } = await formApi.validate();
@@ -55,10 +55,10 @@ const [Drawer, drawerApi] = useVbenDrawer<
               hidden: values.hidden ?? 0,
               icon: values.icon ?? '',
               id: editId.value,
-              keep_alive: values.keep_alive ?? 0,
-              menu_type: values.menu_type,
+              keepAlive: values.keepAlive ?? 0,
+              menuType: values.menuType,
               name: values.name ?? '',
-              parent_id: values.parent_id ?? 0,
+              parentId: values.parentId ?? 0,
               path: values.path ?? '',
               permission: values.permission ?? '',
               sort: values.sort ?? 0,

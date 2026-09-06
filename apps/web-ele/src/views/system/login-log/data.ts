@@ -63,7 +63,7 @@ export function useColumns(): VxeTableGridColumns<LoginLogApi.LoginLog> {
     },
     // 登录日志为只追加记录，无更新语义；用户名列已在前，故只保留登录时间
     {
-      field: 'created_at',
+      field: 'createdAt',
       formatter: 'formatDateTime',
       title: $t('system.loginLog.createdAt'),
       width: 170,

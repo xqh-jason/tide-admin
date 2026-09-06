@@ -8,7 +8,7 @@ import { useDictOptions } from '#/store';
 
 import { useAuditColumns } from '../audit-columns';
 
-/** 菜单类型选项（1 目录 / 2 菜单 / 3 按钮，对齐 sys_menu.menu_type） */
+/** 菜单类型选项（1 目录 / 2 菜单 / 3 按钮，对齐 sys_menu.menuType） */
 export function getMenuTypeOptions() {
   return [
     { label: $t('system.menu.typeCatalog'), type: 'info', value: 1 },
@@ -19,7 +19,7 @@ export function getMenuTypeOptions() {
 
 /**
  * 新增/编辑菜单表单 schema
- * 字段显隐与校验按 menu_type 联动：目录(1)/菜单(2) 需要 path+name，
+ * 字段显隐与校验按 menuType 联动：目录(1)/菜单(2) 需要 path+name，
  * 菜单(2) 需要 component，按钮(3) 需要 permission
  */
 export function useFormSchema(): VbenFormSchema[] {
@@ -32,7 +32,7 @@ export function useFormSchema(): VbenFormSchema[] {
         options: getMenuTypeOptions(),
       },
       defaultValue: 2,
-      fieldName: 'menu_type',
+      fieldName: 'menuType',
       label: $t('system.menu.menuType'),
     },
     {
@@ -51,7 +51,7 @@ export function useFormSchema(): VbenFormSchema[] {
         valueField: 'id',
       },
       defaultValue: 0,
-      fieldName: 'parent_id',
+      fieldName: 'parentId',
       label: $t('system.menu.parent'),
       rules: 'selectRequired',
     },
@@ -67,9 +67,9 @@ export function useFormSchema(): VbenFormSchema[] {
         placeholder: $t('system.menu.pathTip'),
       },
       dependencies: {
-        rules: (values) => (values.menu_type === 3 ? null : 'required'),
-        show: (values) => values.menu_type !== 3,
-        triggerFields: ['menu_type'],
+        rules: (values) => (values.menuType === 3 ? null : 'required'),
+        show: (values) => values.menuType !== 3,
+        triggerFields: ['menuType'],
       },
       fieldName: 'path',
       label: $t('system.menu.path'),
@@ -80,9 +80,9 @@ export function useFormSchema(): VbenFormSchema[] {
         placeholder: $t('system.menu.nameTip'),
       },
       dependencies: {
-        rules: (values) => (values.menu_type === 3 ? null : 'required'),
-        show: (values) => values.menu_type !== 3,
-        triggerFields: ['menu_type'],
+        rules: (values) => (values.menuType === 3 ? null : 'required'),
+        show: (values) => values.menuType !== 3,
+        triggerFields: ['menuType'],
       },
       fieldName: 'name',
       label: $t('system.menu.name'),
@@ -93,9 +93,9 @@ export function useFormSchema(): VbenFormSchema[] {
         placeholder: $t('system.menu.componentTip'),
       },
       dependencies: {
-        rules: (values) => (values.menu_type === 2 ? 'required' : null),
-        show: (values) => values.menu_type === 2,
-        triggerFields: ['menu_type'],
+        rules: (values) => (values.menuType === 2 ? 'required' : null),
+        show: (values) => values.menuType === 2,
+        triggerFields: ['menuType'],
       },
       fieldName: 'component',
       label: $t('system.menu.component'),
@@ -103,8 +103,8 @@ export function useFormSchema(): VbenFormSchema[] {
     {
       component: 'IconPicker',
       dependencies: {
-        show: (values) => values.menu_type !== 3,
-        triggerFields: ['menu_type'],
+        show: (values) => values.menuType !== 3,
+        triggerFields: ['menuType'],
       },
       fieldName: 'icon',
       label: $t('system.menu.icon'),
@@ -123,10 +123,10 @@ export function useFormSchema(): VbenFormSchema[] {
       },
       defaultValue: 1,
       dependencies: {
-        show: (values) => values.menu_type === 2,
-        triggerFields: ['menu_type'],
+        show: (values) => values.menuType === 2,
+        triggerFields: ['menuType'],
       },
-      fieldName: 'keep_alive',
+      fieldName: 'keepAlive',
       label: $t('system.menu.keepAlive'),
     },
     {
@@ -137,8 +137,8 @@ export function useFormSchema(): VbenFormSchema[] {
       },
       defaultValue: 0,
       dependencies: {
-        show: (values) => values.menu_type !== 3,
-        triggerFields: ['menu_type'],
+        show: (values) => values.menuType !== 3,
+        triggerFields: ['menuType'],
       },
       fieldName: 'hidden',
       label: $t('system.menu.hideInMenu'),
@@ -149,9 +149,9 @@ export function useFormSchema(): VbenFormSchema[] {
         placeholder: $t('system.menu.permissionTip'),
       },
       dependencies: {
-        rules: (values) => (values.menu_type === 3 ? 'required' : null),
-        show: (values) => values.menu_type === 3,
-        triggerFields: ['menu_type'],
+        rules: (values) => (values.menuType === 3 ? 'required' : null),
+        show: (values) => values.menuType === 3,
+        triggerFields: ['menuType'],
       },
       fieldName: 'permission',
       label: $t('system.menu.permission'),
@@ -207,7 +207,7 @@ export function useColumns(
     },
     {
       cellRender: { name: 'CellTag', options: getMenuTypeOptions() },
-      field: 'menu_type',
+      field: 'menuType',
       title: $t('system.menu.menuType'),
       width: 90,
     },
@@ -240,7 +240,7 @@ export function useColumns(
           // 按钮节点不能再有下级
           {
             code: 'append',
-            show: (row: SystemMenuApi.SystemMenu) => row.menu_type !== 3,
+            show: (row: SystemMenuApi.SystemMenu) => row.menuType !== 3,
             text: $t('system.menu.append'),
           },
           'edit',

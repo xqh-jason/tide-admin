@@ -10,23 +10,23 @@ import { $t } from '#/locales';
 export function useAuditColumns<T>(): NonNullable<VxeTableGridColumns<T>> {
   return [
     {
-      field: 'created_by_name',
+      field: 'createdByName',
       title: $t('system.common.createdBy'),
       width: 110,
     },
     {
-      field: 'created_at',
+      field: 'createdAt',
       formatter: 'formatDateTime',
       title: $t('system.common.createdAt'),
       width: 170,
     },
     {
-      field: 'updated_by_name',
+      field: 'updatedByName',
       title: $t('system.common.updatedBy'),
       width: 110,
     },
     {
-      field: 'updated_at',
+      field: 'updatedAt',
       formatter: 'formatDateTime',
       title: $t('system.common.updatedAt'),
       width: 170,

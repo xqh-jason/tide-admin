@@ -24,7 +24,7 @@ export namespace SystemDictionaryApi {
   export interface DictionaryDetail extends AuditFields {
     id: number;
     /** 所属字典类型 ID */
-    dictionary_id: number;
+    dictionaryId: number;
     /** 展示值 */
     label: string;
     /** 字典值（业务键） */
@@ -82,14 +82,14 @@ export namespace SystemDictionaryApi {
   }
 
   export interface DictionaryDetailListParams extends PageParams {
-    dictionary_id?: number;
+    dictionaryId?: number;
     /** 对 label / value 模糊搜索 */
     keyword?: string;
     status?: CommonStatus;
   }
 
   export interface CreateDictionaryDetailParams {
-    dictionary_id: number;
+    dictionaryId: number;
     label: string;
     value: string;
     extend?: string;
@@ -100,7 +100,7 @@ export namespace SystemDictionaryApi {
   /** 更新字典项：后端全量覆盖 */
   export interface UpdateDictionaryDetailParams {
     id: number;
-    dictionary_id: number;
+    dictionaryId: number;
     label: string;
     value: string;
     extend?: string;
