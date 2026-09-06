@@ -81,7 +81,7 @@ export function useGridFormSchema(): VbenFormSchema[] {
     {
       component: 'Input',
       fieldName: 'keyword',
-      label: $t('system.api.path'),
+      label: $t('system.api.keyword'),
     },
     {
       component: 'Select',
