@@ -1,5 +1,6 @@
 import type {
   AuditFields,
+  AuditFilter,
   CommonStatus,
   IdRequest,
   PageParams,
@@ -21,7 +22,7 @@ export namespace SystemApiApi {
     status: CommonStatus;
   }
 
-  export interface ListParams extends PageParams {
+  export interface ListParams extends AuditFilter, PageParams {
     /** path/description/apiGroup 模糊搜索 */
     keyword?: string;
     method?: string;

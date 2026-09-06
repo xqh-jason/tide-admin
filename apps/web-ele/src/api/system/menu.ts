@@ -1,5 +1,6 @@
 import type {
   AuditFields,
+  AuditFilter,
   CommonStatus,
   IdRequest,
   PageParams,
@@ -35,7 +36,7 @@ export namespace SystemMenuApi {
     title: string;
   }
 
-  export interface ListParams extends PageParams {
+  export interface ListParams extends AuditFilter, PageParams {
     /** 标题/路由名/路径模糊搜索 */
     keyword?: string;
     status?: CommonStatus;

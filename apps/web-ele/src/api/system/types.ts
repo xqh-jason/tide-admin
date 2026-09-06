@@ -30,3 +30,22 @@ export interface AuditFields {
   /** 更新人姓名 */
   updatedByName?: string;
 }
+
+/**
+ * 审计字段过滤参数（各实体 List 请求通用）：
+ * 人员为 id 精确过滤，时间范围 yyyy-MM-dd[ HH:mm:ss] 且含边界；不传查全部
+ */
+export interface AuditFilter {
+  /** 创建时间范围起（含边界） */
+  createdAtBegin?: string;
+  /** 创建时间范围止（含边界） */
+  createdAtEnd?: string;
+  /** 创建人 ID 精确过滤 */
+  createdBy?: number;
+  /** 更新时间范围起（含边界） */
+  updatedAtBegin?: string;
+  /** 更新时间范围止（含边界） */
+  updatedAtEnd?: string;
+  /** 更新人 ID 精确过滤 */
+  updatedBy?: number;
+}

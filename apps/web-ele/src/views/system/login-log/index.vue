@@ -26,7 +26,6 @@ async function onDelete(row: LoginLogApi.LoginLog) {
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: {
     schema: useGridFormSchema(),
-    submitOnChange: true,
   },
   gridOptions: {
     columns: useColumns(),

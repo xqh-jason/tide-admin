@@ -1,5 +1,6 @@
 import type {
   AuditFields,
+  AuditFilter,
   CommonStatus,
   IdRequest,
   PageParams,
@@ -23,7 +24,14 @@ export namespace SystemUserApi {
     username: string;
   }
 
-  export interface ListParams extends PageParams {
+  /** 用户简要信息（/user/all 返回，创建人/更新人等选择器数据源；deleted=1 为软删用户） */
+  export interface UserBrief {
+    deleted: CommonStatus;
+    id: number;
+    username: string;
+  }
+
+  export interface ListParams extends AuditFilter, PageParams {
     /** 用户名模糊搜索 */
     keyword?: string;
     status?: CommonStatus;
@@ -59,6 +67,13 @@ export namespace SystemUserApi {
     /** 编辑态禁用不可改，但全量提交语义下仍需回传 */
     username?: string;
   }
+}
+
+/**
+ * 全量用户（含软删，按 id 升序；创建人/更新人等审计过滤的用户选择器数据源）
+ */
+export async function getAllUsersApi() {
+  return requestClient.post<SystemUserApi.UserBrief[]>('/user/all', {});
 }
 
 /**
