@@ -1,4 +1,10 @@
 <script lang="ts" setup>
+/**
+ * 字典项管理弹层：从字典类型列表点「字典项」进入，展示该类型下的字典项表格。
+ * 查询固定携带 dictionaryId（当前选中类型）；新增/编辑/删除分别受
+ * system:dictionary-detail:create/update/delete 权限码控制。
+ * 搜索/列定义复用 ../data.ts 的 useDetailGridSearchSchema/useDetailColumns。
+ */
 import type {
   OnActionClickParams,
   VxeTableGridOptions,

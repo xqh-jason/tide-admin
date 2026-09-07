@@ -1,4 +1,11 @@
 <script lang="ts" setup>
+/**
+ * 菜单新增/编辑抽屉。
+ * 契约要点：后端创建/更新均为全字段必填（CreateMenuReq/UpdateMenuReq），
+ * 按钮类型（menuType=3）下 path/name/component 等字段被隐藏拿不到值，
+ * 创建与更新统一做空值兜底回传。表单字段显隐/校验按 menuType 联动
+ * （见 data.ts useFormSchema）。
+ */
 import type { SystemMenuApi } from '#/api';
 
 import { computed, ref } from 'vue';
@@ -65,7 +72,22 @@ const [Drawer, drawerApi] = useVbenDrawer<
               status: values.status,
               title: values.title ?? '',
             } as SystemMenuApi.UpdateParams)
-          : createMenu(values as SystemMenuApi.CreateParams);
+          : // 创建契约中 path/name 同为必填字段：按钮类型（menuType=3）下
+            // 两个字段被隐藏拿不到值，统一以空值兜底，避免后端反序列化失败
+            createMenu({
+              component: values.component ?? '',
+              hidden: values.hidden ?? 0,
+              icon: values.icon ?? '',
+              keepAlive: values.keepAlive ?? 0,
+              menuType: values.menuType,
+              name: values.name ?? '',
+              parentId: values.parentId ?? 0,
+              path: values.path ?? '',
+              permission: values.permission ?? '',
+              sort: values.sort ?? 0,
+              status: values.status ?? 1,
+              title: values.title ?? '',
+            } as SystemMenuApi.CreateParams);
       await save;
       ElMessage.success($t('ui.actionMessage.operationSuccess'));
       emits('success');

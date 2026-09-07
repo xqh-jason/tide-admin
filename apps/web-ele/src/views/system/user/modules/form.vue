@@ -1,4 +1,11 @@
 <script lang="ts" setup>
+/**
+ * 用户新增/编辑抽屉。
+ * 契约要点：后端创建/更新均为全字段必填（UpdateUserReq），编辑态全量提交、
+ * 空值以空字符串回传；password 空串表示不修改密码；roleIds 传入即全量替换
+ * 角色关联（空数组时后端跳过，不清空已有角色）。
+ * 用户名/工号创建后禁改（disabled 由编辑态控制）。
+ */
 import type { SystemUserApi } from '#/api';
 
 import { computed, ref } from 'vue';
@@ -78,7 +85,8 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemUserApi.SystemUser>({
       { componentProps: { disabled: Boolean(data) }, fieldName: 'username' },
       { componentProps: { disabled: Boolean(data) }, fieldName: 'empNo' },
     ]);
-    // 编辑态拉取详情以回显角色；后端未就绪时静默回退到行数据
+    // 编辑态拉取详情回显（后端 UserResp 暂不返回 roleIds，角色选择器无法回显；
+    // 提交空数组时后端跳过角色关联更新，不会清空已有角色），失败时回退到行数据
     let base = data;
     if (data?.id) {
       try {

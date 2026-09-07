@@ -75,6 +75,7 @@ export function useFormSchema(getEditId: () => number): VbenFormSchema[] {
       componentProps: {
         afterFetch: (items: SystemRoleApi.SystemRole[]) =>
           items.map((role) => ({ label: role.roleName, value: role.id })),
+        // 后端 pageSize 上限 1000；此处下拉仅取前 100 条，角色更多时需分批搜索
         api: () => getRoleList({ page: 1, pageSize: 100 }),
         multiple: true,
       },
@@ -105,7 +106,7 @@ export function useGridFormSchema(): VbenFormSchema[] {
   ];
 }
 
-/** 列表列配置 */
+/** 列表列配置：审计列复用公共 useAuditColumns，status 列按传参切换开关/标签 */
 export function useColumns(
   onStatusChange?: (
     newVal: number,
@@ -118,10 +119,16 @@ export function useColumns(
     { field: 'empNo', title: $t('system.user.empNo'), width: 120 },
     { field: 'nickname', title: $t('system.user.nickname'), width: 140 },
     { field: 'email', minWidth: 180, title: $t('system.user.email') },
-    { field: 'phone', title: $t('system.user.phone'), width: 140 },
+    {
+      // 后端 UserResp 暂不返回 phone（创建/更新请求有该字段），列表中恒为空；
+      // 后端补齐后自动展示
+      field: 'phone',
+      title: $t('system.user.phone'),
+      width: 140,
+    },
     {
       cellRender: {
-        attrs: { beforeChange: onStatusChange },
+        attrs: { auth: 'system:user:update', beforeChange: onStatusChange },
         name: onStatusChange ? 'CellSwitch' : 'CellTag',
         options: statusOptions,
       },

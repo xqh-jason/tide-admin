@@ -1,6 +1,14 @@
 /**
- * 通用组件共同的使用的基础组件，原先放在 adapter/form 内部，限制了使用范围，这里提取出来，方便其他地方使用
- * 可用于 vben-form、vben-modal、vben-drawer 等组件使用,
+ * 表单组件类型注册表：把业务 schema 中使用的组件名（BaseFormComponentType）
+ * 映射到 Element Plus 实际组件，供 vben-form/vben-modal/vben-drawer 渲染。
+ *
+ * 分组：
+ * - 文件头部的 defineAsyncComponent：Element Plus 组件按需异步加载（附样式）；
+ * - componentSetting 全局配置：默认清空 placeholder、各组件默认占位宽度等；
+ * - BaseFormComponentType 字符串映射：'Input'/'Select'/'ApiSelect' 等名称
+ *   → 组件实现，其中 ApiComponent 包装了自动拉取 options 的远程组件
+ *   （ApiSelect/ApiTreeSelect 共用）；
+ * - ComponentPropsMap：各组件在 schema.componentProps 中可用的 props 类型。
  */
 
 import type {

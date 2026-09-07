@@ -1,3 +1,8 @@
+/**
+ * vben 表单适配器：基于 @vben/common-ui 的 setupVbenForm 注册 Element Plus
+ * 组件类型映射（见 ./component）与通用校验规则，并统一 re-export zod。
+ * 业务侧一律从 '#/adapter/form' 引入 useVbenForm / VbenFormSchema / z。
+ */
 import type {
   VbenFormProps as FormProps,
   VbenFormSchema as FormSchema,
@@ -9,6 +14,7 @@ import type { ComponentPropsMap, ComponentType } from './component';
 import { setupVbenForm, useVbenForm as useForm, z } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
+/** 全局初始化（应用启动时由 bootstrap 调用一次） */
 async function initSetupVbenForm() {
   setupVbenForm<ComponentType>({
     config: {

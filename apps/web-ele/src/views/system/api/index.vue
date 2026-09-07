@@ -1,4 +1,11 @@
 <script lang="ts" setup>
+/**
+ * API 权限点管理列表页。
+ * 数据链路：搜索/列定义在 data.ts（操作列用 CellOperation 渲染器，
+ * 权限码在列配置内声明），列表数据走 POST /sys-api/list（分页），
+ * 新增/编辑（含授权角色选择）在 modules/form.vue 抽屉内完成。
+ * 注意：sys_api 登记 + 角色授权构成后端接口级授权（ApiPermission 中间件）。
+ */
 import type {
   OnActionClickParams,
   VxeTableGridOptions,
@@ -20,17 +27,20 @@ import Form from './modules/form.vue';
 
 defineOptions({ name: 'SystemApiList' });
 
+// connectedComponent 模式：FormDrawer 即 modules/form.vue
 const [FormDrawer, formDrawerApi] = useVbenDrawer({
   connectedComponent: Form,
   destroyOnClose: true,
 });
 
+/** 删除 API 权限点（软删除并清空角色授权，需 system:api:delete），成功后刷新列表 */
 async function onDelete(row: SystemApiApi.SystemApi) {
   await deleteApi(row.id);
   ElMessage.success($t('ui.actionMessage.deleteSuccess'));
   gridApi.query();
 }
 
+/** 操作列统一入口（CellOperation onClick 分发），edit/delete 权限码见 data.ts */
 function onActionClick({
   code,
   row,
@@ -49,6 +59,7 @@ function onActionClick({
 
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: {
+    // 模块搜索项（keyword/method/status）+ 公共审计搜索项
     schema: [...useGridFormSchema(), ...useAuditSearchSchema()],
     fieldMappingTime: auditFieldMappingTime,
   },
@@ -58,6 +69,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
     keepSource: true,
     proxyConfig: {
       ajax: {
+        // 分页查询：页码/页大小由 vxe proxy 注入，其余为搜索表单值
         query: async ({ page }, formValues) => {
           return getApiList({
             page: page.currentPage,
@@ -77,6 +89,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
   } as VxeTableGridOptions<SystemApiApi.SystemApi>,
 });
 
+/** 打开新建抽屉（setData(null) 表示创建态） */
 function onCreate() {
   formDrawerApi.setData(null).open();
 }

@@ -80,6 +80,10 @@ export const useAuthStore = defineStore('auth', () => {
     };
   }
 
+  /**
+   * 退出登录：调 /auth/logout 将 token 加入后端黑名单（失败也继续本地清理），
+   * 重置全部 store 后携带 redirect 回登录页
+   */
   async function logout(redirect: boolean = true) {
     try {
       await logoutApi();
@@ -100,6 +104,7 @@ export const useAuthStore = defineStore('auth', () => {
     });
   }
 
+  /** 拉取当前用户信息并写入 userStore（路由守卫/个人中心复用） */
   async function fetchUserInfo() {
     const userInfo = await getUserInfoApi();
     userStore.setUserInfo(userInfo);

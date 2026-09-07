@@ -1,4 +1,9 @@
 <script lang="ts" setup>
+/**
+ * 操作日志详情抽屉：按行 id 调 /operation-log/get 拉取完整记录
+ * （列表项不含 body/resp/userName，仅详情返回，body/resp 已脱敏截断）。
+ * 纯展示组件，无任何写操作。
+ */
 import type { OperationLogApi } from '#/api';
 
 import { computed, ref } from 'vue';

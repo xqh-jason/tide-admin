@@ -1,3 +1,7 @@
+/**
+ * 用户契约接口：/user/info 供 vben 登录态初始化消费
+ * （access-codes 在 auth.ts，菜单在 menu.ts）。
+ */
 import type { UserInfo } from '@vben/types';
 
 import { preferences } from '@vben/preferences';

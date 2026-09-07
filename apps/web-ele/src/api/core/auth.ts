@@ -37,7 +37,10 @@ export async function loginApi(data: AuthApi.LoginParams) {
 }
 
 /**
- * 刷新accessToken
+ * 刷新 accessToken
+ * ⚠️ 后端暂未提供 /auth/refresh 端点（只有 7 天有效期的 access token）；
+ * 当前 preferences.app.enableRefreshToken 为默认 false，本函数不会被调用，
+ * 后端补齐 refresh 机制前请勿开启该开关
  */
 export async function refreshTokenApi() {
   return baseRequestClient.post<AuthApi.RefreshTokenResult>(

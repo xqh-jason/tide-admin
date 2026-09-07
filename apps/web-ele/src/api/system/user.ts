@@ -24,9 +24,10 @@ export namespace SystemUserApi {
     username: string;
   }
 
-  /** 用户简要信息（/user/all 返回，创建人/更新人等选择器数据源；deleted=1 为软删用户） */
+  /** 用户简要信息（/user/all 返回，创建人/更新人等选择器数据源；deleted=true 为软删用户） */
   export interface UserBrief {
-    deleted: CommonStatus;
+    /** 是否已软删（后端 bool，序列化为 true/false） */
+    deleted: boolean;
     id: number;
     username: string;
   }
@@ -87,7 +88,8 @@ export async function getUserList(params: SystemUserApi.ListParams) {
 }
 
 /**
- * 用户详情（含角色 id 列表）
+ * 用户详情（对齐后端 UserResp；后端暂不返回 roleIds，角色编辑回显不可用，
+ * 但提交空数组时后端跳过角色关联更新，不会清空已有角色）
  */
 export async function getUser(id: number) {
   return requestClient.post<SystemUserApi.SystemUser>('/user/get', {

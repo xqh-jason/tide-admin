@@ -1,4 +1,11 @@
 <script lang="ts" setup>
+/**
+ * 菜单管理列表页（树表）。
+ * 数据链路：getMenuList 内部按后端 pageSize 上限循环拉全量，
+ * 由 vxe-table treeConfig transform 按 parentId 组树并默认展开；
+ * 搜索/列定义在 data.ts（append/edit/delete 权限码在列配置内声明），
+ * 新增/编辑在 modules/form.vue 抽屉内完成。
+ */
 import type {
   OnActionClickParams,
   VxeTableGridOptions,
@@ -20,23 +27,28 @@ import Form from './modules/form.vue';
 
 defineOptions({ name: 'SystemMenuList' });
 
+// connectedComponent 模式：FormDrawer 即 modules/form.vue；
+// 打开数据三种形态：null（新建顶级）/ { parentId }（append 子菜单）/ 整行（编辑）
 const [FormDrawer, formDrawerApi] = useVbenDrawer({
   connectedComponent: Form,
   destroyOnClose: true,
 });
 
+/** 删除菜单（软删除，需 system:menu:delete），成功后重新拉取整棵树 */
 async function onDelete(row: SystemMenuApi.SystemMenu) {
   await deleteMenu(row.id);
   ElMessage.success($t('ui.actionMessage.deleteSuccess'));
   gridApi.query();
 }
 
+/** 操作列统一入口（CellOperation onClick 分发），append 为新增下级菜单 */
 function onActionClick({
   code,
   row,
 }: OnActionClickParams<SystemMenuApi.SystemMenu>) {
   switch (code) {
     case 'append': {
+      // 携带父菜单 id 打开创建态，表单内 parentId 自动选中
       formDrawerApi.setData({ parentId: row.id }).open();
       break;
     }
@@ -53,6 +65,7 @@ function onActionClick({
 
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: {
+    // 模块搜索项（keyword/status）+ 公共审计搜索项
     schema: [...useGridFormSchema(), ...useAuditSearchSchema()],
     fieldMappingTime: auditFieldMappingTime,
   },
@@ -64,8 +77,8 @@ const [Grid, gridApi] = useVbenVxeGrid({
     pagerConfig: { enabled: false },
     proxyConfig: {
       ajax: {
+        // getMenuList 内部已按全量分页拉取，树表不分页直接返回
         query: async (_params, formValues) => {
-          // getMenuList 内部已按全量分页拉取，树表不分页直接返回
           return await getMenuList(formValues ?? {});
         },
       },
@@ -86,6 +99,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
   } as VxeTableGridOptions<SystemMenuApi.SystemMenu>,
 });
 
+/** 打开新建顶级菜单抽屉（setData(null) 表示创建态） */
 function onCreate() {
   formDrawerApi.setData(null).open();
 }
@@ -95,6 +109,7 @@ function onCreate() {
   <Page auto-content-height>
     <FormDrawer @success="() => gridApi.query()" />
     <Grid :table-title="$t('system.menu.list')">
+      <!-- 工具栏新建按钮：system:menu:create 权限码控制显隐 -->
       <template #toolbar-tools>
         <ElButton
           v-access:code="'system:menu:create'"
@@ -105,6 +120,7 @@ function onCreate() {
           {{ $t('ui.actionTitle.create', [$t('system.menu.title')]) }}
         </ElButton>
       </template>
+      <!-- 标题列插槽：图标 + 标题 + 按钮类型徽标（menuType=3） -->
       <template #title="{ row }">
         <div class="flex items-center gap-1">
           <IconifyIcon v-if="row.icon" :icon="row.icon" />

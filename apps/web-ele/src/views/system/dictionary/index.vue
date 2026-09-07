@@ -1,4 +1,12 @@
 <script lang="ts" setup>
+/**
+ * 数据字典管理列表页（字典类型维度）。
+ * 列表数据走 POST /dictionary/list（分页）；新增/编辑类型在
+ * modules/type-form.vue 抽屉内完成，字典项维护通过 items 入口打开
+ * modules/items-panel.vue 二级抽屉（内部含字典项表格与编辑表单）。
+ * 按钮权限：类型与字典项分别使用 system:dictionary:* 与
+ * system:dictionary-detail:* 权限码。
+ */
 import type {
   OnActionClickParams,
   VxeTableGridOptions,
@@ -21,6 +29,7 @@ import TypeForm from './modules/type-form.vue';
 
 defineOptions({ name: 'SystemDictionaryList' });
 
+// 类型新增/编辑抽屉（connectedComponent 模式）
 const [TypeFormDrawer, typeFormDrawerApi] = useVbenDrawer({
   connectedComponent: TypeForm,
   destroyOnClose: true,
@@ -32,6 +41,10 @@ const [ItemsDrawer, itemsDrawerApi] = useVbenDrawer({
   destroyOnClose: true,
 });
 
+/**
+ * 删除字典类型（软删并级联软删其下字典项，需 system:dictionary:delete），
+ * 成功后刷新列表
+ */
 async function onDelete(row: SystemDictionaryApi.Dictionary) {
   await deleteDictionary(row.id);
   ElMessage.success($t('ui.actionMessage.deleteSuccess'));
@@ -40,6 +53,7 @@ async function onDelete(row: SystemDictionaryApi.Dictionary) {
 
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: {
+    // 模块搜索项（keyword/status）+ 公共审计搜索项
     schema: [...useGridFormSchema(), ...useAuditSearchSchema()],
     fieldMappingTime: auditFieldMappingTime,
   },
@@ -49,6 +63,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
     keepSource: true,
     proxyConfig: {
       ajax: {
+        // 分页查询：页码/页大小由 vxe proxy 注入，其余为搜索表单值
         query: async ({ page }, formValues) => {
           return getDictionaryList({
             page: page.currentPage,
@@ -68,10 +83,16 @@ const [Grid, gridApi] = useVbenVxeGrid({
   } as VxeTableGridOptions<SystemDictionaryApi.Dictionary>,
 });
 
+/** 打开新建字典类型抽屉（setData(null) 表示创建态） */
 function onCreate() {
   typeFormDrawerApi.setData(null).open();
 }
 
+/**
+ * 操作列统一入口：items 打开字典项管理弹层（无需权限码，进入后
+ * 按钮级操作再按 system:dictionary-detail:* 控制），
+ * edit/delete 分别受 system:dictionary:update/delete 控制
+ */
 function onActionClick({
   code,
   row,

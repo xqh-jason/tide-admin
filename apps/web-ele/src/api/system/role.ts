@@ -10,10 +10,14 @@ import type {
 import { requestClient } from '#/api/request';
 
 export namespace SystemRoleApi {
-  /** 角色（对齐后端 w3-role-crud 契约 RoleResp；menuIds 由 /role/get 返回用于编辑回显） */
+  /** 角色（对齐后端 w3-role-crud 契约 RoleResp；后端暂未在 /role/get 回传 menuIds） */
   export interface SystemRole extends AuditFields {
     id: number;
-    /** 已授权菜单+按钮 id 列表，仅 /role/get 返回 */
+    /**
+     * 已授权菜单+按钮 id 列表，编辑回显用；
+     * ⚠️ 后端 /role/get 暂不返回该字段（始终为 undefined），角色编辑保存
+     * 按"全量替换"语义提交，编辑回显问题由表单内警示文案兜底（后端补齐后移除警示）
+     */
     menuIds?: number[];
     remark: string;
     roleKey: string;

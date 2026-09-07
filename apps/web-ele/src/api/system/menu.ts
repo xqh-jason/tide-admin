@@ -76,16 +76,17 @@ export namespace SystemMenuApi {
 }
 
 /**
- * 菜单平铺列表（含按钮节点，按 sort、id 升序）
- * 后端为分页接口（默认 pageSize=10）；菜单树需一次性取全量组树，
- * 故默认以最大 pageSize 拉全量，调用方可覆盖分页参数
+ * 菜单平铺列表（含按钮节点，按 sort、id 升序）。
+ * 菜单树需一次性取全量组树，故固定以单页拉全量；
+ * 后端 PageQuery 的 pageSize 上限为 1000（clamp(1, 1000)），
+ * 菜单数量超过上限时需由调用方自行处理或后端提供树接口
  */
 export async function getMenuList(
   params: SystemMenuApi.ListParams = {},
 ): Promise<PageResult<SystemMenuApi.SystemMenu>> {
   return requestClient.post<PageResult<SystemMenuApi.SystemMenu>>(
     '/menu/list',
-    { page: 1, pageSize: 10_000, ...params },
+    { page: 1, pageSize: 1000, ...params },
   );
 }
 

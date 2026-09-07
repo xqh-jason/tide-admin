@@ -1,4 +1,9 @@
 <script lang="ts" setup>
+/**
+ * 字典类型新增/编辑抽屉。
+ * 契约要点：后端创建/更新为全量覆盖（UpdateDictionaryReq），列表行已含
+ * 全部可编辑字段（name/type/status/remark），编辑态直接用行数据回显，无需再调 get。
+ */
 import type { SystemDictionaryApi } from '#/api';
 
 import { computed, ref } from 'vue';

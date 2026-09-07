@@ -12,7 +12,8 @@
     "roles": "Authorized Roles",
     "rolesPlaceholder": "Select roles that can access this API",
     "status": "Status",
-    "title": "API Management"
+    "title": "API Management",
+    "roleEchoWarning": "The backend does not return the roles assigned to this API yet. Please re-select them; saving will fully replace the grants with the current selection (empty selection clears them)"
   },
   "common": {
     "createdBy": "Created By",
@@ -94,7 +95,8 @@
     "roleName": "Role Name",
     "sort": "Sort",
     "status": "Status",
-    "title": "Role Management"
+    "title": "Role Management",
+    "menuEchoWarning": "The backend does not return the menus assigned to this role yet, so they cannot be echoed below. Saving will fully replace the role-menu grants with the current selection (empty selection clears them)"
   },
   "menu": {
     "append": "Append Child",

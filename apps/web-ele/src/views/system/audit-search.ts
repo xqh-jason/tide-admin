@@ -21,7 +21,8 @@ export function useAuditSearchSchema(): VbenFormSchema[] {
     componentProps: {
       afterFetch: (items: SystemUserApi.UserBrief[]) =>
         items.map((user) => ({
-          disabled: user.deleted === 1,
+          // 软删用户仅作审计筛选的历史数据源，禁选避免新数据挂到已删用户
+          disabled: user.deleted,
           label: user.username,
           value: user.id,
         })),

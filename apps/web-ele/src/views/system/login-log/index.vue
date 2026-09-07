@@ -1,4 +1,10 @@
 <script lang="ts" setup>
+/**
+ * 登录日志列表页（只读审计页，仅支持查询与删除）。
+ * 列表数据走 POST /login-log/list（分页，按创建时间倒序）；
+ * 搜索/列定义在 data.ts，删除需 system:login-log:delete 权限码。
+ * 无审计搜索项/审计列：登录日志为只追加记录，无创建人/更新人语义。
+ */
 import type {
   OnActionClickParams,
   VxeTableGridOptions,
@@ -17,6 +23,7 @@ import { useColumns, useGridFormSchema } from './data';
 
 defineOptions({ name: 'SystemLoginLogList' });
 
+/** 删除登录日志（软删除，需 system:login-log:delete），成功后刷新列表 */
 async function onDelete(row: LoginLogApi.LoginLog) {
   await deleteLoginLog(row.id);
   ElMessage.success($t('ui.actionMessage.deleteSuccess'));
@@ -25,6 +32,7 @@ async function onDelete(row: LoginLogApi.LoginLog) {
 
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: {
+    // 搜索项：username/ip/status，与后端 LoginLogListReq 一一对应
     schema: useGridFormSchema(),
   },
   gridOptions: {
@@ -33,6 +41,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
     keepSource: true,
     proxyConfig: {
       ajax: {
+        // 分页查询：页码/页大小由 vxe proxy 注入，其余为搜索表单值
         query: async ({ page }, formValues) => {
           return getLoginLogList({
             page: page.currentPage,
@@ -52,6 +61,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
   } as VxeTableGridOptions<LoginLogApi.LoginLog>,
 });
 
+/** 操作列统一入口，仅 delete 一项（二次确认弹窗） */
 function onActionClick({
   code,
   row,
