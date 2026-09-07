@@ -1,4 +1,8 @@
 <script setup lang="ts">
+/**
+ * 个人中心「基本设置」Tab（上游模板）：onMounted 拉取 /user/info 回显
+ * 昵称/用户名等基本信息；角色选项为静态 mock，保存未接后端。
+ */
 import type { BasicOption } from '@vben/types';
 
 import type { VbenFormSchema } from '#/adapter/form';

@@ -93,7 +93,7 @@ export function useColumns(
     { field: 'sort', title: $t('system.role.sort'), width: 90 },
     {
       cellRender: {
-        attrs: { beforeChange: onStatusChange },
+        attrs: { auth: 'system:role:update', beforeChange: onStatusChange },
         name: onStatusChange ? 'CellSwitch' : 'CellTag',
         options: statusOptions,
       },
@@ -113,12 +113,14 @@ export function useColumns(
         },
         name: 'CellOperation',
         options: [
-          // 超管角色（super）固定不可改
+          // 超管角色（super）固定不可改；编辑/删除分别受 update/delete 权限码控制
           {
+            auth: 'system:role:update',
             code: 'edit',
             show: (row: SystemRoleApi.SystemRole) => row.roleKey !== 'super',
           },
           {
+            auth: 'system:role:delete',
             code: 'delete',
             show: (row: SystemRoleApi.SystemRole) => row.roleKey !== 'super',
           },

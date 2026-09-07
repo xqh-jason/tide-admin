@@ -1,3 +1,15 @@
+/**
+ * vxe-table 适配器：全局表格配置、自定义单元格渲染器与表格操作组件。
+ *
+ * 核心对齐点：proxyConfig.response 的 `result: 'items'` / `total: 'total'`
+ * 直接映射后端统一分页结构 PageResult { items, total, totalPages }，
+ * 业务页面的 query 回调只需返回接口的 PageResult 即可自动填充表格。
+ *
+ * 渲染器：CellImage / CellLink / CellTag / CellSwitch / CellOperation，
+ * 其中 CellTag 未传 options 时回退到字典 store 的 status 选项；
+ * CellSwitch / CellOperation 支持 attrs.auth / 按钮级 auth 声明权限码，
+ * 与 VbenTableAction 的 auth 语义一致。
+ */
 import type { FormValues, TableActionProps } from '@vben/common-ui';
 import type { VxeTableGridOptions } from '@vben/plugins/vxe-table';
 import type { Recordable } from '@vben/types';
@@ -98,9 +110,15 @@ setupVbenVxeTable({
       },
     });
 
-    // 单元格渲染： ElSwitch，attrs.beforeChange(newVal, row) 返回 false 可中止变更
+    // 单元格渲染： ElSwitch，attrs.beforeChange(newVal, row) 返回 false 可中止变更；
+    // attrs.auth 声明权限码（string | string[]），无权限时开关置为禁用，
+    // 避免点击后才被后端权限校验拒绝
     vxeUI.renderer.add('CellSwitch', {
       renderTableDefault({ attrs, props }, { column, row }) {
+        const { hasAccessByCodes } = useAccess();
+        const auth = attrs?.auth;
+        const permitted =
+          !auth || hasAccessByCodes(Array.isArray(auth) ? auth : [auth]);
         const loadingKey = `__loading_${column.field}`;
         const finallyProps = {
           activeText: $t('common.enabled'),
@@ -109,6 +127,7 @@ setupVbenVxeTable({
           inactiveValue: 0,
           inlinePrompt: true,
           ...props,
+          disabled: !permitted || props?.disabled,
           modelValue: row[column.field],
           loading: row[loadingKey] ?? false,
           'onUpdate:modelValue': onChange,
@@ -128,9 +147,12 @@ setupVbenVxeTable({
       },
     });
 
-    // 单元格渲染：操作按钮组，options 为 ['edit', 'detail', 'delete'] 或自定义项
+    // 单元格渲染：操作按钮组，options 为 ['edit', 'detail', 'delete'] 或自定义项；
+    // 自定义项支持 auth 声明权限码（string | string[]，配合 useAccess 过滤），
+    // 无对应权限码的按钮不渲染，与 VbenTableAction 的 auth 语义保持一致
     vxeUI.renderer.add('CellOperation', {
       renderTableDefault({ attrs, options }, { column, row }) {
+        const { hasAccessByCodes } = useAccess();
         let justify: string;
         switch (column.align) {
           case 'center': {
@@ -179,7 +201,12 @@ setupVbenVxeTable({
             });
             return optBtn;
           })
-          .filter((opt) => opt.show !== false);
+          .filter((opt) => {
+            if (opt.show === false) return false;
+            if (!opt.auth) return true;
+            const codes = Array.isArray(opt.auth) ? opt.auth : [opt.auth];
+            return hasAccessByCodes(codes);
+          });
 
         function renderBtn(opt: Recordable<any>, listen = true) {
           return h(

@@ -237,14 +237,15 @@ export function useColumns(
         },
         name: 'CellOperation',
         options: [
-          // 按钮节点不能再有下级
+          // 按钮节点不能再有下级；append 为新增子菜单，走 create 权限码
           {
+            auth: 'system:menu:create',
             code: 'append',
             show: (row: SystemMenuApi.SystemMenu) => row.menuType !== 3,
             text: $t('system.menu.append'),
           },
-          'edit',
-          'delete',
+          { auth: 'system:menu:update', code: 'edit' },
+          { auth: 'system:menu:delete', code: 'delete' },
         ],
       },
       field: 'operation',

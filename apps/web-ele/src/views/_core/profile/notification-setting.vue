@@ -1,4 +1,7 @@
 <script setup lang="ts">
+/**
+ * 个人中心「新消息提醒」Tab（上游模板）：全部为静态 mock 数据，未接后端。
+ */
 import { computed } from 'vue';
 
 import { ProfileNotificationSetting } from '@vben/common-ui';

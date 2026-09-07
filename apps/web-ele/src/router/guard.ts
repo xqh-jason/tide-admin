@@ -1,3 +1,8 @@
+/**
+ * 路由守卫：通用进度条守卫 + 权限访问守卫。
+ * 权限守卫核心流程：core 路由放行 → 校验 accessToken → 首次进入时
+ * 拉取用户信息并按后端菜单（accessMode: 'backend'）生成动态路由。
+ */
 import type { Router } from 'vue-router';
 
 import { LOGIN_PATH } from '@vben/constants';

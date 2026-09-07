@@ -1,4 +1,9 @@
 <script lang="ts" setup>
+/**
+ * 字典项新增/编辑抽屉（嵌套在 items-panel 弹层内）。
+ * 契约要点：后端创建/更新为全量覆盖（UpdateDictionaryDetailReq），
+ * dictionaryId 必须回传避免所属字典被清空；编辑态直接用行数据回显。
+ */
 import type { SystemDictionaryApi } from '#/api';
 
 import { computed, ref } from 'vue';

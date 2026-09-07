@@ -1,4 +1,8 @@
 <script setup lang="ts">
+/**
+ * 个人中心「修改密码」Tab（上游模板）：仅前端校验（两次密码一致），
+ * 提交为本地假成功提示，后端暂无修改密码端点。
+ */
 import type { VbenFormSchema } from '#/adapter/form';
 
 import { computed } from 'vue';

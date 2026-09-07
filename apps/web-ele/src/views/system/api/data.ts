@@ -64,6 +64,7 @@ export function useFormSchema(): VbenFormSchema[] {
       componentProps: {
         afterFetch: (items: SystemRoleApi.SystemRole[]) =>
           items.map((role) => ({ label: role.roleName, value: role.id })),
+        // 后端 pageSize 上限 1000；此处下拉仅取前 100 条，角色更多时需分批搜索
         api: () => getRoleList({ page: 1, pageSize: 100 }),
         multiple: true,
         placeholder: $t('system.api.rolesPlaceholder'),
@@ -139,7 +140,10 @@ export function useColumns(
           onClick: onActionClick,
         },
         name: 'CellOperation',
-        options: [{ code: 'edit' }, { code: 'delete', danger: true }],
+        options: [
+          { auth: 'system:api:update', code: 'edit' },
+          { auth: 'system:api:delete', code: 'delete', danger: true },
+        ],
       },
       field: 'operation',
       fixed: 'right',

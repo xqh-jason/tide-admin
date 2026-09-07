@@ -1,5 +1,12 @@
 /**
- * 该文件可自行根据业务逻辑进行调整
+ * requestClient 工厂与全局拦截器（对接 Salvo 后端统一契约）。
+ *
+ * 契约要点：
+ * - baseURL 取环境配置 /api/v1（dev 下经 vite proxy 转发到 127.0.0.1:8080）；
+ * - 业务接口全 POST + JSON body；请求头统一注入 Bearer token 与 Accept-Language；
+ * - 响应包装 { code, data, message }，code=1 成功 / 0 失败（HTTP 恒 200，
+ *   仅认证失败返回 401），successCode 必须为 1（vben 默认 0）；
+ * - 后端暂无 refresh token 机制，enableRefreshToken 保持默认关闭。
  */
 import type { RequestClientOptions } from '@vben/request';
 
@@ -28,7 +35,7 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
   });
 
   /**
-   * 重新认证逻辑
+   * 重新认证逻辑：清空 token 后按偏好设置选择「登录过期弹窗」或直接登出
    */
   async function doReAuthenticate() {
     console.warn('Access token or refresh token is invalid or expired. ');
@@ -47,6 +54,8 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
 
   /**
    * 刷新token逻辑
+   * ⚠️ 后端暂无 /auth/refresh 端点；enableRefreshToken 关闭时不会被调用，
+   * 后端补齐 refresh 机制前请勿开启该开关
    */
   async function doRefreshToken() {
     const accessStore = useAccessStore();

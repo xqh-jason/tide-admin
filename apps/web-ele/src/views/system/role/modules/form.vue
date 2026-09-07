@@ -1,11 +1,18 @@
 <script lang="ts" setup>
+/**
+ * 角色新增/编辑抽屉。
+ * 契约要点：后端创建/更新均为全字段必填（UpdateRoleReq），编辑态全量提交、
+ * apiIds 前端未维护但必须回传（空数组）；menuIds/apiIds 均为"全量替换"
+ * 语义（传数组即替换 sys_role_menu/sys_role_api 关联，空数组即清空）。
+ * 菜单授权树勾选含半选父节点（保证后端组树完整）。
+ */
 import type { SystemMenuApi, SystemRoleApi } from '#/api';
 
 import { computed, nextTick, ref } from 'vue';
 
 import { useVbenDrawer } from '@vben/common-ui';
 
-import { ElMessage, ElTree } from 'element-plus';
+import { ElAlert, ElMessage, ElTree } from 'element-plus';
 
 import { useVbenForm } from '#/adapter/form';
 import {
@@ -131,15 +138,26 @@ defineExpose({ drawerApi });
   <Drawer class="w-[560px]" :title="drawerTitle">
     <Form>
       <template #menuIds>
-        <ElTree
-          ref="treeRef"
-          :check-strictly="treeStrictly"
-          class="w-full"
-          :data="menuTree"
-          node-key="id"
-          :props="{ label: 'title', children: 'children' }"
-          show-checkbox
-        />
+        <div class="flex flex-col gap-2">
+          <!-- 后端 /role/get 暂不回传 menuIds，已授权菜单无法回显；
+               编辑保存为全量替换语义（不勾选即清空），必须显式警示 -->
+          <ElAlert
+            v-if="editId > 0"
+            :closable="false"
+            :title="$t('system.role.menuEchoWarning')"
+            show-icon
+            type="warning"
+          />
+          <ElTree
+            ref="treeRef"
+            :check-strictly="treeStrictly"
+            class="w-full"
+            :data="menuTree"
+            node-key="id"
+            :props="{ label: 'title', children: 'children' }"
+            show-checkbox
+          />
+        </div>
       </template>
     </Form>
     <AuditInfo :record="auditRecord" />

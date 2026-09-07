@@ -1,4 +1,9 @@
 <script setup lang="ts">
+/**
+ * 个人中心页（vben 上游模板结构）：四个 Tab 均为静态展示页，
+ * 仅「基本设置」在 onMounted 拉取 /user/info 回显；修改密码等
+ * 写操作未接后端，接入时后端需提供相应端点。
+ */
 import { ref } from 'vue';
 
 import { Profile } from '@vben/common-ui';

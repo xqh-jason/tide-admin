@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+/**
+ * 工作台主页（前端自有静态路由，不依赖后端菜单下发，
+ * 见 router/routes/modules/dashboard.ts；访问仍走登录守卫）。
+ */
 import { WorkbenchHeader } from '@vben/common-ui';
 import { preferences } from '@vben/preferences';
 import { useUserStore } from '@vben/stores';
