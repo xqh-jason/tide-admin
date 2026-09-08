@@ -183,7 +183,10 @@ const withDefaultPlaceholder = (
   });
 };
 
-// 这里需要自行根据业务组件库进行适配，需要用到的组件都需要在这里类型说明
+/**
+ * 业务表单可用的组件名联合类型；新增组件需在下方
+ * initComponentAdapter 注册并同步 ComponentPropsMap
+ */
 export type ComponentType =
   | 'ApiSelect'
   | 'ApiTreeSelect'
@@ -229,9 +232,6 @@ export interface ComponentPropsMap {
 
 async function initComponentAdapter() {
   const components: Partial<Record<ComponentType, Component>> = {
-    // 如果你的组件体积比较大，可以使用异步加载
-    // Button: () =>
-    // import('xxx').then((res) => res.Button),
     ApiSelect: withDefaultPlaceholder(
       {
         ...ApiComponent,
@@ -323,6 +323,8 @@ async function initComponentAdapter() {
       rows: 4,
       type: 'textarea',
     }),
+    // range 场景下 Element Plus 要求 name/id 为二元数组（起止两个
+    // 原生 input 各自的标识）；Schema 上只配单值时自动补 `${x}_end`
     TimePicker: (props, { attrs, slots }) => {
       const { name, id, isRange } = props;
       const extraProps: Recordable<any> = {};
@@ -344,6 +346,7 @@ async function initComponentAdapter() {
         slots,
       );
     },
+    // 同 TimePicker：range 类型时把单值 name/id 展开为起止二元数组
     DatePicker: (props, { attrs, slots }) => {
       const { name, id, type } = props;
       const extraProps: Recordable<any> = {};
@@ -369,12 +372,9 @@ async function initComponentAdapter() {
     Upload: ElUpload,
   };
 
-  // 将组件注册到全局共享状态中
   globalShareState.setComponents(components);
 
-  // 定义全局共享状态中的消息提示
   globalShareState.defineMessage({
-    // 复制成功消息提示
     copyPreferencesSuccess: (title, content) => {
       ElNotification({
         title,

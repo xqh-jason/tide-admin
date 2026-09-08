@@ -18,20 +18,11 @@ import App from './app.vue';
 import { router } from './router';
 
 async function bootstrap(namespace: string) {
-  // 初始化组件适配器
+  // 组件适配器就绪后表单/表格才能解析业务组件类型
   await initComponentAdapter();
 
-  // 初始化表单组件
   await initSetupVbenForm();
 
-  // // 设置弹窗的默认配置
-  // setDefaultModalProps({
-  //   fullscreenButton: false,
-  // });
-  // // 设置抽屉的默认配置
-  // setDefaultDrawerProps({
-  //   zIndex: 2000,
-  // });
   const app = createApp(App);
 
   // 注册Element Plus提供的v-loading指令
@@ -46,7 +37,7 @@ async function bootstrap(namespace: string) {
   // 国际化 i18n 配置
   await setupI18n(app);
 
-  // 配置 pinia-tore
+  // 初始化 pinia store
   await initStores(app, { namespace });
 
   // 安装权限指令

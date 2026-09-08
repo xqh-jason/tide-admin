@@ -16,11 +16,9 @@ import { useAuthStore } from '#/store';
 import { generateAccess } from './access';
 
 /**
- * 通用守卫配置
- * @param router
+ * 通用守卫配置：页面加载进度条
  */
 function setupCommonGuard(router: Router) {
-  // 记录已经加载的页面
   const loadedPaths = new Set<string>();
 
   router.beforeEach((to) => {
@@ -35,7 +33,6 @@ function setupCommonGuard(router: Router) {
 
   router.afterEach((to) => {
     // 记录页面是否加载,如果已经加载，后续的页面切换动画等效果不在重复执行
-
     loadedPaths.add(to.path);
 
     // 关闭页面加载进度条
@@ -47,7 +44,6 @@ function setupCommonGuard(router: Router) {
 
 /**
  * 权限访问守卫配置
- * @param router
  */
 function setupAccessGuard(router: Router) {
   router.beforeEach(async (to, from) => {
@@ -78,12 +74,11 @@ function setupAccessGuard(router: Router) {
       if (to.fullPath !== LOGIN_PATH) {
         return {
           path: LOGIN_PATH,
-          // 如不需要，直接删除 query
+          // 记录原始目标页，登录成功后回跳；默认首页则无需回跳
           query:
             to.fullPath === preferences.app.defaultHomePath
               ? {}
               : { redirect: encodeURIComponent(to.fullPath) },
-          // 携带当前跳转的页面，登录后重新跳转该页面
           replace: true,
         };
       }
@@ -108,7 +103,6 @@ function setupAccessGuard(router: Router) {
     const { accessibleMenus, accessibleRoutes } = await generateAccess({
       roles: userRoles,
       router,
-      // 则会在菜单中显示，但是访问会被重定向到403
       routes: accessRoutes,
     });
 
@@ -116,6 +110,11 @@ function setupAccessGuard(router: Router) {
     accessStore.setAccessMenus(accessibleMenus);
     accessStore.setAccessRoutes(accessibleRoutes);
     accessStore.setIsAccessChecked(true);
+    // 动态路由注册后的重定向目标（三分支）：
+    // 1. 登录页带 redirect 参数 → 回跳原始目标页；
+    // 2. 直接访问默认首页 → 优先用用户配置的 homePath；
+    // 3. 其余 → 当前目标页（首次进入时动态路由尚未注册，
+    //    需 resolve 后 replace 重定向一次才能命中新路由）
     const redirectPath = (from.query.redirect ??
       (to.path === preferences.app.defaultHomePath
         ? userInfo.homePath || preferences.app.defaultHomePath
@@ -129,13 +128,10 @@ function setupAccessGuard(router: Router) {
 }
 
 /**
- * 项目守卫配置
- * @param router
+ * 项目守卫配置入口
  */
 function createRouterGuard(router: Router) {
-  /** 通用 */
   setupCommonGuard(router);
-  /** 权限访问 */
   setupAccessGuard(router);
 }
 

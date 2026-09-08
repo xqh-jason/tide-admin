@@ -65,6 +65,10 @@ export const useDictStore = defineStore('dict', () => {
     return list;
   }
 
+  /**
+   * 重置缓存：由 @vben/stores 的 resetAllStores 在登出/切换账号链路
+   * 统一调用，避免下个会话读到上个账号的字典缓存
+   */
   function $reset() {
     for (const key of Object.keys(optionsMap)) {
       Reflect.deleteProperty(optionsMap, key);
@@ -72,7 +76,8 @@ export const useDictStore = defineStore('dict', () => {
     pendingMap.clear();
   }
 
-  return { $reset, getOptions, loadOptions, optionsMap };
+  // loadOptions/optionsMap 仅作内部缓存，不对外暴露，外部统一走 getOptions
+  return { $reset, getOptions };
 });
 
 /** 便捷入口：取某个字典类型的选项，如 useDictOptions('status') */

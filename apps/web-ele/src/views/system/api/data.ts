@@ -7,6 +7,14 @@ import { useDictOptions } from '#/store';
 
 import { useAuditColumns } from '../audit-columns';
 
+/** HTTP 方法选项（表单与搜索共用） */
+const METHOD_OPTIONS = [
+  { label: 'GET', value: 'GET' },
+  { label: 'POST', value: 'POST' },
+  { label: 'PUT', value: 'PUT' },
+  { label: 'DELETE', value: 'DELETE' },
+];
+
 /** 新增/编辑 API 表单 schema */
 export function useFormSchema(): VbenFormSchema[] {
   const statusOptions = useDictOptions('status');
@@ -23,12 +31,7 @@ export function useFormSchema(): VbenFormSchema[] {
     {
       component: 'Select',
       componentProps: {
-        options: [
-          { label: 'GET', value: 'GET' },
-          { label: 'POST', value: 'POST' },
-          { label: 'PUT', value: 'PUT' },
-          { label: 'DELETE', value: 'DELETE' },
-        ],
+        options: METHOD_OPTIONS,
       },
       defaultValue: 'POST',
       fieldName: 'method',
@@ -74,12 +77,7 @@ export function useGridFormSchema(): VbenFormSchema[] {
       component: 'Select',
       componentProps: {
         clearable: true,
-        options: [
-          { label: 'GET', value: 'GET' },
-          { label: 'POST', value: 'POST' },
-          { label: 'PUT', value: 'PUT' },
-          { label: 'DELETE', value: 'DELETE' },
-        ],
+        options: METHOD_OPTIONS,
       },
       fieldName: 'method',
       label: $t('system.api.method'),

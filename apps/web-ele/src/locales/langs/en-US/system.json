@@ -19,6 +19,8 @@
     "updatedAt": "Updated At"
   },
   "dictionary": {
+    "deleteConfirm": "The code cannot be reused after deletion, which may affect the system. Consider disabling it instead. Are you sure this data has never been used?",
+    "deleteConfirmTitle": "Confirm",
     "extend": "Extend",
     "extendTip": "e.g. tag color, can be left blank",
     "itemKeywordTip": "Search by label / value",

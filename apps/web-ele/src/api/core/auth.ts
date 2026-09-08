@@ -18,6 +18,11 @@ export namespace AuthApi {
     accessToken: string;
   }
 
+  /**
+   * 刷新 token 的响应形状：baseRequestClient 是原始 axios 实例，
+   * 不经过 { code, data } 统一契约解包，因此拿到的是 HTTP 层的
+   * { data, status }，与 requestClient 的返回结构不同
+   */
   export interface RefreshTokenResult {
     data: string;
     status: number;

@@ -66,6 +66,12 @@ const menuTree = ref<SystemMenuApi.SystemMenu[]>([]);
 /** 回显已授权节点时临时开启严格模式，避免父节点联动全选子节点 */
 const treeStrictly = ref(false);
 
+/**
+ * 拉取菜单树并回显勾选。setCheckedKeys 前需 treeStrictly=true 且等待
+ * nextTick（让严格模式渲染进树组件），否则非严格模式下 setCheckedKeys
+ * 会按父子联动把已勾选父节点的全部子节点误置为选中；回显完成后立即
+ * 恢复非严格模式，保证用户后续手动勾选时有正常的父子联动
+ */
 async function loadMenuTree(checkedIds: number[] = []) {
   try {
     const { items: menus } = await getMenuList();
