@@ -16,7 +16,7 @@ import type { SystemDictionaryApi } from '#/api';
 import { Page, useVbenDrawer } from '@vben/common-ui';
 import { Plus } from '@vben/icons';
 
-import { ElButton, ElMessage } from 'element-plus';
+import { ElButton, ElMessage, ElMessageBox } from 'element-plus';
 
 import { useVbenVxeGrid, VbenTableAction } from '#/adapter/vxe-table';
 import { deleteDictionary, getDictionaryList } from '#/api';
@@ -41,11 +41,24 @@ const [ItemsDrawer, itemsDrawerApi] = useVbenDrawer({
   destroyOnClose: true,
 });
 
+/** 删除二次确认文案：强调编码不可复用的风险 */
+const DELETE_SECOND_CONFIRM_TEXT =
+  '删除后编码不可复用，可能影响系统运行，建议修改状态，确定没有使用过当前数据吗？';
+
 /**
  * 删除字典类型（软删并级联软删其下字典项，需 system:dictionary:delete），
- * 成功后刷新列表
+ * popConfirm 首次确认后弹出二次风险提示，确认后才执行，成功后刷新列表
  */
 async function onDelete(row: SystemDictionaryApi.Dictionary) {
+  try {
+    await ElMessageBox.confirm(DELETE_SECOND_CONFIRM_TEXT, '二次确认', {
+      cancelButtonText: '取消',
+      confirmButtonText: '确定',
+      type: 'warning',
+    });
+  } catch {
+    return; // 用户取消二次确认
+  }
   await deleteDictionary(row.id);
   ElMessage.success($t('ui.actionMessage.deleteSuccess'));
   gridApi.query();

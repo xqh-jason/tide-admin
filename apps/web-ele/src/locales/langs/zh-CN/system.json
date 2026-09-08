@@ -9,11 +9,8 @@
     "operation": "操作",
     "path": "接口路径",
     "pathTip": "如 /api/v1/user/list",
-    "roles": "授权角色",
-    "rolesPlaceholder": "选择可访问该接口的角色",
     "status": "状态",
-    "title": "API 管理",
-    "roleEchoWarning": "后端暂未返回该接口已授权的角色，请重新勾选；保存后将按当前选择全量替换授权（不选即清空）"
+    "title": "API 管理"
   },
   "common": {
     "createdBy": "创建人",
@@ -111,6 +108,10 @@
     "username": "用户名"
   },
   "role": {
+    "apis": "API 权限",
+    "apisClear": "取消全选",
+    "apisSelectAll": "全选",
+    "apisUngrouped": "未分组",
     "list": "角色列表",
     "menus": "菜单权限",
     "menusTip": "勾选目录/菜单/按钮，按钮节点即按钮权限码",

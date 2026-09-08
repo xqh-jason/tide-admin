@@ -7,7 +7,7 @@ import { useDictOptions } from '#/store';
 
 import { useAuditColumns } from '../audit-columns';
 
-/** 新增/编辑角色表单 schema（menuIds 由表单插槽内的授权树维护） */
+/** 新增/编辑角色表单 schema（菜单/API 权限区块由 form.vue 独立渲染，不走表单字段） */
 export function useFormSchema(): VbenFormSchema[] {
   const statusOptions = useDictOptions('status');
   return [
@@ -46,13 +46,6 @@ export function useFormSchema(): VbenFormSchema[] {
       component: 'Textarea',
       fieldName: 'remark',
       label: $t('system.role.remark'),
-    },
-    {
-      // 渲染被 list/form 中按 fieldName 命名的插槽接管
-      component: 'Input',
-      fieldName: 'menuIds',
-      formItemClass: 'items-start',
-      label: $t('system.role.menus'),
     },
   ];
 }
