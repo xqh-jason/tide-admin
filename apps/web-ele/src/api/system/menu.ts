@@ -57,7 +57,10 @@ export namespace SystemMenuApi {
     title: string;
   }
 
-  /** 更新菜单：除 id 外全部可选，后端对未传字段不做修改 */
+  /**
+   * 更新菜单：后端 UpdateMenuReq 13 个字段全量必填、全量覆盖
+   * （未传字段会被 serde 反序列化拒绝），编辑态必须全量提交
+   */
   export interface UpdateParams {
     component?: string;
     hidden?: CommonStatus;

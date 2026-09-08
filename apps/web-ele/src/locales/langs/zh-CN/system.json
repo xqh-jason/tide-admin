@@ -19,6 +19,8 @@
     "updatedAt": "更新时间"
   },
   "dictionary": {
+    "deleteConfirm": "删除后编码不可复用，可能影响系统运行，建议修改状态，确定没有使用过当前数据吗？",
+    "deleteConfirmTitle": "二次确认",
     "extend": "扩展值",
     "extendTip": "如 tag 颜色，可留空",
     "itemKeywordTip": "支持标签/字典值模糊搜索",

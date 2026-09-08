@@ -31,22 +31,18 @@ export const useAuthStore = defineStore('auth', () => {
 
   /**
    * 异步处理登录操作
-   * Asynchronously handle the login process
    * @param params 登录表单数据
    */
   async function authLogin(
     params: AuthApi.LoginParams,
     onSuccess?: () => Promise<void> | void,
   ) {
-    // 异步处理用户登录操作并获取 accessToken
     let userInfo: null | UserInfo = null;
     try {
       loginLoading.value = true;
       const { accessToken } = await loginApi(params);
 
-      // 如果成功获取到 accessToken
       if (accessToken) {
-        // 将 accessToken 存储到 accessStore 中
         accessStore.setAccessToken(accessToken);
 
         // 获取用户信息并存储到 accessStore 中（权限码由 fetchAccessCodes 内部写入）

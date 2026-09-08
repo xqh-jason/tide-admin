@@ -26,9 +26,7 @@ const localesMap = loadLocalesMapFromDir(
   modules,
 );
 /**
- * 加载应用特有的语言包
- * 这里也可以改造为从服务端获取翻译数据
- * @param lang
+ * 加载应用特有的语言包（./langs/<lang>/*.json，懒加载）
  */
 async function loadMessages(lang: SupportedLanguagesType) {
   const [appLocaleMessages] = await Promise.all([
@@ -39,8 +37,7 @@ async function loadMessages(lang: SupportedLanguagesType) {
 }
 
 /**
- * 加载第三方组件库的语言包
- * @param lang
+ * 加载第三方组件库的语言包（element-plus、dayjs）
  */
 async function loadThirdPartyMessage(lang: SupportedLanguagesType) {
   await Promise.all([loadElementLocale(lang), loadDayjsLocale(lang)]);
@@ -48,7 +45,6 @@ async function loadThirdPartyMessage(lang: SupportedLanguagesType) {
 
 /**
  * 加载dayjs的语言包
- * @param lang
  */
 async function loadDayjsLocale(lang: SupportedLanguagesType) {
   let locale;

@@ -44,8 +44,9 @@ export namespace SystemRoleApi {
   }
 
   /**
-   * 更新角色：除 id 外全部可选，后端对未传字段不做修改；
-   * menuIds/apiIds 传 null 视为不修改，传数组即全量替换
+   * 更新角色：后端 UpdateRoleReq 全字段必填、全量覆盖（未传的字段
+   * 会被 serde 反序列化拒绝），menuIds/apiIds 传空数组即清空关联；
+   * 编辑态必须全量提交（见 role/modules/form.vue 的空值兜底）
    */
   export interface UpdateParams {
     apiIds?: null | number[];

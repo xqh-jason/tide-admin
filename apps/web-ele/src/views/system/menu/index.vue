@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 /**
  * 菜单管理列表页（树表）。
- * 数据链路：getMenuList 内部按后端 pageSize 上限循环拉全量，
+ * 数据链路：getMenuList 以单次请求 pageSize=1000（后端上限）拉全量，
  * 由 vxe-table treeConfig transform 按 parentId 组树并默认展开；
  * 搜索/列定义在 data.ts（append/edit/delete 权限码在列配置内声明），
  * 新增/编辑在 modules/form.vue 抽屉内完成。

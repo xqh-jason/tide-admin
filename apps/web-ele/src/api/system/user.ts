@@ -51,9 +51,11 @@ export namespace SystemUserApi {
   }
 
   /**
-   * 更新用户：字段可选（列表状态开关等局部更新只传部分字段）；
-   * 编辑抽屉提交时会显式带上全部字段（可为空字符串，空串表示清空），
-   * roleIds 传入即全量替换
+   * 更新用户：后端 UpdateUserReq 除 email/phone（serde default）外
+   * 全字段必填，编辑抽屉提交时显式带上全部字段（空串表示清空）。
+   * roleIds 非空即全量替换（先删旧关联再插入）；空数组时后端直接
+   * 跳过角色关联更新，不会清空已有角色。状态开关走独立的
+   * /user/update-status 端点，不经此接口
    */
   export interface UpdateParams {
     avatar?: string;
@@ -71,7 +73,7 @@ export namespace SystemUserApi {
 }
 
 /**
- * 全量用户
+ * 全量用户列表（不分页，用于创建人/更新人等下拉数据源）
  */
 export async function getAllUsersApi() {
   return requestClient.post<SystemUserApi.UserBrief[]>('/user/list-all', {});

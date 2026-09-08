@@ -53,6 +53,8 @@ setupVbenVxeTable({
         proxyConfig: {
           autoLoad: true,
           response: {
+            // result：分页数据取值字段；list：树形/全量数据取值字段，
+            // 后端 PageResult 均以 items 返回，两者指向同一字段
             result: 'items',
             total: 'total',
             list: 'items',
@@ -291,6 +293,11 @@ setupVbenVxeTable({
   useVbenForm,
 });
 
+/**
+ * 业务表格入口：为 @vben/plugins 的 useGrid 绑定本项目的组件类型
+ * （ComponentType/ComponentPropsMap），使 gridOptions 中 formOptions 的
+ * schema 能获得组件名与 componentProps 的类型提示与约束
+ */
 export const useVbenVxeGrid = <
   T extends Record<string, any>,
   TFormValues extends FormValues = FormValues,
