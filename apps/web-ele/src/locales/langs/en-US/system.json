@@ -9,11 +9,8 @@
     "operation": "Operation",
     "path": "Path",
     "pathTip": "e.g. /api/v1/user/list",
-    "roles": "Authorized Roles",
-    "rolesPlaceholder": "Select roles that can access this API",
     "status": "Status",
-    "title": "API Management",
-    "roleEchoWarning": "The backend does not return the roles assigned to this API yet. Please re-select them; saving will fully replace the grants with the current selection (empty selection clears them)"
+    "title": "API Management"
   },
   "common": {
     "createdBy": "Created By",
@@ -111,6 +108,10 @@
     "username": "Username"
   },
   "role": {
+    "apis": "API Permissions",
+    "apisClear": "Clear All",
+    "apisSelectAll": "Select All",
+    "apisUngrouped": "Ungrouped",
     "list": "Role List",
     "menus": "Menu Permissions",
     "menusTip": "Check catalogs/menus/buttons; button nodes grant access codes",

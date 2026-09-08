@@ -2,8 +2,8 @@
 /**
  * API 权限点新增/编辑抽屉。
  * 契约要点：后端创建/更新均为全字段必填（UpdateApiReq），编辑态全量提交、
- * 空值以空字符串兜底；roleIds 为"全量替换"语义（空数组即清空授权），
- * 后端 /sys-api/get 暂不回传 roleIds，编辑时需重新勾选（模板内有警示）。
+ * 空值以空字符串兜底；roleIds 为后端必填字段（Vec 非 Option，全量替换语义），
+ * 但角色授权统一在角色管理侧维护，表单固定回传空数组（即清空/不授权）。
  */
 import type { SystemApiApi } from '#/api';
 
@@ -11,7 +11,7 @@ import { computed, ref } from 'vue';
 
 import { useVbenDrawer } from '@vben/common-ui';
 
-import { ElAlert, ElMessage } from 'element-plus';
+import { ElMessage } from 'element-plus';
 
 import { useVbenForm } from '#/adapter/form';
 import { createApi, updateApi } from '#/api';
@@ -48,30 +48,29 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemApiApi.SystemApi>({
     const { valid } = await formApi.validate();
     if (!valid) return;
     const values = await formApi.getValues();
-    // roleIds 全量替换语义；未选择时传空数组（后端会清空授权）
-    const roleIds: number[] = values.roleIds ?? [];
     drawerApi.lock();
     try {
       const save =
         editId.value > 0
-          ? // 后端更新为全量覆盖契约：apiGroup/description 必填非空，空值以空串兜底
+          ? // 后端更新为全量覆盖契约：apiGroup/description 必填非空，空值以空串兜底；
+            // roleIds 后端必填但角色授权在角色管理侧维护，固定传空数组（即清空）
             updateApi({
               apiGroup: values.apiGroup ?? '',
               description: values.description ?? '',
               id: editId.value,
               method: values.method,
               path: values.path,
-              roleIds,
+              roleIds: [],
               status: values.status,
             } as SystemApiApi.UpdateParams)
           : // 创建同为全字段必填契约：apiGroup/description 未填以空串回传，
-            // roleIds 为全量替换语义（空数组即无授权），不省略任何参数
+            // roleIds 固定传空数组（即暂不授权），不省略任何参数
             createApi({
               apiGroup: values.apiGroup ?? '',
               description: values.description ?? '',
               method: values.method,
               path: values.path,
-              roleIds,
+              roleIds: [],
               status: values.status,
             } as SystemApiApi.CreateParams);
       await save;
@@ -88,11 +87,7 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemApiApi.SystemApi>({
     formApi.reset();
     editId.value = data?.id ?? 0;
     if (data) {
-      // 后端 /sys-api/get 不回传 roleIds，编辑时授权角色需重新选择
-      const { roleIds, ...rest } = data as SystemApiApi.SystemApi & {
-        roleIds?: number[];
-      };
-      formApi.setValues(rest);
+      formApi.setValues(data);
     }
     auditRecord.value = editId.value > 0 ? (data ?? null) : null;
   },
@@ -104,16 +99,6 @@ defineExpose({ drawerApi });
 <template>
   <Drawer class="w-[560px]" :title="drawerTitle">
     <div class="pl-3 pr-[22px]">
-      <!-- 后端 /sys-api/get 暂不回传 roleIds，已授权角色无法回显；
-           编辑保存为全量替换语义（不选即清空），必须显式警示 -->
-      <ElAlert
-        v-if="editId > 0"
-        class="mb-4"
-        :closable="false"
-        :title="$t('system.api.roleEchoWarning')"
-        show-icon
-        type="warning"
-      />
       <Form />
       <AuditInfo :record="auditRecord" />
     </div>

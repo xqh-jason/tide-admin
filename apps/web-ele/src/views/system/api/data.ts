@@ -1,8 +1,7 @@
 import type { VbenFormSchema } from '#/adapter/form';
 import type { OnActionClickFn, VxeTableGridColumns } from '#/adapter/vxe-table';
-import type { SystemApiApi, SystemRoleApi } from '#/api';
+import type { SystemApiApi } from '#/api';
 
-import { getRoleList } from '#/api';
 import { $t } from '#/locales';
 import { useDictOptions } from '#/store';
 
@@ -58,19 +57,6 @@ export function useFormSchema(): VbenFormSchema[] {
       defaultValue: 1,
       fieldName: 'status',
       label: $t('system.api.status'),
-    },
-    {
-      component: 'ApiSelect',
-      componentProps: {
-        afterFetch: (items: SystemRoleApi.SystemRole[]) =>
-          items.map((role) => ({ label: role.roleName, value: role.id })),
-        // 后端 pageSize 上限 1000；此处下拉仅取前 100 条，角色更多时需分批搜索
-        api: () => getRoleList({ page: 1, pageSize: 100 }),
-        multiple: true,
-        placeholder: $t('system.api.rolesPlaceholder'),
-      },
-      fieldName: 'roleIds',
-      label: $t('system.api.roles'),
     },
   ];
 }

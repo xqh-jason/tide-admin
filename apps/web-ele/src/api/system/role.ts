@@ -13,6 +13,8 @@ export namespace SystemRoleApi {
   /** 角色（对齐后端 w3-role-crud 契约 RoleResp） */
   export interface SystemRole extends AuditFields {
     id: number;
+    /** 已授权 API 权限点 id 平铺列表，编辑回显用 */
+    apiIds?: number[];
     /** 已授权菜单+按钮 id 平铺列表（含半选父节点），编辑回显用 */
     menuIds?: number[];
     remark: string;
@@ -29,7 +31,7 @@ export namespace SystemRoleApi {
   }
 
   export interface CreateParams {
-    /** 接口 id 列表（W3 第一版授权链路不使用，预留） */
+    /** API 权限点 id 列表，传入即全量替换 sys_role_api */
     apiIds?: number[];
     /** 菜单+按钮 id 列表，传入即全量替换 sys_role_menu */
     menuIds?: number[];

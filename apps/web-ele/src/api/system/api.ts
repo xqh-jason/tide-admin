@@ -34,19 +34,19 @@ export namespace SystemApiApi {
     description?: string;
     method: string;
     path: string;
-    /** 授权角色 id 列表，传入即全量替换 sys_role_api */
-    roleIds?: number[];
+    /** 后端必填（全量替换 sys_role_api）；角色授权在角色管理侧维护，表单固定传空数组 */
+    roleIds: number[];
     status?: CommonStatus;
   }
 
-  /** 更新 API：后端全量覆盖；roleIds 传数组即全量替换（空数组清空） */
+  /** 更新 API：后端全量覆盖；roleIds 后端必填（全量替换，空数组清空授权） */
   export interface UpdateParams {
     apiGroup: string;
     description: string;
     id: number;
     method: string;
     path: string;
-    roleIds?: number[];
+    roleIds: number[];
     status: CommonStatus;
   }
 }
