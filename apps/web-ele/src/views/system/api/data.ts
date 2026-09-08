@@ -147,6 +147,7 @@ export function useColumns(
       },
       field: 'operation',
       fixed: 'right',
+      showOverflow: false,
       title: $t('system.api.operation'),
       width: 140,
     },

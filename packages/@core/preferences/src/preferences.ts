@@ -10,7 +10,7 @@ import type {
 
 import { markRaw, reactive, readonly, watch } from 'vue';
 
-import { StorageManager } from '@vben-core/shared/cache';
+import { MemoryStorageDriver, StorageManager } from '@vben-core/shared/cache';
 import {
   isMacOs,
   merge,
@@ -44,7 +44,11 @@ class PreferenceManager {
   private state: Preferences;
 
   constructor() {
-    this.cache = new StorageManager();
+    // initPreferences 前的占位实例：使用内存驱动，避免空 prefix 触碰真实 localStorage
+    this.cache = new StorageManager({
+      driver: new MemoryStorageDriver(),
+      prefix: 'preferences',
+    });
     // 构造函数不再同步读取缓存，使用默认值初始化
     // 真正的缓存加载在 initPreferences 中完成（已经是 async）
     this.state = reactive<Preferences>({ ...defaultPreferences });

@@ -80,7 +80,7 @@ function onActionClick({
     <Grid :table-title="$t('system.loginLog.list')">
       <template #action="{ row }">
         <VbenTableAction
-          :dropdown-actions="[
+          :actions="[
             {
               auth: 'system:login-log:delete',
               danger: true,

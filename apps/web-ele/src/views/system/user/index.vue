@@ -20,7 +20,7 @@ import { useVbenVxeGrid, VbenTableAction } from '#/adapter/vxe-table';
 import { deleteUser, getUserList, updateUserStatus } from '#/api';
 import { $t } from '#/locales';
 
-import { auditFieldMappingTime, useAuditSearchSchema } from '../audit-search';
+import { auditTimeCodec, useAuditSearchSchema } from '../audit-search';
 import { useColumns, useGridFormSchema } from './data';
 import Form from './modules/form.vue';
 
@@ -62,7 +62,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
     // 模块搜索项（keyword/status）+ 公共审计搜索项（创建人/更新人/时间范围）
     schema: [...useGridFormSchema(), ...useAuditSearchSchema()],
     // 时间范围控件值拆为 createdAtBegin/createdAtEnd 等请求参数
-    fieldMappingTime: auditFieldMappingTime,
+    codec: auditTimeCodec,
   },
   gridOptions: {
     columns: useColumns(onStatusChange),
@@ -136,7 +136,9 @@ function onActionClick({
         <VbenTableAction
           :actions="[
             {
+              // 内置超管 admin 不可编辑（后端拒绝），隐藏该行操作按钮
               auth: 'system:user:update',
+              ifShow: (row as SystemUserApi.SystemUser).username !== 'admin',
               onClick: () =>
                 onActionClick({
                   code: 'edit',
@@ -144,11 +146,10 @@ function onActionClick({
                 }),
               text: $t('common.edit'),
             },
-          ]"
-          :dropdown-actions="[
             {
               auth: 'system:user:delete',
               danger: true,
+              ifShow: (row as SystemUserApi.SystemUser).username !== 'admin',
               popConfirm: {
                 confirm: () =>
                   onActionClick({

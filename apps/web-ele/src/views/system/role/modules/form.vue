@@ -12,7 +12,7 @@ import { computed, nextTick, ref } from 'vue';
 
 import { useVbenDrawer } from '@vben/common-ui';
 
-import { ElAlert, ElMessage, ElTree } from 'element-plus';
+import { ElMessage, ElTree } from 'element-plus';
 
 import { useVbenForm } from '#/adapter/form';
 import {
@@ -99,7 +99,17 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemRoleApi.SystemRole>({
               sort: values.sort ?? 0,
               status: values.status,
             } as SystemRoleApi.UpdateParams)
-          : createRole({ ...values, menuIds } as SystemRoleApi.CreateParams);
+          : // 创建与更新同为全字段必填契约：apiIds 前端未维护也回传空数组，
+            // 未填字段以空串/0 兜底（remark/sort），不省略任何参数
+            createRole({
+              apiIds: [],
+              menuIds,
+              remark: values.remark ?? '',
+              roleKey: values.roleKey ?? '',
+              roleName: values.roleName ?? '',
+              sort: values.sort ?? 0,
+              status: values.status,
+            } as SystemRoleApi.CreateParams);
       await save;
       ElMessage.success($t('ui.actionMessage.operationSuccess'));
       emits('success');
@@ -113,7 +123,7 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemRoleApi.SystemRole>({
     const data = drawerApi.getData();
     formApi.reset();
     editId.value = data?.id ?? 0;
-    // 编辑态拉取详情以回显已授权菜单；后端未就绪时静默回退到行数据
+    // 编辑态拉取详情以回显已授权菜单；后端异常时静默回退到行数据
     let base = data;
     if (data?.id) {
       try {
@@ -136,30 +146,23 @@ defineExpose({ drawerApi });
 
 <template>
   <Drawer class="w-[560px]" :title="drawerTitle">
-    <Form>
-      <template #menuIds>
-        <div class="flex flex-col gap-2">
-          <!-- 后端 /role/get 暂不回传 menuIds，已授权菜单无法回显；
-               编辑保存为全量替换语义（不勾选即清空），必须显式警示 -->
-          <ElAlert
-            v-if="editId > 0"
-            :closable="false"
-            :title="$t('system.role.menuEchoWarning')"
-            show-icon
-            type="warning"
-          />
-          <ElTree
-            ref="treeRef"
-            :check-strictly="treeStrictly"
-            class="w-full"
-            :data="menuTree"
-            node-key="id"
-            :props="{ label: 'title', children: 'children' }"
-            show-checkbox
-          />
-        </div>
-      </template>
-    </Form>
-    <AuditInfo :record="auditRecord" />
+    <div class="pl-3 pr-[22px]">
+      <Form>
+        <template #menuIds>
+          <div class="flex flex-col gap-2">
+            <ElTree
+              ref="treeRef"
+              :check-strictly="treeStrictly"
+              class="w-full"
+              :data="menuTree"
+              node-key="id"
+              :props="{ label: 'title', children: 'children' }"
+              show-checkbox
+            />
+          </div>
+        </template>
+      </Form>
+      <AuditInfo :record="auditRecord" />
+    </div>
   </Drawer>
 </template>

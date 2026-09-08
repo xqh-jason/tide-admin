@@ -34,6 +34,7 @@ function createWebStorageAdapter(
 ): ViewedRowStorageAdapter {
   const manager = new StorageManager({
     driver: new LocalStorageDriver({ storageType }),
+    prefix: 'vxe-viewed-row',
   });
 
   return {

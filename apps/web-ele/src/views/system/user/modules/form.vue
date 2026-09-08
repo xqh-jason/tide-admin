@@ -66,7 +66,18 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemUserApi.SystemUser>({
               status: values.status,
               username: values.username ?? '',
             })
-          : createUser(values as SystemUserApi.CreateParams);
+          : // 创建态同样全量回传：未填的可选字段（email/phone）为空串、未勾选角色为空数组，
+            // 避免字段值为 undefined 时被 JSON 序列化省略、后端收不到必填字段
+            createUser({
+              email: values.email ?? '',
+              empNo: values.empNo ?? '',
+              nickname: values.nickname ?? '',
+              password: values.password ?? '',
+              phone: values.phone ?? '',
+              roleIds: values.roleIds ?? [],
+              status: values.status,
+              username: values.username ?? '',
+            } as SystemUserApi.CreateParams);
       await save;
       ElMessage.success($t('ui.actionMessage.operationSuccess'));
       emits('success');
@@ -107,7 +118,9 @@ defineExpose({ drawerApi });
 
 <template>
   <Drawer class="w-[560px]" :title="drawerTitle">
-    <Form />
-    <AuditInfo :record="auditRecord" />
+    <div class="pl-3 pr-[22px]">
+      <Form />
+      <AuditInfo :record="auditRecord" />
+    </div>
   </Drawer>
 </template>

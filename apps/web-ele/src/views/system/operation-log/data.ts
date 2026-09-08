@@ -59,6 +59,7 @@ export function useColumns(): VxeTableGridColumns<OperationLogApi.OperationLog> 
       align: 'center',
       field: 'operation',
       fixed: 'right',
+      showOverflow: false,
       slots: { default: 'action' },
       title: $t('system.operationLog.operation'),
       width: 140,

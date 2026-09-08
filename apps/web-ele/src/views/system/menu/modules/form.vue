@@ -112,7 +112,9 @@ defineExpose({ drawerApi });
 
 <template>
   <Drawer class="w-[560px]" :title="drawerTitle">
-    <Form />
-    <AuditInfo :record="auditRecord" />
+    <div class="pl-3 pr-[22px]">
+      <Form />
+      <AuditInfo :record="auditRecord" />
+    </div>
   </Drawer>
 </template>

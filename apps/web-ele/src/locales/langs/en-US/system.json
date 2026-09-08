@@ -40,6 +40,32 @@
     "typeTitle": "Dictionary Types",
     "value": "Value"
   },
+  "job": {
+    "batchDelete": "Batch Delete",
+    "batchDeleteConfirm": "Delete {0} selected log(s)?",
+    "batchDeleteEmpty": "Please select logs first",
+    "cronExpr": "Cron Expression",
+    "cronInvalid": "Cron expression must have 6 fields (sec min hour day month week), max 64 chars",
+    "cronTip": "6-field second-level cron: sec min hour day month week, e.g. 0 0 3 * * * runs daily at 03:00",
+    "durationMs": "Duration (ms)",
+    "errorMsg": "Error Message",
+    "handlerCleanupJobLogs": "Cleanup Job Logs",
+    "handlerCleanupLoginLogs": "Cleanup Login Logs",
+    "handlerName": "Handler",
+    "jobName": "Job Name",
+    "list": "Job List",
+    "log": "Execution Log",
+    "logStatus": "Result",
+    "logTitle": "Execution Log · {0}",
+    "operation": "Operation",
+    "remark": "Remark",
+    "runOnce": "Run Once",
+    "runOnceConfirm": "Run job \"{0}\" now?",
+    "runOnceSuccess": "Triggered. Check the execution log for the result",
+    "status": "Status",
+    "statusChangeConfirm": "Switch job \"{0}\" to \"{1}\"?",
+    "title": "Scheduled Job"
+  },
   "loginLog": {
     "agent": "User-Agent",
     "createdAt": "Login Time",
@@ -95,8 +121,7 @@
     "roleName": "Role Name",
     "sort": "Sort",
     "status": "Status",
-    "title": "Role Management",
-    "menuEchoWarning": "The backend does not return the menus assigned to this role yet, so they cannot be echoed below. Saving will fully replace the role-menu grants with the current selection (empty selection clears them)"
+    "title": "Role Management"
   },
   "menu": {
     "append": "Append Child",

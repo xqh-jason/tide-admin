@@ -75,7 +75,7 @@ export function extendsDefaultFormatter(vxeUI: VxeUIExport) {
 
   vxeUI.formats.add('formatDateTime', {
     tableCellFormatMethod({ cellValue }) {
-      return formatDateTime(cellValue);
+      return cellValue ? formatDateTime(cellValue) : '-';
     },
   });
 }

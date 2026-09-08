@@ -102,8 +102,6 @@ function onActionClick({
                 }),
               text: $t('system.operationLog.detail'),
             },
-          ]"
-          :dropdown-actions="[
             {
               auth: 'system:operation-log:delete',
               danger: true,

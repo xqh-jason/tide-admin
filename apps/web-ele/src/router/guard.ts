@@ -100,6 +100,10 @@ function setupAccessGuard(router: Router) {
     const userInfo = userStore.userInfo || (await authStore.fetchUserInfo());
     const userRoles = userInfo.roles ?? [];
 
+    // 刷新权限码：页面刷新后 accessStore 的 accessCodes 来自 localStorage 持久化，
+    // 角色/权限变更后可能过期，这里与用户信息一起在会话开始时重新拉取
+    await authStore.fetchAccessCodes();
+
     // 生成菜单和路由
     const { accessibleMenus, accessibleRoutes } = await generateAccess({
       roles: userRoles,

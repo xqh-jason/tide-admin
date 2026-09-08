@@ -26,7 +26,7 @@ import {
   setupVbenVxeTable,
   useVbenVxeGrid as useGrid,
 } from '@vben/plugins/vxe-table';
-import { formatDateTime, get, isFunction, isString } from '@vben/utils';
+import { get, isFunction, isString } from '@vben/utils';
 
 import { objectOmit } from '@vueuse/core';
 import { ElButton, ElImage, ElPopconfirm, ElSwitch, ElTag } from 'element-plus';
@@ -112,14 +112,26 @@ setupVbenVxeTable({
 
     // 单元格渲染： ElSwitch，attrs.beforeChange(newVal, row) 返回 false 可中止变更；
     // attrs.auth 声明权限码（string | string[]），无权限时开关置为禁用，
-    // 避免点击后才被后端权限校验拒绝
+    // 避免点击后才被后端权限校验拒绝；
+    // attrs.show(row) 返回 false 时不渲染开关，回退为只读状态标签
+    // （内置超管行后端拒绝变更，展示开关只会误导）
     vxeUI.renderer.add('CellSwitch', {
-      renderTableDefault({ attrs, props }, { column, row }) {
+      renderTableDefault({ attrs, options, props }, { column, row }) {
         const { hasAccessByCodes } = useAccess();
         const auth = attrs?.auth;
         const permitted =
           !auth || hasAccessByCodes(Array.isArray(auth) ? auth : [auth]);
         const loadingKey = `__loading_${column.field}`;
+        if (attrs?.show && !attrs.show(row)) {
+          const tagItem = (options ?? []).find(
+            (item: Recordable<any>) => item.value === row[column.field],
+          );
+          return h(
+            ElTag,
+            { ...props, ...objectOmit(tagItem ?? {}, ['label', 'value']) },
+            { default: () => tagItem?.label ?? row[column.field] },
+          );
+        }
         const finallyProps = {
           activeText: $t('common.enabled'),
           activeValue: 1,
@@ -265,7 +277,7 @@ setupVbenVxeTable({
         return h(
           'div',
           {
-            class: 'flex table-operations w-full',
+            class: 'flex table-operations w-full flex-wrap',
             style: { justifyContent: justify },
           },
           btns,
@@ -273,10 +285,8 @@ setupVbenVxeTable({
       },
     });
 
-    // 全局时间格式化，列上用 formatter: 'formatDateTime' 引用
-    vxeUI.formats.add('formatDateTime', ({ cellValue }) =>
-      cellValue ? formatDateTime(cellValue) : '-',
-    );
+    // 全局时间格式化由插件包 extendsDefaultFormatter 提供，
+    // 列上用 formatter: 'formatDateTime' 引用，空值显示 '-'
   },
   useVbenForm,
 });
