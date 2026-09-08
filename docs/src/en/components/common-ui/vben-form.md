@@ -18,8 +18,6 @@ Named field slot control bindings are now grouped under `slotProps.componentProp
 
 Migrate every field slot from `v-bind="slotProps"` to `v-bind="slotProps.componentProps"`. Root metadata remains available for template logic through `field`, `componentField`, `modelValue`, `name`, `disabled`, `isInValid`, `values`, and `formApi`, but it is no longer forwarded automatically to the rendered control.
 
-In this release, starting a Vben application or Playground development server prints this migration warning in the terminal, and loading the page prints the same warning in the browser console. The warning is excluded from production builds and is planned for removal in the next release.
-
 :::
 
 `Vben Form` is the shared form abstraction used across different UI-library variants such as `Ant Design Vue`, `Element Plus`, `Naive UI`, and other adapters added inside this repository.

@@ -22,10 +22,7 @@ import { useVbenVxeGrid, VbenTableAction } from '#/adapter/vxe-table';
 import { deleteDictionaryDetail, getDictionaryDetailList } from '#/api';
 import { $t } from '#/locales';
 
-import {
-  auditFieldMappingTime,
-  useAuditSearchSchema,
-} from '../../audit-search';
+import { auditTimeCodec, useAuditSearchSchema } from '../../audit-search';
 import { useDetailColumns, useDetailGridSearchSchema } from '../data';
 import DetailForm from './detail-form.vue';
 
@@ -64,7 +61,7 @@ function onActionClick({
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: {
     schema: [...useDetailGridSearchSchema(), ...useAuditSearchSchema()],
-    fieldMappingTime: auditFieldMappingTime,
+    codec: auditTimeCodec,
   },
   gridOptions: {
     columns: useDetailColumns(),
@@ -153,8 +150,6 @@ defineExpose({ drawerApi });
                   }),
                 text: $t('common.edit'),
               },
-            ]"
-            :dropdown-actions="[
               {
                 auth: 'system:dictionary-detail:delete',
                 danger: true,

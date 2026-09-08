@@ -18,8 +18,6 @@ outline: deep
 
 请将所有字段 slot 的 `v-bind="slotProps"` 迁移为 `v-bind="slotProps.componentProps"`。根级的 `field`、`componentField`、`modelValue`、`name`、`disabled`、`isInValid`、`values` 和 `formApi` 仍可用于模板逻辑，但不会再自动传入实际控件。
 
-当前版本启动 Vben 应用或 Playground 开发服务器时会在终端输出一次迁移警告，页面加载时浏览器控制台也会提示。该提示不会进入生产构建，并计划在下个版本移除。
-
 :::
 
 框架提供的表单组件，可适配 `Element Plus`、`Ant Design Vue`、`Naive UI` 等框架。

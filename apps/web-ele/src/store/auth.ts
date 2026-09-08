@@ -22,6 +22,13 @@ export const useAuthStore = defineStore('auth', () => {
 
   const loginLoading = ref(false);
 
+  /** 拉取当前用户权限码并写入 accessStore（登录与刷新页面后守卫复用） */
+  async function fetchAccessCodes() {
+    const accessCodes = await getAccessCodesApi();
+    accessStore.setAccessCodes(accessCodes);
+    return accessCodes;
+  }
+
   /**
    * 异步处理登录操作
    * Asynchronously handle the login process
@@ -42,16 +49,15 @@ export const useAuthStore = defineStore('auth', () => {
         // 将 accessToken 存储到 accessStore 中
         accessStore.setAccessToken(accessToken);
 
-        // 获取用户信息并存储到 accessStore 中
-        const [fetchUserInfoResult, accessCodes] = await Promise.all([
+        // 获取用户信息并存储到 accessStore 中（权限码由 fetchAccessCodes 内部写入）
+        const [fetchUserInfoResult] = await Promise.all([
           fetchUserInfo(),
-          getAccessCodesApi(),
+          fetchAccessCodes(),
         ]);
 
         userInfo = fetchUserInfoResult;
 
         userStore.setUserInfo(userInfo);
-        accessStore.setAccessCodes(accessCodes);
 
         if (accessStore.loginExpired) {
           accessStore.setLoginExpired(false);
@@ -118,6 +124,7 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     $reset,
     authLogin,
+    fetchAccessCodes,
     fetchUserInfo,
     loginLoading,
     logout,

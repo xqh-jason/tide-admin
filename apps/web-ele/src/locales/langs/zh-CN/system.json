@@ -40,6 +40,32 @@
     "typeTitle": "字典类型",
     "value": "字典值"
   },
+  "job": {
+    "batchDelete": "批量删除",
+    "batchDeleteConfirm": "确认删除选中的 {0} 条执行日志？",
+    "batchDeleteEmpty": "请先勾选要删除的日志",
+    "cronExpr": "Cron 表达式",
+    "cronInvalid": "Cron 表达式需为 6 段（秒 分 时 日 月 周），长度不超过 64",
+    "cronTip": "6 段秒级 cron：秒 分 时 日 月 周，如 0 0 3 * * * 表示每天 03:00 执行",
+    "durationMs": "耗时 (ms)",
+    "errorMsg": "失败信息",
+    "handlerCleanupJobLogs": "清理任务日志",
+    "handlerCleanupLoginLogs": "清理登录日志",
+    "handlerName": "处理器",
+    "jobName": "任务名称",
+    "list": "任务列表",
+    "log": "执行日志",
+    "logStatus": "执行结果",
+    "logTitle": "执行日志 · {0}",
+    "operation": "操作",
+    "remark": "备注",
+    "runOnce": "立即执行",
+    "runOnceConfirm": "确认立即执行任务「{0}」？",
+    "runOnceSuccess": "已触发执行，执行结果请查看执行日志",
+    "status": "状态",
+    "statusChangeConfirm": "确认将任务「{0}」切换为「{1}」？",
+    "title": "定时任务"
+  },
   "loginLog": {
     "agent": "User-Agent",
     "createdAt": "登录时间",
@@ -95,8 +121,7 @@
     "roleName": "角色名称",
     "sort": "排序",
     "status": "状态",
-    "title": "角色管理",
-    "menuEchoWarning": "后端暂未返回该角色已授权的菜单，下方勾选无法回显；保存后将按当前勾选全量替换角色授权（不勾选即清空），请谨慎操作"
+    "title": "角色管理"
   },
   "menu": {
     "append": "新增下级",

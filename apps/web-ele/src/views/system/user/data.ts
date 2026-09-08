@@ -3,7 +3,7 @@ import type { VxeTableGridColumns } from '#/adapter/vxe-table';
 import type { SystemRoleApi, SystemUserApi } from '#/api';
 
 import { z } from '#/adapter/form';
-import { getRoleList } from '#/api';
+import { getAllRoles } from '#/api';
 import { $t } from '#/locales';
 import { useDictOptions } from '#/store';
 
@@ -18,6 +18,10 @@ export function useFormSchema(getEditId: () => number): VbenFormSchema[] {
   return [
     {
       component: 'Input',
+      componentProps: {
+        // 禁止浏览器用登录页保存的账号自动填充「新增用户」的用户名
+        autocomplete: 'off',
+      },
       fieldName: 'username',
       label: $t('system.user.username'),
       rules: 'required',
@@ -37,6 +41,9 @@ export function useFormSchema(getEditId: () => number): VbenFormSchema[] {
     {
       component: 'Input',
       componentProps: {
+        // new-password 声明这是「新建密码」而非登录密码，
+        // 浏览器才不会把保存的登录密码自动填入（autocomplete=off 对密码框会被 Chrome 忽略）
+        autocomplete: 'new-password',
         placeholder: $t('system.user.passwordKeepTip'),
         showPassword: true,
       },
@@ -74,9 +81,13 @@ export function useFormSchema(getEditId: () => number): VbenFormSchema[] {
       component: 'ApiSelect',
       componentProps: {
         afterFetch: (items: SystemRoleApi.SystemRole[]) =>
-          items.map((role) => ({ label: role.roleName, value: role.id })),
-        // 后端 pageSize 上限 1000；此处下拉仅取前 100 条，角色更多时需分批搜索
-        api: () => getRoleList({ page: 1, pageSize: 100 }),
+          items.map((role) => ({
+            // list-all 含禁用角色（历史分配需可见回显），标注以便辨识
+            label:
+              role.status === 0 ? `${role.roleName}（已禁用）` : role.roleName,
+            value: role.id,
+          })),
+        api: () => getAllRoles(),
         multiple: true,
       },
       fieldName: 'roleIds',
@@ -128,7 +139,12 @@ export function useColumns(
     },
     {
       cellRender: {
-        attrs: { auth: 'system:user:update', beforeChange: onStatusChange },
+        attrs: {
+          auth: 'system:user:update',
+          beforeChange: onStatusChange,
+          // 内置超管 admin 状态不可变更（后端拒绝），不展示开关，只读标签
+          show: (row: SystemUserApi.SystemUser) => row.username !== 'admin',
+        },
         name: onStatusChange ? 'CellSwitch' : 'CellTag',
         options: statusOptions,
       },
@@ -141,6 +157,7 @@ export function useColumns(
       align: 'center',
       field: 'operation',
       fixed: 'right',
+      showOverflow: false,
       slots: { default: 'action' },
       title: $t('system.user.operation'),
       width: 150,

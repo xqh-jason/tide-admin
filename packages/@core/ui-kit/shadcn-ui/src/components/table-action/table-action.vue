@@ -61,7 +61,7 @@ const alignClass = computed(
 
 // 缓存根节点类名，避免每次渲染都执行 cn()（内部 tailwind-merge 解析开销较大）
 const wrapperClass = computed(() =>
-  cn('flex items-center gap-1', alignClass.value, props.class),
+  cn('flex flex-wrap items-center gap-1', alignClass.value, props.class),
 );
 
 function tooltipSide(action: ActionItem) {

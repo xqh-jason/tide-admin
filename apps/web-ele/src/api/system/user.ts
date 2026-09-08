@@ -71,10 +71,10 @@ export namespace SystemUserApi {
 }
 
 /**
- * 全量用户（含软删，按 id 升序；创建人/更新人等审计过滤的用户选择器数据源）
+ * 全量用户
  */
 export async function getAllUsersApi() {
-  return requestClient.post<SystemUserApi.UserBrief[]>('/user/all', {});
+  return requestClient.post<SystemUserApi.UserBrief[]>('/user/list-all', {});
 }
 
 /**
@@ -88,8 +88,7 @@ export async function getUserList(params: SystemUserApi.ListParams) {
 }
 
 /**
- * 用户详情（对齐后端 UserResp；后端暂不返回 roleIds，角色编辑回显不可用，
- * 但提交空数组时后端跳过角色关联更新，不会清空已有角色）
+ * 用户详情
  */
 export async function getUser(id: number) {
   return requestClient.post<SystemUserApi.SystemUser>('/user/get', {

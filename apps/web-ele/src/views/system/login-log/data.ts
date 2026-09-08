@@ -72,6 +72,7 @@ export function useColumns(): VxeTableGridColumns<LoginLogApi.LoginLog> {
       align: 'center',
       field: 'operation',
       fixed: 'right',
+      showOverflow: false,
       slots: { default: 'action' },
       title: $t('system.loginLog.operation'),
       width: 120,

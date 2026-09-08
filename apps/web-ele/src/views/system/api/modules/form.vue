@@ -64,7 +64,16 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemApiApi.SystemApi>({
               roleIds,
               status: values.status,
             } as SystemApiApi.UpdateParams)
-          : createApi({ ...values, roleIds } as SystemApiApi.CreateParams);
+          : // 创建同为全字段必填契约：apiGroup/description 未填以空串回传，
+            // roleIds 为全量替换语义（空数组即无授权），不省略任何参数
+            createApi({
+              apiGroup: values.apiGroup ?? '',
+              description: values.description ?? '',
+              method: values.method,
+              path: values.path,
+              roleIds,
+              status: values.status,
+            } as SystemApiApi.CreateParams);
       await save;
       ElMessage.success($t('ui.actionMessage.operationSuccess'));
       emits('success');
@@ -94,17 +103,19 @@ defineExpose({ drawerApi });
 
 <template>
   <Drawer class="w-[560px]" :title="drawerTitle">
-    <!-- 后端 /sys-api/get 暂不回传 roleIds，已授权角色无法回显；
-         编辑保存为全量替换语义（不选即清空），必须显式警示 -->
-    <ElAlert
-      v-if="editId > 0"
-      class="mb-4"
-      :closable="false"
-      :title="$t('system.api.roleEchoWarning')"
-      show-icon
-      type="warning"
-    />
-    <Form />
-    <AuditInfo :record="auditRecord" />
+    <div class="pl-3 pr-[22px]">
+      <!-- 后端 /sys-api/get 暂不回传 roleIds，已授权角色无法回显；
+           编辑保存为全量替换语义（不选即清空），必须显式警示 -->
+      <ElAlert
+        v-if="editId > 0"
+        class="mb-4"
+        :closable="false"
+        :title="$t('system.api.roleEchoWarning')"
+        show-icon
+        type="warning"
+      />
+      <Form />
+      <AuditInfo :record="auditRecord" />
+    </div>
   </Drawer>
 </template>

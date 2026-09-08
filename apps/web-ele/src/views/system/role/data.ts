@@ -93,7 +93,12 @@ export function useColumns(
     { field: 'sort', title: $t('system.role.sort'), width: 90 },
     {
       cellRender: {
-        attrs: { auth: 'system:role:update', beforeChange: onStatusChange },
+        attrs: {
+          auth: 'system:role:update',
+          beforeChange: onStatusChange,
+          // 内置超管角色（super）状态不可变更（后端拒绝），不展示开关，只读标签
+          show: (row: SystemRoleApi.SystemRole) => row.roleKey !== 'super',
+        },
         name: onStatusChange ? 'CellSwitch' : 'CellTag',
         options: statusOptions,
       },
@@ -128,6 +133,7 @@ export function useColumns(
       },
       field: 'operation',
       fixed: 'right',
+      showOverflow: false,
       title: $t('system.role.operation'),
       width: 140,
     },

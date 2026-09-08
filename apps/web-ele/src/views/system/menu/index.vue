@@ -21,7 +21,7 @@ import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { deleteMenu, getMenuList } from '#/api';
 import { $t } from '#/locales';
 
-import { auditFieldMappingTime, useAuditSearchSchema } from '../audit-search';
+import { auditTimeCodec, useAuditSearchSchema } from '../audit-search';
 import { useColumns, useGridFormSchema } from './data';
 import Form from './modules/form.vue';
 
@@ -67,7 +67,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: {
     // 模块搜索项（keyword/status）+ 公共审计搜索项
     schema: [...useGridFormSchema(), ...useAuditSearchSchema()],
-    fieldMappingTime: auditFieldMappingTime,
+    codec: auditTimeCodec,
   },
   gridOptions: {
     columns: useColumns(onActionClick),

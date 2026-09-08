@@ -22,7 +22,7 @@ import { useVbenVxeGrid, VbenTableAction } from '#/adapter/vxe-table';
 import { deleteDictionary, getDictionaryList } from '#/api';
 import { $t } from '#/locales';
 
-import { auditFieldMappingTime, useAuditSearchSchema } from '../audit-search';
+import { auditTimeCodec, useAuditSearchSchema } from '../audit-search';
 import { useColumns, useGridFormSchema } from './data';
 import ItemsPanel from './modules/items-panel.vue';
 import TypeForm from './modules/type-form.vue';
@@ -55,7 +55,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: {
     // 模块搜索项（keyword/status）+ 公共审计搜索项
     schema: [...useGridFormSchema(), ...useAuditSearchSchema()],
-    fieldMappingTime: auditFieldMappingTime,
+    codec: auditTimeCodec,
   },
   gridOptions: {
     columns: useColumns(),
@@ -149,8 +149,6 @@ function onActionClick({
                 }),
               text: $t('common.edit'),
             },
-          ]"
-          :dropdown-actions="[
             {
               auth: 'system:dictionary:delete',
               danger: true,

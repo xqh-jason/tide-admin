@@ -10,14 +10,10 @@ import type {
 import { requestClient } from '#/api/request';
 
 export namespace SystemRoleApi {
-  /** 角色（对齐后端 w3-role-crud 契约 RoleResp；后端暂未在 /role/get 回传 menuIds） */
+  /** 角色（对齐后端 w3-role-crud 契约 RoleResp） */
   export interface SystemRole extends AuditFields {
     id: number;
-    /**
-     * 已授权菜单+按钮 id 列表，编辑回显用；
-     * ⚠️ 后端 /role/get 暂不返回该字段（始终为 undefined），角色编辑保存
-     * 按"全量替换"语义提交，编辑回显问题由表单内警示文案兜底（后端补齐后移除警示）
-     */
+    /** 已授权菜单+按钮 id 平铺列表（含半选父节点），编辑回显用 */
     menuIds?: number[];
     remark: string;
     roleKey: string;
@@ -59,6 +55,13 @@ export namespace SystemRoleApi {
     sort?: number;
     status?: CommonStatus;
   }
+}
+
+/**
+ * 全量角色列表（不分页，用于下拉选择等场景）
+ */
+export async function getAllRoles() {
+  return requestClient.post<SystemRoleApi.SystemRole[]>('/role/list-all');
 }
 
 /**
