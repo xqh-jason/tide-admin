@@ -1,7 +1,8 @@
 import type { VbenFormSchema } from '#/adapter/form';
 import type { VxeTableGridColumns } from '#/adapter/vxe-table';
-import type { OperationLogApi } from '#/api';
+import type { OperationLogApi, SystemUserApi } from '#/api';
 
+import { getAllUsersApi } from '#/api';
 import { $t } from '#/locales';
 
 /** 操作日志搜索表单 schema（keyword 命中接口路径） */
@@ -16,6 +17,23 @@ export function useGridFormSchema(): VbenFormSchema[] {
       label: $t('system.operationLog.path'),
     },
     {
+      // 操作人：用户选择器，软删用户仅作历史数据筛选、置灰禁选
+      component: 'ApiSelect',
+      componentProps: {
+        afterFetch: (items: SystemUserApi.UserBrief[]) =>
+          items.map((user) => ({
+            disabled: user.deleted,
+            label: user.username,
+            value: user.id,
+          })),
+        api: getAllUsersApi,
+        clearable: true,
+        filterable: true,
+      },
+      fieldName: 'userId',
+      label: $t('system.operationLog.operator'),
+    },
+    {
       component: 'InputNumber',
       componentProps: {
         controls: false,
@@ -24,6 +42,16 @@ export function useGridFormSchema(): VbenFormSchema[] {
       },
       fieldName: 'status',
       label: $t('system.operationLog.status'),
+    },
+    {
+      // 创建时间范围，提交时经 auditTimeCodec 拆为 createdAtBegin/End
+      component: 'DatePicker',
+      componentProps: {
+        type: 'daterange',
+        valueFormat: 'YYYY-MM-DD',
+      },
+      fieldName: 'createdAt',
+      label: $t('system.operationLog.createdAt'),
     },
   ];
 }

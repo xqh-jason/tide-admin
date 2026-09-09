@@ -38,6 +38,12 @@ export namespace OperationLogApi {
     userId?: number;
     /** HTTP 状态码精确过滤 */
     status?: number;
+    /** 客户端 IP 模糊搜索 */
+    ip?: string;
+    /** 创建时间范围起（含边界） */
+    createdAtBegin?: string;
+    /** 创建时间范围止（含边界） */
+    createdAtEnd?: string;
   }
 }
 
