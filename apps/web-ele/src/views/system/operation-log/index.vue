@@ -20,6 +20,7 @@ import { useVbenVxeGrid, VbenTableAction } from '#/adapter/vxe-table';
 import { deleteOperationLog, getOperationLogList } from '#/api';
 import { $t } from '#/locales';
 
+import { auditTimeCodec } from '../audit-search';
 import { useColumns, useGridFormSchema } from './data';
 import DetailDrawer from './modules/detail.vue';
 
@@ -40,7 +41,9 @@ async function onDelete(row: OperationLogApi.OperationLog) {
 
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: {
-    // 搜索项：keyword（路径模糊）/status（HTTP 状态码），对齐后端 OperationLogListReq
+    // 搜索项：keyword（路径模糊）/ userId（操作人）/ status（HTTP 状态码）/
+    // createdAt（时间范围，经 auditTimeCodec 拆为 createdAtBegin/End）
+    codec: auditTimeCodec,
     schema: useGridFormSchema(),
   },
   gridOptions: {

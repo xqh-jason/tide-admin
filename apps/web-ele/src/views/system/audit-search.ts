@@ -3,8 +3,6 @@ import type { FormCodec } from '@vben/common-ui';
 import type { VbenFormSchema } from '#/adapter/form';
 import type { SystemUserApi } from '#/api';
 
-import { formatDate } from '@vben/utils';
-
 import { getAllUsersApi } from '#/api';
 import { $t } from '#/locales';
 
@@ -34,7 +32,10 @@ export const auditTimeCodec: FormCodec = {
       const start = result[startKey];
       const end = result[endKey];
       if (start === undefined && end === undefined) continue;
-      result[field] = [start, end].filter((v) => v !== undefined);
+      // 还原为日期选择器的 yyyy-MM-dd 值格式
+      result[field] = [start?.slice(0, 10), end?.slice(0, 10)].filter(
+        (v) => v !== undefined,
+      );
       Reflect.deleteProperty(result, startKey);
       Reflect.deleteProperty(result, endKey);
     }
@@ -47,10 +48,9 @@ export const auditTimeCodec: FormCodec = {
       Reflect.deleteProperty(result, field);
       if (!range) continue;
       const [start, end] = range;
-      result[startKey] = start
-        ? formatDate(start, 'YYYY-MM-DD HH:mm:ss')
-        : undefined;
-      result[endKey] = end ? formatDate(end, 'YYYY-MM-DD HH:mm:ss') : undefined;
+      // 日期选择只到天：起止补全为整日边界，覆盖所选两天的全部记录
+      result[startKey] = start ? `${start} 00:00:00` : undefined;
+      result[endKey] = end ? `${end} 23:59:59` : undefined;
     }
     return result;
   },
@@ -77,11 +77,11 @@ export function useAuditSearchSchema(): VbenFormSchema[] {
       filterable: true,
     },
   };
-  const datetimeRange = {
+  const dateRange = {
     component: 'DatePicker',
     componentProps: {
-      type: 'datetimerange',
-      valueFormat: 'YYYY-MM-DD HH:mm:ss',
+      type: 'daterange',
+      valueFormat: 'YYYY-MM-DD',
     },
   };
   return [
@@ -91,7 +91,7 @@ export function useAuditSearchSchema(): VbenFormSchema[] {
       label: $t('system.common.createdBy'),
     },
     {
-      ...datetimeRange,
+      ...dateRange,
       fieldName: 'createdAt',
       label: $t('system.common.createdAt'),
     },
@@ -101,7 +101,7 @@ export function useAuditSearchSchema(): VbenFormSchema[] {
       label: $t('system.common.updatedBy'),
     },
     {
-      ...datetimeRange,
+      ...dateRange,
       fieldName: 'updatedAt',
       label: $t('system.common.updatedAt'),
     },
