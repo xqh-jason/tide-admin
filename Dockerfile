@@ -3,12 +3,16 @@
 
 # ---- builder ----
 FROM node:22-alpine AS builder
-# 用 package.json 的 packageManager 字段（pnpm@11.16.0）钉死版本
-RUN corepack enable && corepack prepare --activate
+# 启用 corepack：后续 pnpm 在项目目录内按 package.json 的 packageManager 字段
+#（pnpm@11.16.0）自动选用对应版本，无需在此 prepare
+RUN corepack enable
 
 WORKDIR /app
 # vben monorepo 依赖较多，vite 构建加大 Node 堆上限避免 OOM
 ENV NODE_OPTIONS="--max-old-space-size=8192"
+# CI=true：跳过根 prepare 脚本（is-ci || lefthook install）——容器内无需 git hooks，
+# 且 alpine 镜像不装 git
+ENV CI=true
 
 # 先装依赖（清单变化才失效，最大化 Docker layer 缓存）
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml turbo.json ./
