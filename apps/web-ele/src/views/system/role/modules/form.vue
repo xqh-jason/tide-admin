@@ -27,7 +27,7 @@ import { useVbenForm } from '#/adapter/form';
 import {
   buildMenuTree as buildTree,
   createRole,
-  getApiList,
+  getAllApis,
   getMenuList,
   getRole,
   updateRole,
@@ -116,8 +116,7 @@ const apiGroups = computed(() => {
 
 async function loadApis(checkedIds: number[] = []) {
   try {
-    const { items } = await getApiList({ page: 1, pageSize: 1000 });
-    apiList.value = items;
+    apiList.value = await getAllApis();
   } catch {
     apiList.value = [];
   }

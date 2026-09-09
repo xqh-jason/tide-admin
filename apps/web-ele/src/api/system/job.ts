@@ -24,6 +24,14 @@ export namespace SystemJobApi {
     status: CommonStatus;
   }
 
+  /** 内置任务处理器下拉项（后端 /job/handlers 返回） */
+  export interface HandlerOption {
+    /** 中文显示名 */
+    label: string;
+    /** 处理器名（注册表键） */
+    name: string;
+  }
+
   export interface ListParams extends AuditFilter, PageParams {
     /** 任务名称模糊搜索 */
     jobName?: string;
@@ -129,6 +137,13 @@ export async function runJobOnce(id: number) {
   return requestClient.post<null>('/job/run-once', {
     id,
   } satisfies IdRequest);
+}
+
+/**
+ * 内置任务处理器列表（任务新增/编辑表单的下拉数据源）
+ */
+export async function getJobHandlers() {
+  return requestClient.post<SystemJobApi.HandlerOption[]>('/job/handlers', {});
 }
 
 /**
