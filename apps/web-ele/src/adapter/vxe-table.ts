@@ -259,16 +259,21 @@ setupVbenVxeTable({
               cancelButtonText: $t('common.cancel'),
               confirmButtonText: $t('common.confirm'),
               placement: 'top',
-              title: $t('ui.actionMessage.deleteConfirm', [
-                row[attrs?.nameField || 'name'],
-              ]),
+              // option.confirmTitle 可为函数（随行求值）；缺省回退通用删除确认
+              title:
+                opt.confirmTitle ??
+                $t('ui.actionMessage.deleteConfirm', [
+                  row[attrs?.nameField || 'name'],
+                ]),
               width: 220,
               onConfirm: () => {
                 attrs?.onClick?.({ code: opt.code, row });
               },
             },
             {
-              reference: () => renderBtn({ ...opt }, false),
+              // confirmTitle 仅用于确认文案，不传递给按钮渲染，避免落到 DOM attribute
+              reference: () =>
+                renderBtn(objectOmit({ ...opt }, ['confirmTitle']), false),
             },
           );
         }

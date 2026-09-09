@@ -64,11 +64,15 @@ const [Drawer, drawerApi] =
               updateDictionaryDetail({
                 ...values,
                 dictionaryId,
+                // extend 后端必填（serde missing field 即拒），未填以空串兜底
+                extend: values.extend ?? '',
                 id: editId.value,
               } as SystemDictionaryApi.UpdateDictionaryDetailParams)
             : createDictionaryDetail({
                 ...values,
                 dictionaryId,
+                // 创建契约 extend 同为必填 String，未填以空串兜底
+                extend: values.extend ?? '',
               } as SystemDictionaryApi.CreateDictionaryDetailParams);
         await save;
         ElMessage.success($t('ui.actionMessage.operationSuccess'));

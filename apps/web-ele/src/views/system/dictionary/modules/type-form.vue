@@ -55,10 +55,14 @@ const [Drawer, drawerApi] =
             ? updateDictionary({
                 ...values,
                 id: editId.value,
+                // remark 后端必填（serde missing field 即拒），未填以空串兜底
+                remark: values.remark ?? '',
               } as SystemDictionaryApi.UpdateDictionaryParams)
-            : createDictionary(
-                values as SystemDictionaryApi.CreateDictionaryParams,
-              );
+            : createDictionary({
+                ...values,
+                // 创建契约 remark 同为必填 String，未填以空串兜底，避免丢键被拒
+                remark: values.remark ?? '',
+              } as SystemDictionaryApi.CreateDictionaryParams);
         await save;
         ElMessage.success($t('ui.actionMessage.operationSuccess'));
         emits('success');

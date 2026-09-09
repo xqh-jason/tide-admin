@@ -96,8 +96,8 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemUserApi.SystemUser>({
       { componentProps: { disabled: Boolean(data) }, fieldName: 'username' },
       { componentProps: { disabled: Boolean(data) }, fieldName: 'empNo' },
     ]);
-    // 编辑态拉取详情回显（后端 UserResp 暂不返回 roleIds，角色选择器无法回显；
-    // 提交空数组时后端跳过角色关联更新，不会清空已有角色），失败时回退到行数据
+    // 编辑态经 /user/get 拉详情回显：列表 UserResp 不含 roleIds，详情接口会填充。
+    // roleIds 传空数组时后端跳过角色关联更新，不清空已有角色；拉取失败回退到行数据
     let base = data;
     if (data?.id) {
       try {

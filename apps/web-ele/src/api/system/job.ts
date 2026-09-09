@@ -62,7 +62,7 @@ export namespace SystemJobLogApi {
     jobId: number;
     /** 任务名称冗余存储，主任务删除后仍可读 */
     jobName: string;
-    /** 1 成功 / 0 失败（字典 cronJobStatus） */
+    /** 1 成功 / 0 失败（字典 execResultStatus，sys_job_log 与 sys_login_log 共用） */
     status: CommonStatus;
   }
 
@@ -111,10 +111,14 @@ export async function deleteJob(id: number) {
 }
 
 /**
- * 更新任务状态：启用/停用并同步调度器（需权限码 system:job:update-status）
+ * 更新任务状态：启用/停用并同步调度器（需权限码 system:job:update-status）。
+ * 后端返回更新后的任务实体（data 为 JobResp，非 boolean）
  */
 export async function updateJobStatus(id: number, status: CommonStatus) {
-  return requestClient.post<boolean>('/job/update-status', { id, status });
+  return requestClient.post<SystemJobApi.Job>('/job/update-status', {
+    id,
+    status,
+  });
 }
 
 /**

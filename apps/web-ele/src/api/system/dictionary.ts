@@ -46,7 +46,8 @@ export namespace SystemDictionaryApi {
     name: string;
     type: string;
     status: CommonStatus;
-    remark?: string;
+    /** 后端必填 String，无备注须显式传空串（否则 serde missing field） */
+    remark: string;
   }
 
   /** 更新字典类型：后端全量覆盖 */
@@ -55,7 +56,8 @@ export namespace SystemDictionaryApi {
     name: string;
     type: string;
     status: CommonStatus;
-    remark?: string;
+    /** 后端必填 String，无备注须显式传空串 */
+    remark: string;
   }
 
   /** get-by-type 请求：按字典类型编码取启用项 */
@@ -93,7 +95,8 @@ export namespace SystemDictionaryApi {
     dictionaryId: number;
     label: string;
     value: string;
-    extend?: string;
+    /** 扩展值（JSON 字符串），无扩展须显式传空串（后端必填，否则 serde missing field） */
+    extend: string;
     sort: number;
     status: CommonStatus;
   }
@@ -104,7 +107,8 @@ export namespace SystemDictionaryApi {
     dictionaryId: number;
     label: string;
     value: string;
-    extend?: string;
+    /** 扩展值（JSON 字符串），无扩展须显式传空串（后端必填） */
+    extend: string;
     sort: number;
     status: CommonStatus;
   }

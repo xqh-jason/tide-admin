@@ -5,6 +5,8 @@ import { requestClient } from '#/api/request';
 export namespace OperationLogApi {
   /** 操作日志列表项（不含 body / resp）；只追加记录，无更新人 / 更新时间 */
   export interface OperationLog {
+    /** 操作人名称（列表经 fill_user_names 填充；用户已被软删时仍可回原名） */
+    actionByName: string;
     id: number;
     /** 操作人 ID */
     userId: number;

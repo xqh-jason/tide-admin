@@ -10,7 +10,7 @@ import type {
 import { requestClient } from '#/api/request';
 
 export namespace SystemRoleApi {
-  /** 角色（对齐后端 w3-role-crud 契约 RoleResp） */
+  /** 角色（对齐后端 RoleResp） */
   export interface SystemRole extends AuditFields {
     id: number;
     /** 已授权 API 权限点 id 平铺列表，编辑回显用 */
@@ -101,10 +101,11 @@ export async function updateRole(data: SystemRoleApi.UpdateParams) {
 }
 
 /**
- * 更新角色状态（仅切换启用/禁用，需权限码；超管角色不可改）
+ * 更新角色状态（仅切换启用/禁用，需权限码；超管角色不可改）。
+ * 后端返回 data 恒为 null
  */
 export async function updateRoleStatus(id: number, status: CommonStatus) {
-  return requestClient.post<boolean>('/role/update-status', { id, status });
+  return requestClient.post<null>('/role/update-status', { id, status });
 }
 
 /**

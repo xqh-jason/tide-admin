@@ -3,7 +3,7 @@
  * 定时任务执行日志抽屉：从任务列表操作列进入，展示该任务的执行记录。
  * 查询固定携带 jobId（当前打开的任务）；删除/批量删除受
  * system:job-log:delete 权限码控制。搜索/列定义复用 ../data.ts。
- * 注意：日志的 status 语义为执行结果（1 成功 / 0 失败），字典 cronJobStatus。
+ * 注意：日志的 status 语义为执行结果（1 成功 / 0 失败），字典 execResultStatus。
  */
 import type {
   OnActionClickParams,

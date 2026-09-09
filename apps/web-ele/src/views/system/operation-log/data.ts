@@ -47,8 +47,14 @@ export function useColumns(): VxeTableGridColumns<OperationLogApi.OperationLog> 
       width: 110,
     },
     { field: 'ip', title: $t('system.operationLog.ip'), width: 140 },
-    // 操作日志为只追加记录，无更新语义；后端只回操作人 id，故不走通用审计列
-    { field: 'userId', title: $t('system.operationLog.operator'), width: 110 },
+    // 操作日志为只追加记录，无更新语义；列表操作人姓名由后端 actionByName 返回
+    // （软删用户仍能回原名，查不到时展示占位符）
+    {
+      field: 'actionByName',
+      formatter: ({ cellValue }) => cellValue || '-',
+      title: $t('system.operationLog.operator'),
+      width: 110,
+    },
     {
       field: 'createdAt',
       formatter: 'formatDateTime',
