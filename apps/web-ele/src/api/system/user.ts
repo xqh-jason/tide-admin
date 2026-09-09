@@ -24,7 +24,7 @@ export namespace SystemUserApi {
     username: string;
   }
 
-  /** 用户简要信息（/user/all 返回，创建人/更新人等选择器数据源；deleted=true 为软删用户） */
+  /** 用户简要信息（/user/list-all-includes-soft-deleted 返回，创建人/更新人等选择器数据源；deleted=true 为软删用户） */
   export interface UserBrief {
     /** 是否已软删（后端 bool，序列化为 true/false） */
     deleted: boolean;
@@ -73,10 +73,14 @@ export namespace SystemUserApi {
 }
 
 /**
- * 全量用户列表（不分页，用于创建人/更新人等下拉数据源）
+ * 全量用户列表（含软删，用于创建人/更新人等审计选择器数据源；
+ * 软删用户由调用方按 UserBrief.deleted 置灰）
  */
 export async function getAllUsersApi() {
-  return requestClient.post<SystemUserApi.UserBrief[]>('/user/list-all', {});
+  return requestClient.post<SystemUserApi.UserBrief[]>(
+    '/user/list-all-includes-soft-deleted',
+    {},
+  );
 }
 
 /**

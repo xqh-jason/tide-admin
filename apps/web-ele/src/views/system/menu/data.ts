@@ -175,8 +175,12 @@ export function useGridFormSchema(): VbenFormSchema[] {
   return [
     {
       component: 'Input',
+      componentProps: {
+        placeholder: $t('system.menu.nameKeywordTip'),
+      },
+      // 后端 keyword 仅对路由 name 模糊匹配（title/path 不参与），引导按 name 搜索
       fieldName: 'keyword',
-      label: $t('system.menu.menuTitle'),
+      label: $t('system.menu.name'),
     },
     {
       component: 'Select',
@@ -245,7 +249,13 @@ export function useColumns(
             text: $t('system.menu.append'),
           },
           { auth: 'system:menu:update', code: 'edit' },
-          { auth: 'system:menu:delete', code: 'delete' },
+          {
+            auth: 'system:menu:delete',
+            code: 'delete',
+            // 后端 /menu/delete 为级联软删（连同全部子孙并解除角色绑定），确认文案显式警示
+            confirmTitle: (row: SystemMenuApi.SystemMenu) =>
+              $t('system.menu.deleteCascadeTip', [row.title]),
+          },
         ],
       },
       field: 'operation',

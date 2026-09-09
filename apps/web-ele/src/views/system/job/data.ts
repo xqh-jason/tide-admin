@@ -25,9 +25,12 @@ export function useHandlerOptions() {
   ];
 }
 
-/** 执行日志状态选项（字典 cronJobStatus：1 成功 / 0 失败，与启停的 status 字典区分） */
+/**
+ * 执行日志状态选项（字典 execResultStatus：1 成功 / 0 失败，
+ * sys_job_log 与 sys_login_log 共用，与启停的 status 字典区分）
+ */
 export function useLogStatusOptions() {
-  return useDictOptions('cronJobStatus');
+  return useDictOptions('execResultStatus');
 }
 
 /** cron 校验：6 段秒级表达式格式兜底，语义合法性由后端解析校验 */

@@ -3,6 +3,15 @@ import type { VxeTableGridColumns } from '#/adapter/vxe-table';
 import type { LoginLogApi } from '#/api';
 
 import { $t } from '#/locales';
+import { useDictOptions } from '#/store';
+
+/**
+ * 登录日志结果选项（字典 execResultStatus：1 成功 / 0 失败，
+ * 与 sys_job_log 执行日志共用；标签配色来自字典项 extend）
+ */
+function useResultStatusOptions() {
+  return useDictOptions('execResultStatus');
+}
 
 /** 登录日志搜索表单 schema */
 export function useGridFormSchema(): VbenFormSchema[] {
@@ -21,10 +30,7 @@ export function useGridFormSchema(): VbenFormSchema[] {
       component: 'Select',
       componentProps: {
         clearable: true,
-        options: [
-          { label: $t('system.loginLog.success'), value: 1 },
-          { label: $t('system.loginLog.fail'), value: 0 },
-        ],
+        options: useResultStatusOptions(),
       },
       fieldName: 'status',
       label: $t('system.loginLog.status'),
@@ -40,10 +46,7 @@ export function useColumns(): VxeTableGridColumns<LoginLogApi.LoginLog> {
     {
       cellRender: {
         name: 'CellTag',
-        options: [
-          { label: $t('system.loginLog.success'), type: 'success', value: 1 },
-          { label: $t('system.loginLog.fail'), type: 'danger', value: 0 },
-        ],
+        options: useResultStatusOptions(),
       },
       field: 'status',
       title: $t('system.loginLog.status'),

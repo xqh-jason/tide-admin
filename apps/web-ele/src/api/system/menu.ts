@@ -37,7 +37,7 @@ export namespace SystemMenuApi {
   }
 
   export interface ListParams extends AuditFilter, PageParams {
-    /** 标题/路由名/路径模糊搜索 */
+    /** 路由 name 模糊搜索（后端仅对 name 做 LIKE，title/path 不参与） */
     keyword?: string;
     status?: CommonStatus;
   }
