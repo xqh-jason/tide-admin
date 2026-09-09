@@ -62,6 +62,13 @@ export async function getApiList(params: SystemApiApi.ListParams) {
 }
 
 /**
+ * 全量 API 权限点（不分页，用于角色授权的权限点勾选数据源）
+ */
+export async function getAllApis() {
+  return requestClient.post<SystemApiApi.SystemApi[]>('/sys-api/list-all');
+}
+
+/**
  * API 权限点详情
  */
 export async function getApi(id: number) {

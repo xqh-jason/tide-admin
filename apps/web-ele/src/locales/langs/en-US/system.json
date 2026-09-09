@@ -48,8 +48,6 @@
     "cronTip": "6-field second-level cron: sec min hour day month week, e.g. 0 0 3 * * * runs daily at 03:00",
     "durationMs": "Duration (ms)",
     "errorMsg": "Error Message",
-    "handlerCleanupJobLogs": "Cleanup Job Logs",
-    "handlerCleanupLoginLogs": "Cleanup Login Logs",
     "handlerName": "Handler",
     "jobName": "Job Name",
     "list": "Job List",

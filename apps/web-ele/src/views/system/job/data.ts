@@ -2,27 +2,37 @@ import type { VbenFormSchema } from '#/adapter/form';
 import type { VxeTableGridColumns } from '#/adapter/vxe-table';
 import type { SystemJobApi, SystemJobLogApi } from '#/api';
 
+import { reactive } from 'vue';
+
 import { z } from '#/adapter/form';
+import { getJobHandlers } from '#/api';
 import { $t } from '#/locales';
 import { useDictOptions } from '#/store';
 
 import { useAuditColumns } from '../audit-columns';
 
+/** 处理器下拉选项响应式缓存：首次调用触发拉取，加载完成后就地更新 */
+const handlerOptions = reactive<Array<{ label: string; value: string }>>([]);
+let handlerOptionsLoaded = false;
+
 /**
- * 处理器下拉选项（后端 task 注册表白名单）：
- * 后端无获取列表的接口，新增 handler 时需在此同步
+ * 处理器下拉选项：由后端 /job/handlers 接口下发（name + 中文 label），
+ * 前端零写死，新增 handler 时无需改动前端
  */
 export function useHandlerOptions() {
-  return [
-    {
-      label: $t('system.job.handlerCleanupLoginLogs'),
-      value: 'cleanup_login_logs',
-    },
-    {
-      label: $t('system.job.handlerCleanupJobLogs'),
-      value: 'cleanup_job_logs',
-    },
-  ];
+  if (!handlerOptionsLoaded) {
+    handlerOptionsLoaded = true;
+    getJobHandlers()
+      .then((items) => {
+        handlerOptions.splice(
+          0,
+          handlerOptions.length,
+          ...items.map((item) => ({ label: item.label, value: item.name })),
+        );
+      })
+      .catch(() => undefined);
+  }
+  return handlerOptions;
 }
 
 /**

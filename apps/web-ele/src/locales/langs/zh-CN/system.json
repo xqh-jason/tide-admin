@@ -48,8 +48,6 @@
     "cronTip": "6 段秒级 cron：秒 分 时 日 月 周，如 0 0 3 * * * 表示每天 03:00 执行",
     "durationMs": "耗时 (ms)",
     "errorMsg": "失败信息",
-    "handlerCleanupJobLogs": "清理任务日志",
-    "handlerCleanupLoginLogs": "清理登录日志",
     "handlerName": "处理器",
     "jobName": "任务名称",
     "list": "任务列表",
