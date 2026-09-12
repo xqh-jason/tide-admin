@@ -1,9 +1,9 @@
 <div align="center">
 
-# salvo-vben-web
+# tide-admin
 
 基于 [Vue Vben Admin 5.x](https://github.com/vbenjs/vue-vben-admin) 的中后台管理前端，
-对接 Rust Salvo 后端 [salvo-vben-admin](https://github.com/xqh-jason/salvo-vben-admin)
+对接 Rust Salvo 后端 [tide-server](https://github.com/xqh-jason/tide-server)
 
 [![license](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![node](https://img.shields.io/badge/node-%5E22.18%20%7C%7C%20%5E24.12-blue.svg)](./package.json)
@@ -12,9 +12,9 @@
 
 ## 简介
 
-salvo-vben-web 是一套 RBAC 中后台管理系统的前端实现，采用 pnpm monorepo 组织，
+tide-admin 是一套 RBAC 中后台管理系统的前端实现，采用 pnpm monorepo 组织，
 唯一应用为 `apps/web-ele`（Vue 3 + Element Plus + Tailwind CSS v4）。
-后端为独立仓库 [salvo-vben-admin](https://github.com/xqh-jason/salvo-vben-admin)
+后端为独立仓库 [tide-server](https://github.com/xqh-jason/tide-server)
 （Rust · Salvo · SeaORM · MySQL），前后端通过统一的 POST + JSON 契约通信。
 
 ## 功能特性
@@ -43,8 +43,8 @@ salvo-vben-web 是一套 RBAC 中后台管理系统的前端实现，采用 pnpm
 环境要求：Node `^22.18 || ^24.12`，pnpm（版本由 `packageManager` 字段钉住，`corepack enable` 即可）。
 
 ```bash
-git clone https://github.com/xqh-jason/salvo-vben-web.git
-cd salvo-vben-web
+git clone https://github.com/xqh-jason/tide-admin.git
+cd tide-admin
 pnpm install
 
 # 先按后端仓库说明启动 Salvo 服务（默认 127.0.0.1:8080），再启动前端
@@ -79,12 +79,12 @@ pnpm dev:ele   # http://localhost:5910
 
 前端自带多阶段构建 `Dockerfile` 与 `docker/nginx.conf`（gzip、静态资源长缓存、
 `/api` 反代后端服务）。推荐使用后端仓库的 docker-compose 一键编排
-（MySQL + backend + frontend，frontend 构建上下文指向**同级目录**的 salvo-vben-web）：
+（MySQL + backend + frontend，frontend 构建上下文指向**同级目录**的 tide-admin）：
 
 ```bash
-git clone https://github.com/xqh-jason/salvo-vben-admin.git
-git clone https://github.com/xqh-jason/salvo-vben-web.git   # 与后端仓库同级存放
-cd salvo-vben-admin
+git clone https://github.com/xqh-jason/tide-server.git
+git clone https://github.com/xqh-jason/tide-admin.git   # 与后端仓库同级存放
+cd tide-server
 docker compose up -d --build   # 访问 http://localhost:80
 ```
 
@@ -110,7 +110,7 @@ docker compose up -d --build   # 访问 http://localhost:80
 - 业务接口统一 **POST + JSON body**；响应包装 `{ code, data, message }`，
   `code=1` 成功 / `0` 失败，HTTP 恒 200（仅认证失败 401）
 - 分页请求 `{ page, pageSize }`，响应 `{ total, totalPages, items }`
-- 完整契约与种子数据见 [后端仓库](https://github.com/xqh-jason/salvo-vben-admin)，
+- 完整契约与种子数据见 [后端仓库](https://github.com/xqh-jason/tide-server)，
   联调时可参考其 Swagger UI（`/swagger-ui`）
 
 ## 开发规范
