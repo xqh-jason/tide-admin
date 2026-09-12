@@ -1,13 +1,50 @@
 import type { VbenFormSchema } from '#/adapter/form';
 import type { VxeTableGridColumns } from '#/adapter/vxe-table';
-import type { SystemRoleApi, SystemUserApi } from '#/api';
+import type { SystemDeptApi, SystemRoleApi, SystemUserApi } from '#/api';
 
 import { z } from '#/adapter/form';
-import { getAllRoles } from '#/api';
+import { flattenDeptTree, getAllRoles, getDeptList } from '#/api';
 import { $t } from '#/locales';
 import { useDictOptions } from '#/store';
 
 import { useAuditColumns } from '../audit-columns';
+
+/** 部门选择器共享缓存：部门树选择器与主部门/负责人选项共用同一份数据源 */
+let deptTreeCache: SystemDeptApi.SystemDept[] = [];
+let deptTreePending: Promise<void> | undefined;
+
+/**
+ * 拉取最新部门树写入缓存（并发调用去重）。
+ * 部门树选择器（ApiTreeSelect）与表单回填（setValues 前）都会调用，
+ * 保证主部门/负责人选项与树数据一致
+ */
+export function refreshDeptTreeCache(): Promise<void> {
+  deptTreePending ??= getDeptList()
+    .then((tree) => {
+      deptTreeCache = tree;
+    })
+    .finally(() => {
+      deptTreePending = undefined;
+    });
+  return deptTreePending;
+}
+
+/**
+ * 按已选部门 id 过滤出下拉选项（须在 refreshDeptTreeCache 完成后调用）；
+ * 停用部门保留可选但加后缀标注（历史挂载需可见回显）
+ */
+function getDeptOptionsByIds(ids?: number[]) {
+  const idSet = new Set(ids);
+  return flattenDeptTree(deptTreeCache)
+    .filter((dept) => idSet.has(dept.id))
+    .map((dept) => ({
+      label:
+        dept.status === 0
+          ? `${dept.deptName}${$t('system.user.deptDisabledMark')}`
+          : dept.deptName,
+      value: dept.id,
+    }));
+}
 
 /**
  * 新增/编辑用户表单 schema
@@ -93,6 +130,61 @@ export function useFormSchema(getEditId: () => number): VbenFormSchema[] {
       fieldName: 'roleIds',
       label: $t('system.user.roles'),
     },
+    {
+      component: 'ApiTreeSelect',
+      componentProps: {
+        // refreshDeptTreeCache 并发去重，与表单回填共享同一份数据
+        api: async () => {
+          await refreshDeptTreeCache();
+          return deptTreeCache;
+        },
+        checkStrictly: true,
+        defaultExpandAll: true,
+        labelField: 'deptName',
+        multiple: true,
+        valueField: 'id',
+      },
+      fieldName: 'deptIds',
+      label: $t('system.user.depts'),
+    },
+    {
+      component: 'Select',
+      // 主部门 = 已选部门中的一项；depts 非空时后端要求恰好一个 isPrimary=1，
+      // 选项与校验规则均随 deptIds 联动（含从树中取消勾选后的悬挂值）
+      dependencies: {
+        componentProps: (values) => ({
+          clearable: true,
+          options: getDeptOptionsByIds(values.deptIds as number[] | undefined),
+        }),
+        rules: (values) => {
+          const deptIds = (values.deptIds as number[] | undefined) ?? [];
+          if (deptIds.length === 0) return null;
+          const primary = values.primaryDeptId;
+          return primary === undefined ||
+            primary === null ||
+            !deptIds.includes(primary)
+            ? 'selectRequired'
+            : null;
+        },
+        triggerFields: ['deptIds', 'primaryDeptId'],
+      },
+      fieldName: 'primaryDeptId',
+      label: $t('system.user.primaryDept'),
+    },
+    {
+      component: 'Select',
+      // 负责人部门 = 已选部门的子集（isLeader 可多个）；提交前按 deptIds 收敛
+      dependencies: {
+        componentProps: (values) => ({
+          clearable: true,
+          multiple: true,
+          options: getDeptOptionsByIds(values.deptIds as number[] | undefined),
+        }),
+        triggerFields: ['deptIds'],
+      },
+      fieldName: 'leaderDeptIds',
+      label: $t('system.user.leaderDepts'),
+    },
   ];
 }
 
@@ -129,14 +221,22 @@ export function useColumns(
     { field: 'username', title: $t('system.user.username'), width: 140 },
     { field: 'empNo', title: $t('system.user.empNo'), width: 120 },
     { field: 'nickname', title: $t('system.user.nickname'), width: 140 },
-    { field: 'email', minWidth: 180, title: $t('system.user.email') },
     {
-      // 后端 UserResp 暂不返回 phone（创建/更新请求有该字段），列表中恒为空；
-      // 后端补齐后自动展示
-      field: 'phone',
-      title: $t('system.user.phone'),
-      width: 140,
+      // 所属部门：后端 /user/list 回填 depts（含部门名），主部门加标注
+      field: 'depts',
+      formatter: ({ cellValue }) =>
+        ((cellValue ?? []) as SystemUserApi.UserDeptItem[])
+          .map((dept) =>
+            dept.isPrimary === 1
+              ? `${dept.deptName}${$t('system.user.primaryDeptMark')}`
+              : dept.deptName,
+          )
+          .join('、'),
+      minWidth: 180,
+      title: $t('system.user.depts'),
     },
+    { field: 'email', minWidth: 180, title: $t('system.user.email') },
+    { field: 'phone', title: $t('system.user.phone'), width: 140 },
     {
       cellRender: {
         attrs: {
