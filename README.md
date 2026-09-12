@@ -1,157 +1,130 @@
 <div align="center">
-  <a href="https://github.com/anncwb/vue-vben-admin">
-    <img alt="VbenAdmin Logo" width="215" src="https://unpkg.com/@vbenjs/static-source@0.1.7/source/logo-v1.webp">
-  </a>
-  <br>
-  <br>
 
-[![license](https://img.shields.io/github/license/anncwb/vue-vben-admin.svg)](LICENSE)
+# salvo-vben-web
 
-  <h1>Vue Vben Admin</h1>
+基于 [Vue Vben Admin 5.x](https://github.com/vbenjs/vue-vben-admin) 的中后台管理前端，
+对接 Rust Salvo 后端 [salvo-vben-admin](https://github.com/xqh-jason/salvo-vben-admin)
+
+[![license](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![node](https://img.shields.io/badge/node-%5E22.18%20%7C%7C%20%5E24.12-blue.svg)](./package.json)
+
 </div>
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=vbenjs_vue-vben-admin&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=vbenjs_vue-vben-admin) [![codeql](https://github.com/vbenjs/vue-vben-admin/actions/workflows/codeql.yml/badge.svg)](https://github.com/vbenjs/vue-vben-admin/actions/workflows/codeql.yml) [![build](https://github.com/vbenjs/vue-vben-admin/actions/workflows/build.yml/badge.svg)](https://github.com/vbenjs/vue-vben-admin/actions/workflows/build.yml) [![ci](https://github.com/vbenjs/vue-vben-admin/actions/workflows/ci.yml/badge.svg)](https://github.com/vbenjs/vue-vben-admin/actions/workflows/ci.yml) [![deploy](https://github.com/vbenjs/vue-vben-admin/actions/workflows/deploy.yml/badge.svg)](https://github.com/vbenjs/vue-vben-admin/actions/workflows/deploy.yml)
+## 简介
 
-**English** | [中文](./README.zh-CN.md) | [日本語](./README.ja-JP.md)
+salvo-vben-web 是一套 RBAC 中后台管理系统的前端实现，采用 pnpm monorepo 组织，
+唯一应用为 `apps/web-ele`（Vue 3 + Element Plus + Tailwind CSS v4）。
+后端为独立仓库 [salvo-vben-admin](https://github.com/xqh-jason/salvo-vben-admin)
+（Rust · Salvo · SeaORM · MySQL），前后端通过统一的 POST + JSON 契约通信。
 
-## Introduction
+## 功能特性
 
-Vue Vben Admin is a free and open source middle and back-end template. Using the latest `vue3`, `vite`, `TypeScript` and other mainstream technology development, the out-of-the-box middle and back-end front-end solutions can also be used for learning reference.
+- **认证登录**：账号密码 + 图形验证码，JWT Bearer 鉴权，登录过期弹窗重新认证
+- **动态路由与权限**：后端菜单模式生成路由，按钮级权限码前端显隐 + 后端接口拦截双保险
+- **系统管理**：用户（多部门挂载 / 主部门 / 负责人）、部门（树表）、角色（菜单 + API 授权）、
+  菜单、API、数据字典（类型 + 字典项）
+- **任务与日志**：定时任务（执行日志、立即执行）、操作日志、登录日志
+- **通用能力**：审计字段（创建人 / 更新人 / 时间）统一列与搜索、危险操作二次确认、
+  zh-CN / en-US 国际化、多主题
+- **工程化**：pnpm workspace + Turbo 任务编排，oxlint / eslint / stylelint / lefthook 全链路规范
 
-## Upgrade Notice
+## 技术栈
 
-This is the latest version, 5.0, and it is not compatible with previous versions. If you are starting a new project, it is recommended to use the latest version. If you wish to view the old version, please use the [v2 branch](https://github.com/vbenjs/vue-vben-admin/tree/v2).
+| 分类     | 选型                                            |
+| -------- | ----------------------------------------------- |
+| 框架     | Vue 3（`<script setup>` + TypeScript）          |
+| 构建     | Vite · pnpm workspace · Turbo                   |
+| UI       | Element Plus · Tailwind CSS v4 · vxe-table      |
+| 状态路由 | Pinia · Vue Router（后端菜单动态路由）          |
+| 质量保障 | oxlint · eslint · stylelint · vitest · lefthook |
 
-## Features
+## 快速开始
 
-- **Latest Technology Stack**: Developed with cutting-edge front-end technologies like Vue 3 and Vite
-- **TypeScript**: A language for application-scale JavaScript
-- **Themes**: Multiple theme colors available with customizable options
-- **Internationalization**: Comprehensive built-in internationalization support
-- **Permissions**: Built-in solution for dynamic route-based permission generation
-
-## Preview
-
-- [Vben Admin](https://vben.pro/) - Full version Chinese site
-
-Test Account: vben/123456
-
-<div align="center">
-  <img alt="VbenAdmin Logo" width="100%" src="https://anncwb.github.io/anncwb/images/preview1.png">
-  <img alt="VbenAdmin Logo" width="100%" src="https://anncwb.github.io/anncwb/images/preview2.png">
-  <img alt="VbenAdmin Logo" width="100%" src="https://anncwb.github.io/anncwb/images/preview3.png">
-</div>
-
-### Use Gitpod
-
-Open the project in Gitpod (free online dev environment for GitHub) and start coding immediately.
-
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/vbenjs/vue-vben-admin)
-
-## Documentation
-
-[Document](https://doc.vben.pro/)
-
-## Install and Use
-
-1. Get the project code
+环境要求：Node `^22.18 || ^24.12`，pnpm（版本由 `packageManager` 字段钉住，`corepack enable` 即可）。
 
 ```bash
-git clone https://github.com/vbenjs/vue-vben-admin.git
-```
-
-2. Install dependencies
-
-```bash
-cd vue-vben-admin
-npm i -g corepack
+git clone https://github.com/xqh-jason/salvo-vben-web.git
+cd salvo-vben-web
 pnpm install
+
+# 先按后端仓库说明启动 Salvo 服务（默认 127.0.0.1:8080），再启动前端
+pnpm dev:ele   # http://localhost:5910
 ```
 
-3. Run
+开发模式下 `/api` 请求经 Vite 代理转发至 `http://127.0.0.1:8080`。
+默认账号见后端仓库种子数据（`admin / admin123`，生产环境务必第一时间改密）。
+
+### 常用命令
+
+| 命令              | 说明                                      |
+| ----------------- | ----------------------------------------- |
+| `pnpm dev:ele`    | 启动 web-ele 开发服务器（端口 5910）      |
+| `pnpm build:ele`  | 构建 web-ele 生产包                       |
+| `pnpm check:type` | 全 workspace 类型检查（vue-tsc）          |
+| `pnpm lint`       | oxlint + eslint + stylelint 聚合检查      |
+| `pnpm format`     | 自动修复格式                              |
+| `pnpm test:unit`  | vitest 单元测试                           |
+
+## 环境变量
+
+配置位于 `apps/web-ele/.env*`，常用项：
+
+| 变量                  | 说明                                    |
+| --------------------- | --------------------------------------- |
+| `VITE_GLOB_API_URL`   | 接口前缀，固定 `/api/v1`                |
+| `VITE_PORT`           | 开发服务器端口（5910）                  |
+| `VITE_ROUTER_HISTORY` | 路由模式，生产默认 hash                 |
+
+## Docker 部署
+
+前端自带多阶段构建 `Dockerfile` 与 `docker/nginx.conf`（gzip、静态资源长缓存、
+`/api` 反代后端服务）。推荐使用后端仓库的 docker-compose 一键编排
+（MySQL + backend + frontend，frontend 构建上下文指向**同级目录**的 salvo-vben-web）：
 
 ```bash
-pnpm dev
+git clone https://github.com/xqh-jason/salvo-vben-admin.git
+git clone https://github.com/xqh-jason/salvo-vben-web.git   # 与后端仓库同级存放
+cd salvo-vben-admin
+docker compose up -d --build   # 访问 http://localhost:80
 ```
 
-4. Build
+## 目录结构
 
-```bash
-pnpm build
+```
+├── apps/web-ele          # 唯一应用（Vue 3 + Element Plus）
+│   └── src
+│       ├── api           # 请求层：request.ts 契约封装 + system/* 资源接口
+│       ├── adapter       # vben form / vxe-table 适配 Element Plus
+│       ├── views         # 页面（system/* 管理页：index.vue + data.ts + modules/form.vue）
+│       ├── router        # 动态路由与守卫（backend 菜单模式）
+│       ├── store         # Pinia（auth、字典缓存等）
+│       └── locales       # 国际化（zh-CN / en-US）
+├── packages/@core        # 与 UI 库无关的框架基础
+├── packages/effects      # 可复用业务能力（access / request / layouts 等）
+├── internal              # 工程配置（vite-config / tsconfig / lint-configs 等）
+└── docs                  # vben 官方文档站（VitePress）
 ```
 
-## Change Log
+## 接口契约要点
 
-[CHANGELOG](https://github.com/vbenjs/vue-vben-admin/releases)
+- 业务接口统一 **POST + JSON body**；响应包装 `{ code, data, message }`，
+  `code=1` 成功 / `0` 失败，HTTP 恒 200（仅认证失败 401）
+- 分页请求 `{ page, pageSize }`，响应 `{ total, totalPages, items }`
+- 完整契约与种子数据见 [后端仓库](https://github.com/xqh-jason/salvo-vben-admin)，
+  联调时可参考其 Swagger UI（`/swagger-ui`）
 
-## How to Contribute
+## 开发规范
 
-You are very welcome to join! [Raise an issue](https://github.com/anncwb/vue-vben-admin/issues/new/choose) or submit a Pull Request.
+- 提交信息遵循 Conventional Commits（commitlint 在 commit-msg 阶段强制校验）
+- lefthook pre-commit 会对暂存文件执行 oxlint / oxfmt / eslint / stylelint 自动修复，
+  并运行全 workspace 类型检查
 
-**Pull Request Process:**
+## 致谢
 
-1. Fork the code
-2. Create your branch: `git checkout -b feat/xxxx`
-3. Submit your changes: `git commit -am 'feat(function): add xxxxx'`
-4. Push your branch: `git push origin feat/xxxx`
-5. Submit `pull request`
-
-## Git Contribution Submission Specification
-
-Reference [vue](https://github.com/vuejs/vue/blob/dev/.github/COMMIT_CONVENTION.md) specification ([Angular](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-angular))
-
-- `feat` Add new features
-- `fix` Fix the problem/BUG
-- `style` The code style is related and does not affect the running result
-- `perf` Optimization/performance improvement
-- `refactor` Refactor
-- `revert` Undo edit
-- `test` Test related
-- `docs` Documentation/notes
-- `chore` Dependency update/scaffolding configuration modification etc.
-- `ci` Continuous integration
-- `types` Type definition file changes
-
-## Browser Support
-
-Tailwind CSS v4.0 is designed for Safari 16.4+, Chrome 111+, and Firefox 128+
-
-Support modern browsers, not IE
-
-| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari |
-| :-: | :-: | :-: | :-: |
-| last 2 versions | last 2 versions | last 2 versions | last 2 versions |
-
-## Maintainer
-
-[@Vben](https://github.com/anncwb)
-
-## Star History
-
-[![Star History Chart](https://star-history.dera.page/svg?repos=vbenjs/vue-vben-admin&type=Date)](https://star-history.dera.page/#vbenjs/vue-vben-admin&Date)
-
-## Donate
-
-If you think this project is helpful to you, you can help the author buy a cup of coffee to show your support!
-
-![donate](https://unpkg.com/@vbenjs/static-source@0.1.7/source/sponsor.png)
-
-<a style="display: block;width: 100px;height: 50px;line-height: 50px; color: #fff;text-align: center; background: #408aee;border-radius: 4px;" href="https://www.paypal.com/paypalme/cvvben">Paypal Me</a>
-
-## Contributors
-
-<a href="https://openomy.app/github/vbenjs/vue-vben-admin" target="_blank" style="display: block; width: 100%;" align="center">
-  <img src="https://openomy.app/svg?repo=vbenjs/vue-vben-admin&chart=bubble&latestMonth=3" target="_blank" alt="Contribution Leaderboard" style="display: block; width: 100%;" />
- </a>
-
-<a href="https://github.com/vbenjs/vue-vben-admin/graphs/contributors">
-  <img alt="Contributors" src="https://contrib.rocks/image?repo=vbenjs/vue-vben-admin" />
-</a>
-
-## Discord
-
-- [Github Discussions](https://github.com/anncwb/vue-vben-admin/discussions)
+- [Vue Vben Admin](https://github.com/vbenjs/vue-vben-admin) — 前端脚手架基座
+- [Element Plus](https://github.com/element-plus/element-plus) / [vxe-table](https://github.com/x-extends/vxe-table)
+- [Salvo](https://github.com/salvo-rs/salvo) / [SeaORM](https://github.com/SeaQL/sea-orm) — 后端框架
 
 ## License
 
-[MIT © Vben-2020](./LICENSE)
+本项目基于 [MIT](LICENSE) 协议开源，脚手架源自 Vue Vben Admin（MIT）。
