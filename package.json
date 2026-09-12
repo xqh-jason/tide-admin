@@ -1,22 +1,22 @@
 {
-  "name": "vben-admin-monorepo",
+  "name": "tide-admin",
   "version": "5.7.0",
   "private": true,
   "keywords": [
+    "tide",
+    "tide admin",
     "monorepo",
     "turbo",
     "vben",
     "vben admin",
-    "vben pro",
     "vue",
     "vue admin",
     "vue vben admin",
-    "vue vben admin pro",
     "vue3"
   ],
-  "homepage": "https://github.com/vbenjs/vue-vben-admin",
-  "bugs": "https://github.com/vbenjs/vue-vben-admin/issues",
-  "repository": "vbenjs/vue-vben-admin.git",
+  "homepage": "https://github.com/xqh-jason/tide-admin",
+  "bugs": "https://github.com/xqh-jason/tide-admin/issues",
+  "repository": "xqh-jason/tide-admin.git",
   "license": "MIT",
   "author": {
     "name": "vben",
