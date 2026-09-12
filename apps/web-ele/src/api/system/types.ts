@@ -5,7 +5,7 @@ export type CommonStatus = 0 | 1;
 export interface PageParams {
   /** 页码，从 1 开始 */
   page?: number;
-  /** 每页条数，1-100，缺省 10 */
+  /** 每页条数，1-1000（后端 clamp 上限 1000），缺省 10 */
   pageSize?: number;
 }
 
