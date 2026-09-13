@@ -29,7 +29,6 @@ import TypeForm from './modules/type-form.vue';
 
 defineOptions({ name: 'SystemDictionaryList' });
 
-// 类型新增/编辑抽屉（connectedComponent 模式）
 const [TypeFormDrawer, typeFormDrawerApi] = useVbenDrawer({
   connectedComponent: TypeForm,
   destroyOnClose: true,
@@ -57,7 +56,7 @@ async function onDelete(row: SystemDictionaryApi.Dictionary) {
       },
     );
   } catch {
-    return; // 用户取消二次确认
+    return;
   }
   await deleteDictionary(row.id);
   ElMessage.success($t('ui.actionMessage.deleteSuccess'));
@@ -66,7 +65,6 @@ async function onDelete(row: SystemDictionaryApi.Dictionary) {
 
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: {
-    // 模块搜索项（keyword/status）+ 公共审计搜索项
     schema: [...useGridFormSchema(), ...useAuditSearchSchema()],
     codec: auditTimeCodec,
   },
@@ -76,7 +74,6 @@ const [Grid, gridApi] = useVbenVxeGrid({
     keepSource: true,
     proxyConfig: {
       ajax: {
-        // 分页查询：页码/页大小由 vxe proxy 注入，其余为搜索表单值
         query: async ({ page }, formValues) => {
           return getDictionaryList({
             page: page.currentPage,

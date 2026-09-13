@@ -30,7 +30,6 @@ import Log from './modules/log.vue';
 
 defineOptions({ name: 'SystemJobList' });
 
-// connectedComponent 模式：两个抽屉均 destroyOnClose 保证每次打开都是全新状态
 const [FormDrawer, formDrawerApi] = useVbenDrawer({
   connectedComponent: Form,
   destroyOnClose: true,
@@ -85,11 +84,6 @@ async function onDelete(row: SystemJobApi.Job) {
   gridApi.query();
 }
 
-/**
- * 操作列统一入口（VbenTableAction 的 onClick 分发）：
- * edit 打开编辑抽屉并带入整行数据，log 打开执行日志抽屉，
- * runOnce/delete 走确认弹窗后执行
- */
 function onActionClick({ code, row }: OnActionClickParams<SystemJobApi.Job>) {
   switch (code) {
     case 'delete': {
@@ -113,7 +107,6 @@ function onActionClick({ code, row }: OnActionClickParams<SystemJobApi.Job>) {
 
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: {
-    // 模块搜索项（jobName/status）+ 公共审计搜索项（创建人/更新人/时间范围）
     schema: [...useGridFormSchema(), ...useAuditSearchSchema()],
     // 时间范围控件值拆为 createdAtBegin/createdAtEnd 等请求参数
     codec: auditTimeCodec,
@@ -124,7 +117,6 @@ const [Grid, gridApi] = useVbenVxeGrid({
     keepSource: true,
     proxyConfig: {
       ajax: {
-        // 分页查询：页码/页大小由 vxe proxy 注入，其余为搜索表单值
         query: async ({ page }, formValues) => {
           return getJobList({
             page: page.currentPage,
@@ -155,7 +147,6 @@ function onCreate() {
     <FormDrawer @success="() => gridApi.query()" />
     <LogDrawer />
     <Grid :table-title="$t('system.job.list')">
-      <!-- 工具栏新建按钮：system:job:create 权限码控制显隐 -->
       <template #toolbar-tools>
         <ElButton
           v-access:code="'system:job:create'"

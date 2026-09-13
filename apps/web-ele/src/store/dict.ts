@@ -32,7 +32,6 @@ function toValue(value: string) {
 export const useDictStore = defineStore('dict', () => {
   /** 字典类型编码 -> 选项列表，响应式，可直接传给表单/表格的 options */
   const optionsMap = reactive<Record<string, DictOption[]>>({});
-  /** 进行中的请求，避免并发重复拉取 */
   const pendingMap = new Map<string, Promise<void>>();
 
   async function loadOptions(type: string) {

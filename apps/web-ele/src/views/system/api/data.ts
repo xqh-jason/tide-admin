@@ -15,7 +15,6 @@ const METHOD_OPTIONS = [
   { label: 'DELETE', value: 'DELETE' },
 ];
 
-/** 新增/编辑 API 表单 schema */
 export function useFormSchema(): VbenFormSchema[] {
   const statusOptions = useDictOptions('status');
   return [
@@ -64,7 +63,6 @@ export function useFormSchema(): VbenFormSchema[] {
   ];
 }
 
-/** 搜索表单 schema */
 export function useGridFormSchema(): VbenFormSchema[] {
   const statusOptions = useDictOptions('status');
   return [
@@ -94,7 +92,6 @@ export function useGridFormSchema(): VbenFormSchema[] {
   ];
 }
 
-/** 列表列配置 */
 export function useColumns(
   onActionClick?: OnActionClickFn<SystemApiApi.SystemApi>,
 ): VxeTableGridColumns<SystemApiApi.SystemApi> {

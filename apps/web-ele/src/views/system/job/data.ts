@@ -52,9 +52,6 @@ const cronSchema = z
     message: $t('system.job.cronInvalid'),
   });
 
-/**
- * 新增/编辑定时任务表单 schema
- */
 export function useFormSchema(): VbenFormSchema[] {
   const statusOptions = useDictOptions('status');
   return [

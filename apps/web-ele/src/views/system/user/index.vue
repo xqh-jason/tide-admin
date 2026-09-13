@@ -26,8 +26,6 @@ import Form from './modules/form.vue';
 
 defineOptions({ name: 'SystemUserList' });
 
-// connectedComponent 模式：FormDrawer 即 modules/form.vue，
-// destroyOnClose 保证每次打开都是全新表单状态
 const [FormDrawer, formDrawerApi] = useVbenDrawer({
   connectedComponent: Form,
   destroyOnClose: true,
@@ -59,7 +57,6 @@ async function onDelete(row: SystemUserApi.SystemUser) {
 
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: {
-    // 模块搜索项（keyword/status）+ 公共审计搜索项（创建人/更新人/时间范围）
     schema: [...useGridFormSchema(), ...useAuditSearchSchema()],
     // 时间范围控件值拆为 createdAtBegin/createdAtEnd 等请求参数
     codec: auditTimeCodec,
@@ -70,7 +67,6 @@ const [Grid, gridApi] = useVbenVxeGrid({
     keepSource: true,
     proxyConfig: {
       ajax: {
-        // 分页查询：页码/页大小由 vxe proxy 注入，其余为搜索表单值
         query: async ({ page }, formValues) => {
           return getUserList({
             page: page.currentPage,
@@ -95,10 +91,6 @@ function onCreate() {
   formDrawerApi.setData(null).open();
 }
 
-/**
- * 操作列统一入口（CellOperation/VbenTableAction 的 onClick 分发）：
- * edit 打开编辑抽屉并带入整行数据，delete 走确认弹窗后删除
- */
 function onActionClick({
   code,
   row,
@@ -120,7 +112,6 @@ function onActionClick({
   <Page auto-content-height>
     <FormDrawer @success="() => gridApi.query()" />
     <Grid :table-title="$t('system.user.list')">
-      <!-- 工具栏新建按钮：system:user:create 权限码控制显隐 -->
       <template #toolbar-tools>
         <ElButton
           v-access:code="'system:user:create'"
@@ -131,7 +122,6 @@ function onActionClick({
           {{ $t('ui.actionTitle.create', [$t('system.user.title')]) }}
         </ElButton>
       </template>
-      <!-- 操作列：VbenTableAction 内置权限过滤（auth 字段），删除走二次确认 -->
       <template #action="{ row }">
         <VbenTableAction
           :actions="[

@@ -162,7 +162,6 @@ const withDefaultPlaceholder = (
         props?.placeholder ||
         attrs?.placeholder ||
         $t(`ui.placeholder.${type}`);
-      // 透传组件暴露的方法
       const innerRef = ref();
       expose(
         new Proxy(
@@ -207,9 +206,6 @@ export type ComponentType =
   | 'Upload'
   | BaseFormComponentType;
 
-/**
- * 与 {@link ComponentType} 中注册的组件名一一对应，便于 Schema 上 `component` + `componentProps` 联动提示
- */
 export interface ComponentPropsMap {
   ApiSelect: ApiComponentSharedProps & SelectV2Props;
   ApiTreeSelect: ApiComponentSharedProps & ElTreeSelectSchemaProps;
@@ -279,11 +275,9 @@ async function initComponentAdapter() {
         { ...slots, default: defaultSlot },
       );
     },
-    // 自定义默认按钮
     DefaultButton: (props, { attrs, slots }) => {
       return h(ElButton, { ...props, attrs, type: 'info' }, slots);
     },
-    // 自定义主要按钮
     PrimaryButton: (props, { attrs, slots }) => {
       return h(ElButton, { ...props, attrs, type: 'primary' }, slots);
     },
@@ -323,8 +317,6 @@ async function initComponentAdapter() {
       rows: 4,
       type: 'textarea',
     }),
-    // range 场景下 Element Plus 要求 name/id 为二元数组（起止两个
-    // 原生 input 各自的标识）；Schema 上只配单值时自动补 `${x}_end`
     TimePicker: (props, { attrs, slots }) => {
       const { name, id, isRange } = props;
       const extraProps: Recordable<any> = {};
@@ -346,7 +338,6 @@ async function initComponentAdapter() {
         slots,
       );
     },
-    // 同 TimePicker：range 类型时把单值 name/id 展开为起止二元数组
     DatePicker: (props, { attrs, slots }) => {
       const { name, id, type } = props;
       const extraProps: Recordable<any> = {};

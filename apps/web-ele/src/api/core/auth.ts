@@ -3,17 +3,14 @@ import { useAccessStore } from '@vben/stores';
 import { baseRequestClient, requestClient } from '#/api/request';
 
 export namespace AuthApi {
-  /** 登录接口参数 */
   export interface LoginParams {
     /** 验证码 id，来自 /captcha/generate */
     captchaId: string;
-    /** 图片上输入的验证码 */
     captchaValue: string;
     password?: string;
     username?: string;
   }
 
-  /** 登录接口返回值 */
   export interface LoginResult {
     accessToken: string;
   }
@@ -29,9 +26,6 @@ export namespace AuthApi {
   }
 }
 
-/**
- * 登录
- */
 export async function loginApi(data: AuthApi.LoginParams) {
   // 后端返回 { token }，vben store 层期望 { accessToken }，在此做字段适配
   const { token } = await requestClient.post<{ token: string }>(
@@ -73,9 +67,6 @@ export async function logoutApi() {
   );
 }
 
-/**
- * 获取用户权限码
- */
 export async function getAccessCodesApi() {
   return requestClient.post<string[]>('/user/access-codes');
 }

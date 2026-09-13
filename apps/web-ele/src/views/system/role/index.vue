@@ -26,7 +26,6 @@ import Form from './modules/form.vue';
 
 defineOptions({ name: 'SystemRoleList' });
 
-// connectedComponent 模式：FormDrawer 即 modules/form.vue（含菜单授权树）
 const [FormDrawer, formDrawerApi] = useVbenDrawer({
   connectedComponent: Form,
   destroyOnClose: true,
@@ -75,7 +74,6 @@ function onActionClick({
 
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: {
-    // 模块搜索项（keyword/status）+ 公共审计搜索项
     schema: [...useGridFormSchema(), ...useAuditSearchSchema()],
     codec: auditTimeCodec,
   },
@@ -85,7 +83,6 @@ const [Grid, gridApi] = useVbenVxeGrid({
     keepSource: true,
     proxyConfig: {
       ajax: {
-        // 分页查询：页码/页大小由 vxe proxy 注入，其余为搜索表单值
         query: async ({ page }, formValues) => {
           return getRoleList({
             page: page.currentPage,

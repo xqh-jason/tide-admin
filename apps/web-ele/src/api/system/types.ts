@@ -16,7 +16,6 @@ export interface PageResult<T> {
   totalPages: number;
 }
 
-/** 按 id 操作的请求体 */
 export interface IdRequest {
   id: number;
 }
@@ -24,10 +23,8 @@ export interface IdRequest {
 /** 审计字段：后端各 Resp 统一返回（记录创建/更新人与时间） */
 export interface AuditFields {
   createdAt?: string;
-  /** 创建人姓名 */
   createdByName?: string;
   updatedAt?: string;
-  /** 更新人姓名 */
   updatedByName?: string;
 }
 
@@ -36,16 +33,10 @@ export interface AuditFields {
  * 人员为 id 精确过滤，时间范围 yyyy-MM-dd[ HH:mm:ss] 且含边界；不传查全部
  */
 export interface AuditFilter {
-  /** 创建时间范围起（含边界） */
   createdAtBegin?: string;
-  /** 创建时间范围止（含边界） */
   createdAtEnd?: string;
-  /** 创建人 ID 精确过滤 */
   createdBy?: number;
-  /** 更新时间范围起（含边界） */
   updatedAtBegin?: string;
-  /** 更新时间范围止（含边界） */
   updatedAtEnd?: string;
-  /** 更新人 ID 精确过滤 */
   updatedBy?: number;
 }

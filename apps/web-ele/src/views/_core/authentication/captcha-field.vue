@@ -5,14 +5,13 @@ import { $t } from '@vben/locales';
 
 /**
  * 图形验证码表单控件：左侧输入框 + 右侧验证码图（点击刷新）。
- * 作为登录表单 schema 的自定义组件使用，值走 modelValue 与表单双向绑定。
+ * 作为登录表单 schema 的自定义组件使用。
  */
 defineOptions({ name: 'CaptchaField' });
 
 const props = defineProps<{
   class?: unknown;
   disabled?: boolean;
-  /** 完整的 img src（data:image/png;base64,...） */
   image?: string;
   modelValue?: string;
 }>();

@@ -26,7 +26,7 @@ import DetailDrawer from './modules/detail.vue';
 
 defineOptions({ name: 'SystemOperationLogList' });
 
-// 详情抽屉（connectedComponent 模式），打开后按行 id 拉取完整日志
+// 详情抽屉打开后按行 id 拉取完整日志
 const [Detail, detailApi] = useVbenDrawer({
   connectedComponent: DetailDrawer,
   destroyOnClose: true,
@@ -52,7 +52,6 @@ const [Grid, gridApi] = useVbenVxeGrid({
     keepSource: true,
     proxyConfig: {
       ajax: {
-        // 分页查询：页码/页大小由 vxe proxy 注入，其余为搜索表单值
         query: async ({ page }, formValues) => {
           return getOperationLogList({
             page: page.currentPage,
@@ -72,7 +71,6 @@ const [Grid, gridApi] = useVbenVxeGrid({
   } as VxeTableGridOptions<OperationLogApi.OperationLog>,
 });
 
-/** 操作列统一入口：detail 打开详情抽屉，delete 走二次确认 */
 function onActionClick({
   code,
   row,

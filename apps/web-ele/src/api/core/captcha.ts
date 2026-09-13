@@ -1,7 +1,6 @@
 import { requestClient } from '#/api/request';
 
 export namespace CaptchaApi {
-  /** 图形验证码 */
   export interface CaptchaResult {
     /** 本次验证码唯一 id，登录时原样回传 */
     captchaId: string;

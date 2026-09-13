@@ -52,7 +52,7 @@ async function onDelete(row: SystemDictionaryApi.DictionaryDetail) {
       },
     );
   } catch {
-    return; // 用户取消二次确认
+    return;
   }
   await deleteDictionaryDetail(row.id);
   ElMessage.success($t('ui.actionMessage.deleteSuccess'));

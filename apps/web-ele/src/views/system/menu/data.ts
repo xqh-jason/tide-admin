@@ -169,7 +169,6 @@ export function useFormSchema(): VbenFormSchema[] {
   ];
 }
 
-/** 搜索表单 schema */
 export function useGridFormSchema(): VbenFormSchema[] {
   const statusOptions = useDictOptions('status');
   return [
@@ -194,7 +193,6 @@ export function useGridFormSchema(): VbenFormSchema[] {
   ];
 }
 
-/** 列表列配置（树表，标题列带图标插槽） */
 export function useColumns(
   onActionClick: OnActionClickFn<SystemMenuApi.SystemMenu>,
 ): VxeTableGridColumns<SystemMenuApi.SystemMenu> {

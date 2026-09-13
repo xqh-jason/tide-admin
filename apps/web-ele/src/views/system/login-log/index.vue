@@ -41,7 +41,6 @@ const [Grid, gridApi] = useVbenVxeGrid({
     keepSource: true,
     proxyConfig: {
       ajax: {
-        // 分页查询：页码/页大小由 vxe proxy 注入，其余为搜索表单值
         query: async ({ page }, formValues) => {
           return getLoginLogList({
             page: page.currentPage,
@@ -61,7 +60,6 @@ const [Grid, gridApi] = useVbenVxeGrid({
   } as VxeTableGridOptions<LoginLogApi.LoginLog>,
 });
 
-/** 操作列统一入口，仅 delete 一项（二次确认弹窗） */
 function onActionClick({
   code,
   row,

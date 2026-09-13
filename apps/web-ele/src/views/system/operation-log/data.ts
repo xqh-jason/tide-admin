@@ -5,7 +5,7 @@ import type { OperationLogApi, SystemUserApi } from '#/api';
 import { getAllUsersApi } from '#/api';
 import { $t } from '#/locales';
 
-/** 操作日志搜索表单 schema（keyword 命中接口路径） */
+/** keyword 命中接口路径 */
 export function useGridFormSchema(): VbenFormSchema[] {
   return [
     {
@@ -56,7 +56,6 @@ export function useGridFormSchema(): VbenFormSchema[] {
   ];
 }
 
-/** 操作日志列表列配置 */
 export function useColumns(): VxeTableGridColumns<OperationLogApi.OperationLog> {
   return [
     { field: 'method', title: $t('system.operationLog.method'), width: 90 },

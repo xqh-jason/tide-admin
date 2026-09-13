@@ -29,7 +29,6 @@ function normalizeComponent(component: string): string {
   return component.replace(/^#\/views\//, '/').replace(/\.vue$/, '');
 }
 
-/** 递归归一化整棵菜单树的 component */
 function normalizeMenuComponents(
   routes: RouteRecordStringComponent[],
 ): RouteRecordStringComponent[] {
@@ -87,9 +86,7 @@ async function generateAccess(options: GenerateMenuAndRoutesOptions) {
       // 归一化 component 命中 pageMap（后端菜单 component 带 #/views 前缀）
       return normalizeMenuComponents(menus);
     },
-    // 可以指定没有权限跳转403页面
     forbiddenComponent,
-    // 如果 route.meta.menuVisibleWithForbidden = true
     layoutMap,
     pageMap,
   });

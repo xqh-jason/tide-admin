@@ -24,11 +24,8 @@ export namespace SystemDictionaryApi {
   /** 字典项（对齐后端 sys_dictionary_detail 表契约 DictionaryDetailResp） */
   export interface DictionaryDetail extends AuditFields {
     id: number;
-    /** 所属字典类型 ID */
     dictionaryId: number;
-    /** 展示值 */
     label: string;
-    /** 字典值（业务键） */
     value: string;
     /** 扩展值，如 tag 颜色 */
     extend: string;
