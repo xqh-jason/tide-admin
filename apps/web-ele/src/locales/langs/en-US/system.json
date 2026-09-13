@@ -110,6 +110,27 @@
     "status": "HTTP Status",
     "title": "Operation Logs"
   },
+  "session": {
+    "agent": "User-Agent",
+    "batchDelete": "Batch Delete",
+    "batchDeleteConfirm": "Delete {0} selected session record(s)? Active/unexpired sessions will be skipped",
+    "batchDeleteEmpty": "Select sessions to delete first",
+    "createdAt": "Login Time",
+    "expired": "Expired",
+    "expiresAt": "Expires At",
+    "forceLogout": "Force Logout",
+    "forceLogoutConfirm": "Force logout the current session of \"{0}\"?",
+    "ip": "IP Address",
+    "lastActiveAt": "Last Active",
+    "list": "Sessions",
+    "offline": "Offline",
+    "online": "Online",
+    "operation": "Operation",
+    "revokeReason": "Logout Reason",
+    "revoked": "Revoked",
+    "status": "Status",
+    "username": "Username"
+  },
   "user": {
     "deptDisabledMark": " (disabled)",
     "depts": "Depts",

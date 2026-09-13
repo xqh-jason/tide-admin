@@ -37,9 +37,9 @@ export async function loginApi(data: AuthApi.LoginParams) {
 
 /**
  * 刷新 accessToken
- * ⚠️ 后端暂未提供 /auth/refresh 端点（只有 7 天有效期的 access token）；
- * 当前 preferences.app.enableRefreshToken 为默认 false，本函数不会被调用，
- * 后端补齐 refresh 机制前请勿开启该开关
+ * 后端契约：POST /auth/refresh 公开端点，凭 HttpOnly Cookie 中的 refresh token
+ * 换发新 access token；成功响应体是**裸 token 字符串**（非 {code,data} 包裹），
+ * 失败返回真 HTTP 401。详见 docs/superpowers/specs/2026-09-13-auth-refresh-session-design.md §2
  */
 export async function refreshTokenApi() {
   return baseRequestClient.post<AuthApi.RefreshTokenResult>(
