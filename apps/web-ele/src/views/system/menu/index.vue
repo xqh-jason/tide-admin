@@ -27,7 +27,6 @@ import Form from './modules/form.vue';
 
 defineOptions({ name: 'SystemMenuList' });
 
-// connectedComponent 模式：FormDrawer 即 modules/form.vue；
 // 打开数据三种形态：null（新建顶级）/ { parentId }（append 子菜单）/ 整行（编辑）
 const [FormDrawer, formDrawerApi] = useVbenDrawer({
   connectedComponent: Form,
@@ -65,7 +64,6 @@ function onActionClick({
 
 const [Grid, gridApi] = useVbenVxeGrid({
   formOptions: {
-    // 模块搜索项（keyword/status）+ 公共审计搜索项
     schema: [...useGridFormSchema(), ...useAuditSearchSchema()],
     codec: auditTimeCodec,
   },
@@ -109,7 +107,6 @@ function onCreate() {
   <Page auto-content-height>
     <FormDrawer @success="() => gridApi.query()" />
     <Grid :table-title="$t('system.menu.list')">
-      <!-- 工具栏新建按钮：system:menu:create 权限码控制显隐 -->
       <template #toolbar-tools>
         <ElButton
           v-access:code="'system:menu:create'"
@@ -120,7 +117,6 @@ function onCreate() {
           {{ $t('ui.actionTitle.create', [$t('system.menu.title')]) }}
         </ElButton>
       </template>
-      <!-- 标题列插槽：图标 + 标题 + 按钮类型徽标（menuType=3） -->
       <template #title="{ row }">
         <div class="flex items-center gap-1">
           <IconifyIcon v-if="row.icon" :icon="row.icon" />

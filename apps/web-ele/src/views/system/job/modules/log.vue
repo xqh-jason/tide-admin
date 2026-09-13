@@ -112,7 +112,6 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemJobApi.Job>({
     }
     const data = drawerApi.getData();
     currentJob.value = data ?? null;
-    // 等 drawer 渲染完再 reload，否则 height:auto 量不到容器高度
     await nextTick();
     gridApi.reload();
   },

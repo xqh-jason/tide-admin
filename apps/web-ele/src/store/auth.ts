@@ -29,10 +29,6 @@ export const useAuthStore = defineStore('auth', () => {
     return accessCodes;
   }
 
-  /**
-   * 异步处理登录操作
-   * @param params 登录表单数据
-   */
   async function authLogin(
     params: AuthApi.LoginParams,
     onSuccess?: () => Promise<void> | void,
@@ -45,7 +41,7 @@ export const useAuthStore = defineStore('auth', () => {
       if (accessToken) {
         accessStore.setAccessToken(accessToken);
 
-        // 获取用户信息并存储到 accessStore 中（权限码由 fetchAccessCodes 内部写入）
+        // 并行拉取用户信息与权限码，分别写入 userStore / accessStore
         const [fetchUserInfoResult] = await Promise.all([
           fetchUserInfo(),
           fetchAccessCodes(),
@@ -90,12 +86,11 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       await logoutApi();
     } catch {
-      // 不做任何处理
+      // 后端登出失败也继续本地清理
     }
     resetAllStores();
     accessStore.setLoginExpired(false);
 
-    // 回登录页带上当前路由地址
     await router.replace({
       path: LOGIN_PATH,
       query: redirect

@@ -5,7 +5,6 @@ import { requestClient } from '#/api/request';
 export namespace SystemDeptApi {
   /** 部门负责人展示项（sys_user_dept.is_leader=1 的挂载用户，可兼管多个部门） */
   export interface DeptLeader {
-    /** 负责人用户 id */
     userId: number;
     /** 负责人显示名（sys_user.username，查不到为空串） */
     userName: string;
@@ -64,9 +63,6 @@ export async function getDeptList() {
   return requestClient.post<SystemDeptApi.SystemDept[]>('/dept/list', {});
 }
 
-/**
- * 部门详情
- */
 export async function getDept(id: number) {
   return requestClient.post<SystemDeptApi.SystemDept>('/dept/get', {
     id,
@@ -95,10 +91,6 @@ export async function deleteDept(id: number) {
   return requestClient.post<null>('/dept/delete', { id } satisfies IdRequest);
 }
 
-/**
- * 将部门树拍平为平铺列表（保留 parentId，剥离 children），顺序为树的
- * 先序遍历；供 vxe treeConfig transform 组树或下拉选项使用
- */
 export function flattenDeptTree(
   tree: SystemDeptApi.SystemDept[],
 ): SystemDeptApi.SystemDept[] {

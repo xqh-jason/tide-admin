@@ -20,15 +20,12 @@ export namespace SystemJobApi {
     /** 任务名称（全局唯一） */
     jobName: string;
     remark: string;
-    /** 1 启用 / 0 停用 */
     status: CommonStatus;
   }
 
   /** 内置任务处理器下拉项（后端 /job/handlers 返回） */
   export interface HandlerOption {
-    /** 中文显示名 */
     label: string;
-    /** 处理器名（注册表键） */
     name: string;
   }
 
@@ -81,16 +78,10 @@ export namespace SystemJobLogApi {
   }
 }
 
-/**
- * 定时任务列表（分页）
- */
 export async function getJobList(params: SystemJobApi.ListParams) {
   return requestClient.post<PageResult<SystemJobApi.Job>>('/job/list', params);
 }
 
-/**
- * 定时任务详情
- */
 export async function getJob(id: number) {
   return requestClient.post<SystemJobApi.Job>('/job/get', {
     id,

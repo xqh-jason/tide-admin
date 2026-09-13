@@ -108,16 +108,13 @@ export async function updateMenu(data: SystemMenuApi.UpdateParams) {
 }
 
 /**
- * 删除菜单（软删除；有子节点时后端应拒绝，需权限码 system:menu:delete）
+ * 删除菜单（软删除，需权限码 system:menu:delete）：
+ * 级联软删该菜单及全部子孙，并解除它们的角色绑定（sys_role_menu 硬删）
  */
 export async function deleteMenu(id: number) {
   return requestClient.post<null>('/menu/delete', { id } satisfies IdRequest);
 }
 
-/**
- * 将平铺菜单列表按 parentId 组装成树，同级按 sort、id 升序；
- * 叶子节点不携带 children 字段
- */
 export function buildMenuTree(
   menus: SystemMenuApi.SystemMenu[],
 ): SystemMenuApi.SystemMenu[] {

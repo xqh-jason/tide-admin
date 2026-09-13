@@ -47,7 +47,6 @@ setupVbenVxeTable({
         },
         minHeight: 180,
         formConfig: {
-          // 全局禁用vxe-table的表单配置，使用formOptions
           enabled: false,
         },
         proxyConfig: {
@@ -68,14 +67,12 @@ setupVbenVxeTable({
       } as VxeTableGridOptions,
     });
 
-    // 解决 vxe-table 热更新时 renderer 重复注册报错的问题
     vxeUI.renderer.forEach((_item, key) => {
       if (key.startsWith('Cell')) {
         vxeUI.renderer.delete(key);
       }
     });
 
-    // 表格配置项可以用 cellRender: { name: 'CellImage' },
     vxeUI.renderer.add('CellImage', {
       renderTableDefault(renderOpts, params) {
         const { props } = renderOpts;
@@ -85,7 +82,6 @@ setupVbenVxeTable({
       },
     });
 
-    // 表格配置项可以用 cellRender: { name: 'CellLink' },
     vxeUI.renderer.add('CellLink', {
       renderTableDefault(renderOpts) {
         const { props } = renderOpts;

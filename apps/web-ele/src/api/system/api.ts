@@ -15,9 +15,7 @@ export namespace SystemApiApi {
     apiGroup: string;
     description: string;
     id: number;
-    /** 请求方法，如 POST / GET / PUT / DELETE */
     method: string;
-    /** 接口路径，如 /api/v1/user/list */
     path: string;
     status: CommonStatus;
   }
@@ -51,9 +49,6 @@ export namespace SystemApiApi {
   }
 }
 
-/**
- * API 权限点列表（分页）
- */
 export async function getApiList(params: SystemApiApi.ListParams) {
   return requestClient.post<PageResult<SystemApiApi.SystemApi>>(
     '/sys-api/list',
@@ -68,9 +63,6 @@ export async function getAllApis() {
   return requestClient.post<SystemApiApi.SystemApi[]>('/sys-api/list-all');
 }
 
-/**
- * API 权限点详情
- */
 export async function getApi(id: number) {
   return requestClient.post<SystemApiApi.SystemApi>('/sys-api/get', {
     id,

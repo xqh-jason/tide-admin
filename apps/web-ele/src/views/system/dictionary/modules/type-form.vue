@@ -76,7 +76,6 @@ const [Drawer, drawerApi] =
       const data = drawerApi.getData();
       formApi.reset();
       editId.value = data?.id ?? 0;
-      // 列表项已含全部可编辑字段（name/type/status/remark），直接回显，无需再调 get
       if (data) {
         formApi.setValues(data);
       }

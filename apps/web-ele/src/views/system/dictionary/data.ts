@@ -7,7 +7,6 @@ import { useDictOptions } from '#/store';
 
 import { useAuditColumns } from '../audit-columns';
 
-/** 字典类型新增/编辑表单 schema */
 export function useTypeFormSchema(): VbenFormSchema[] {
   const statusOptions = useDictOptions('status');
   return [
@@ -44,7 +43,7 @@ export function useTypeFormSchema(): VbenFormSchema[] {
   ];
 }
 
-/** 字典类型搜索表单 schema（keyword 命中 name / type） */
+/** keyword 命中 name / type */
 export function useGridFormSchema(): VbenFormSchema[] {
   const statusOptions = useDictOptions('status');
   return [
@@ -68,7 +67,6 @@ export function useGridFormSchema(): VbenFormSchema[] {
   ];
 }
 
-/** 字典类型列表列配置 */
 export function useColumns(): VxeTableGridColumns<SystemDictionaryApi.Dictionary> {
   const statusOptions = useDictOptions('status');
   return [
@@ -94,7 +92,6 @@ export function useColumns(): VxeTableGridColumns<SystemDictionaryApi.Dictionary
   ];
 }
 
-/** 字典项新增/编辑表单 schema */
 export function useDetailFormSchema(): VbenFormSchema[] {
   const statusOptions = useDictOptions('status');
   return [
@@ -137,7 +134,7 @@ export function useDetailFormSchema(): VbenFormSchema[] {
   ];
 }
 
-/** 字典项搜索表单 schema（keyword 命中 label / value） */
+/** keyword 命中 label / value */
 export function useDetailGridSearchSchema(): VbenFormSchema[] {
   const statusOptions = useDictOptions('status');
   return [
@@ -161,7 +158,6 @@ export function useDetailGridSearchSchema(): VbenFormSchema[] {
   ];
 }
 
-/** 字典项列表列配置 */
 export function useDetailColumns(): VxeTableGridColumns<SystemDictionaryApi.DictionaryDetail> {
   const statusOptions = useDictOptions('status');
   return [

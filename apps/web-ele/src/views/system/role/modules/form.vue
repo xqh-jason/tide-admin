@@ -60,7 +60,6 @@ const [Form, formApi] = useVbenForm({
   showDefaultActions: false,
 });
 
-// 菜单授权树状态
 const treeRef = ref<InstanceType<typeof ElTree>>();
 const menuTree = ref<SystemMenuApi.SystemMenu[]>([]);
 /** 回显已授权节点时临时开启严格模式，避免父节点联动全选子节点 */
@@ -93,10 +92,8 @@ function collectMenuIds(): number[] {
   ].map((item) => item as number);
 }
 
-// API 权限点勾选状态
 const apiList = ref<SystemApiApi.SystemApi[]>([]);
 const checkedApiIds = ref<number[]>([]);
-/** 当前展开的分组（默认全部展开） */
 const expandedGroups = ref<string[]>([]);
 
 /** 按 apiGroup 分组（空分组归入「未分组」），组内按 path 排序 */
@@ -131,12 +128,10 @@ async function loadApis(checkedIds: number[] = []) {
   ];
 }
 
-/** 分组内权限点是否已全部勾选 */
 function isGroupAllChecked(items: SystemApiApi.SystemApi[]): boolean {
   return items.every((api) => checkedApiIds.value.includes(api.id));
 }
 
-/** 一键勾选/取消当前分组的全部权限点 */
 function toggleGroup(items: SystemApiApi.SystemApi[]) {
   const ids = items.map((api) => api.id);
   checkedApiIds.value = isGroupAllChecked(items)

@@ -111,7 +111,6 @@ export function useGridFormSchema(): VbenFormSchema[] {
   ];
 }
 
-/** 列表列配置（树表：部门名列为层级列，审计列复用公共 useAuditColumns） */
 export function useColumns(
   onActionClick: OnActionClickFn<SystemDeptApi.SystemDept>,
 ): VxeTableGridColumns<SystemDeptApi.SystemDept> {

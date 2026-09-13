@@ -15,16 +15,12 @@ import { useAuthStore } from '#/store';
 
 import { generateAccess } from './access';
 
-/**
- * 通用守卫配置：页面加载进度条
- */
 function setupCommonGuard(router: Router) {
   const loadedPaths = new Set<string>();
 
   router.beforeEach((to) => {
     to.meta.loaded = loadedPaths.has(to.path);
 
-    // 页面加载进度条
     if (!to.meta.loaded && preferences.transition.progress) {
       startProgress();
     }
@@ -32,26 +28,20 @@ function setupCommonGuard(router: Router) {
   });
 
   router.afterEach((to) => {
-    // 记录页面是否加载,如果已经加载，后续的页面切换动画等效果不在重复执行
     loadedPaths.add(to.path);
 
-    // 关闭页面加载进度条
     if (preferences.transition.progress) {
       stopProgress();
     }
   });
 }
 
-/**
- * 权限访问守卫配置
- */
 function setupAccessGuard(router: Router) {
   router.beforeEach(async (to, from) => {
     const accessStore = useAccessStore();
     const userStore = useUserStore();
     const authStore = useAuthStore();
 
-    // 基本路由，这些路由不需要进入权限拦截
     if (coreRouteNames.includes(to.name as string)) {
       if (to.path === LOGIN_PATH && accessStore.accessToken) {
         return decodeURIComponent(
@@ -63,14 +53,11 @@ function setupAccessGuard(router: Router) {
       return true;
     }
 
-    // accessToken 检查
     if (!accessStore.accessToken) {
-      // 明确声明忽略权限访问权限，则可以访问
       if (to.meta.ignoreAccess) {
         return true;
       }
 
-      // 没有访问权限，跳转登录页面
       if (to.fullPath !== LOGIN_PATH) {
         return {
           path: LOGIN_PATH,
@@ -85,13 +72,10 @@ function setupAccessGuard(router: Router) {
       return to;
     }
 
-    // 是否已经生成过动态路由
     if (accessStore.isAccessChecked) {
       return true;
     }
 
-    // 生成路由表
-    // 当前登录用户拥有的角色标识列表
     const userInfo = userStore.userInfo || (await authStore.fetchUserInfo());
     const userRoles = userInfo.roles ?? [];
 
@@ -99,14 +83,12 @@ function setupAccessGuard(router: Router) {
     // 角色/权限变更后可能过期，这里与用户信息一起在会话开始时重新拉取
     await authStore.fetchAccessCodes();
 
-    // 生成菜单和路由
     const { accessibleMenus, accessibleRoutes } = await generateAccess({
       roles: userRoles,
       router,
       routes: accessRoutes,
     });
 
-    // 保存菜单信息和路由信息
     accessStore.setAccessMenus(accessibleMenus);
     accessStore.setAccessRoutes(accessibleRoutes);
     accessStore.setIsAccessChecked(true);
@@ -127,9 +109,6 @@ function setupAccessGuard(router: Router) {
   });
 }
 
-/**
- * 项目守卫配置入口
- */
 function createRouterGuard(router: Router) {
   setupCommonGuard(router);
   setupAccessGuard(router);

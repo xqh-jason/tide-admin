@@ -28,7 +28,6 @@ export namespace SystemUserApi {
 
   /** 用户简要信息（/user/list-all-includes-soft-deleted 返回，创建人/更新人等选择器数据源；deleted=true 为软删用户） */
   export interface UserBrief {
-    /** 是否已软删（后端 bool，序列化为 true/false） */
     deleted: boolean;
     id: number;
     username: string;
@@ -41,13 +40,10 @@ export namespace SystemUserApi {
    * isLeader = 是否该部门负责人（可兼管多个），是数据权限直控凭据
    */
   export interface UserDeptItem {
-    /** 部门 ID */
     deptId: number;
     /** 部门名（后端批量拼装，仅响应侧返回） */
     deptName?: string;
-    /** 是否该部门负责人：1 是 / 0 否 */
     isLeader: CommonStatus;
-    /** 主要组织归属：1 是 / 0 否 */
     isPrimary: CommonStatus;
   }
 
@@ -58,8 +54,8 @@ export namespace SystemUserApi {
   }
 
   /**
-   * 创建用户：后端 CreateUserReq 除 email/phone（serde default）外全字段
-   * 必填；depts 字段必填但可为空数组（不挂部门），非空时须恰好一个
+   * 创建用户：后端 CreateUserReq 除 email/phone/positionIds（serde default）
+   * 外全字段必填；depts 字段必填但可为空数组（不挂部门），非空时须恰好一个
    * isPrimary=1、无重复、不超过 50 个
    */
   export interface CreateParams {
@@ -76,11 +72,11 @@ export namespace SystemUserApi {
   }
 
   /**
-   * 更新用户：后端 UpdateUserReq 除 email/phone（serde default）外全字段
-   * 必填、全量覆盖（含禁改的 username），编辑抽屉须全量提交（空串表示清空，
-   * password 空串表示不修改密码）；roleIds/depts 均为全量替换语义——
-   * 后端先清空旧关联再插入，空数组即清空全部关联。状态开关走独立的
-   * /user/update-status 端点，不经此接口
+   * 更新用户：后端 UpdateUserReq 除 email/phone/positionIds（serde default）
+   * 外全字段必填、全量覆盖（username 后端允许修改，仅前端编辑抽屉禁用），
+   * 编辑抽屉须全量提交（空串表示清空，password 空串表示不修改密码）；
+   * roleIds/depts 均为全量替换语义——后端先清空旧关联再插入，空数组即清空
+   * 全部关联。状态开关走独立的 /user/update-status 端点，不经此接口
    */
   export interface UpdateParams {
     depts: UserDeptItem[];
@@ -107,9 +103,6 @@ export async function getAllUsersApi() {
   );
 }
 
-/**
- * 用户列表（分页）
- */
 export async function getUserList(params: SystemUserApi.ListParams) {
   return requestClient.post<PageResult<SystemUserApi.SystemUser>>(
     '/user/list',
@@ -117,9 +110,6 @@ export async function getUserList(params: SystemUserApi.ListParams) {
   );
 }
 
-/**
- * 用户详情
- */
 export async function getUser(id: number) {
   return requestClient.post<SystemUserApi.SystemUser>('/user/get', {
     id,

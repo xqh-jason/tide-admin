@@ -8,7 +8,6 @@ export namespace OperationLogApi {
     /** 操作人名称（列表经 fill_user_names 填充；用户已被软删时仍可回原名） */
     actionByName: string;
     id: number;
-    /** 操作人 ID */
     userId: number;
     ip: string;
     method: string;
@@ -57,9 +56,6 @@ export async function getOperationLogList(params: OperationLogApi.ListParams) {
   );
 }
 
-/**
- * 操作日志详情（含请求体 / 响应体）
- */
 export async function getOperationLog(id: number) {
   return requestClient.post<OperationLogApi.OperationLogDetail>(
     '/operation-log/get',

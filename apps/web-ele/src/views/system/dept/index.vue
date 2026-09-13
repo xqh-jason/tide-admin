@@ -32,7 +32,6 @@ import Form from './modules/form.vue';
 
 defineOptions({ name: 'SystemDeptList' });
 
-// connectedComponent 模式：FormDrawer 即 modules/form.vue；
 // 打开数据三种形态：null（新建顶级）/ { parentId }（append 子部门）/ 整行（编辑）
 const [FormDrawer, formDrawerApi] = useVbenDrawer({
   connectedComponent: Form,
@@ -118,7 +117,6 @@ function onCreate() {
   <Page auto-content-height>
     <FormDrawer @success="() => gridApi.query()" />
     <Grid :table-title="$t('system.dept.list')">
-      <!-- 工具栏新建按钮：system:dept:create 权限码控制显隐 -->
       <template #toolbar-tools>
         <ElButton
           v-access:code="'system:dept:create'"

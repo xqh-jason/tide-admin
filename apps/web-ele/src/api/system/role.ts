@@ -67,9 +67,6 @@ export async function getAllRoles() {
   return requestClient.post<SystemRoleApi.SystemRole[]>('/role/list-all');
 }
 
-/**
- * 角色列表（分页）
- */
 export async function getRoleList(params: SystemRoleApi.ListParams) {
   return requestClient.post<PageResult<SystemRoleApi.SystemRole>>(
     '/role/list',
@@ -77,9 +74,6 @@ export async function getRoleList(params: SystemRoleApi.ListParams) {
   );
 }
 
-/**
- * 角色详情
- */
 export async function getRole(id: number) {
   return requestClient.post<SystemRoleApi.SystemRole>('/role/get', {
     id,

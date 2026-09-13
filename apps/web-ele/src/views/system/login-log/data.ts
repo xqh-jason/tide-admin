@@ -13,7 +13,6 @@ function useResultStatusOptions() {
   return useDictOptions('execResultStatus');
 }
 
-/** 登录日志搜索表单 schema */
 export function useGridFormSchema(): VbenFormSchema[] {
   return [
     {
@@ -38,7 +37,6 @@ export function useGridFormSchema(): VbenFormSchema[] {
   ];
 }
 
-/** 登录日志列表列配置 */
 export function useColumns(): VxeTableGridColumns<LoginLogApi.LoginLog> {
   return [
     { field: 'username', title: $t('system.loginLog.username'), width: 130 },

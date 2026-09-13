@@ -7,7 +7,7 @@ import { useDictOptions } from '#/store';
 
 import { useAuditColumns } from '../audit-columns';
 
-/** 新增/编辑角色表单 schema（菜单/API 权限区块由 form.vue 独立渲染，不走表单字段） */
+/** 菜单/API 权限区块由 form.vue 独立渲染，不走表单字段 */
 export function useFormSchema(): VbenFormSchema[] {
   const statusOptions = useDictOptions('status');
   return [
@@ -50,7 +50,6 @@ export function useFormSchema(): VbenFormSchema[] {
   ];
 }
 
-/** 搜索表单 schema */
 export function useGridFormSchema(): VbenFormSchema[] {
   const statusOptions = useDictOptions('status');
   return [
@@ -71,7 +70,6 @@ export function useGridFormSchema(): VbenFormSchema[] {
   ];
 }
 
-/** 列表列配置（操作列走 CellOperation 渲染器） */
 export function useColumns(
   onStatusChange?: (
     newVal: number,

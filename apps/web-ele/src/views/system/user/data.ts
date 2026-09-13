@@ -46,17 +46,13 @@ function getDeptOptionsByIds(ids?: number[]) {
     }));
 }
 
-/**
- * 新增/编辑用户表单 schema
- * @param getEditId 编辑态返回用户 id，密码可选；创建态密码必填
- */
+/** getEditId：编辑态返回用户 id，密码可选；创建态密码必填 */
 export function useFormSchema(getEditId: () => number): VbenFormSchema[] {
   const statusOptions = useDictOptions('status');
   return [
     {
       component: 'Input',
       componentProps: {
-        // 禁止浏览器用登录页保存的账号自动填充「新增用户」的用户名
         autocomplete: 'off',
       },
       fieldName: 'username',
@@ -78,8 +74,6 @@ export function useFormSchema(getEditId: () => number): VbenFormSchema[] {
     {
       component: 'Input',
       componentProps: {
-        // new-password 声明这是「新建密码」而非登录密码，
-        // 浏览器才不会把保存的登录密码自动填入（autocomplete=off 对密码框会被 Chrome 忽略）
         autocomplete: 'new-password',
         placeholder: $t('system.user.passwordKeepTip'),
         showPassword: true,
@@ -188,7 +182,6 @@ export function useFormSchema(getEditId: () => number): VbenFormSchema[] {
   ];
 }
 
-/** 搜索表单 schema */
 export function useGridFormSchema(): VbenFormSchema[] {
   const statusOptions = useDictOptions('status');
   return [
@@ -209,7 +202,6 @@ export function useGridFormSchema(): VbenFormSchema[] {
   ];
 }
 
-/** 列表列配置：审计列复用公共 useAuditColumns，status 列按传参切换开关/标签 */
 export function useColumns(
   onStatusChange?: (
     newVal: number,
