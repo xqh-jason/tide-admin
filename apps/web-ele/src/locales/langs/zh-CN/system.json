@@ -110,6 +110,20 @@
     "status": "HTTP 状态",
     "title": "操作日志"
   },
+  "position": {
+    "deleteConfirmTip": "确定删除职位「{0}」？已被用户挂载时将被拒绝",
+    "keyword": "关键词",
+    "keywordTip": "支持编码/名称模糊搜索",
+    "list": "职位列表",
+    "operation": "操作",
+    "positionCode": "职位编码",
+    "positionCodeTip": "全局唯一，软删后编码仍占用",
+    "positionName": "职位名称",
+    "remark": "备注",
+    "sort": "排序",
+    "status": "状态",
+    "title": "职位管理"
+  },
   "session": {
     "agent": "User-Agent",
     "batchDelete": "批量删除",
@@ -145,6 +159,8 @@
     "phone": "手机号",
     "primaryDept": "主部门",
     "primaryDeptMark": "（主）",
+    "positionDisabledMark": "（已停用）",
+    "positions": "职位",
     "roles": "角色",
     "rolesPlaceholder": "请选择角色",
     "status": "状态",
