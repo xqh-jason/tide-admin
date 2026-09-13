@@ -1,9 +1,19 @@
 import type { VbenFormSchema } from '#/adapter/form';
 import type { VxeTableGridColumns } from '#/adapter/vxe-table';
-import type { SystemDeptApi, SystemRoleApi, SystemUserApi } from '#/api';
+import type {
+  SystemDeptApi,
+  SystemPositionApi,
+  SystemRoleApi,
+  SystemUserApi,
+} from '#/api';
 
 import { z } from '#/adapter/form';
-import { flattenDeptTree, getAllRoles, getDeptList } from '#/api';
+import {
+  flattenDeptTree,
+  getAllPositions,
+  getAllRoles,
+  getDeptList,
+} from '#/api';
 import { $t } from '#/locales';
 import { useDictOptions } from '#/store';
 
@@ -179,6 +189,24 @@ export function useFormSchema(getEditId: () => number): VbenFormSchema[] {
       fieldName: 'leaderDeptIds',
       label: $t('system.user.leaderDepts'),
     },
+    {
+      component: 'ApiSelect',
+      componentProps: {
+        afterFetch: (items: SystemPositionApi.Position[]) =>
+          items.map((position) => ({
+            // list 返回含禁用职位（历史挂载需可见回显），标注以便辨识
+            label:
+              position.status === 0
+                ? `${position.positionName}${$t('system.user.positionDisabledMark')}`
+                : position.positionName,
+            value: position.id,
+          })),
+        api: getAllPositions,
+        multiple: true,
+      },
+      fieldName: 'positionIds',
+      label: $t('system.user.positions'),
+    },
   ];
 }
 
@@ -226,6 +254,17 @@ export function useColumns(
           .join('、'),
       minWidth: 180,
       title: $t('system.user.depts'),
+    },
+    {
+      // 所属职位：后端 /user/list 回填 positions（含职位名），纯展示无主次
+      field: 'positions',
+      formatter: ({ cellValue }) =>
+        ((cellValue ?? []) as SystemUserApi.UserPositionItem[])
+          .map((position) => position.positionName)
+          .filter(Boolean)
+          .join('、'),
+      minWidth: 140,
+      title: $t('system.user.positions'),
     },
     { field: 'email', minWidth: 180, title: $t('system.user.email') },
     { field: 'phone', title: $t('system.user.phone'), width: 140 },

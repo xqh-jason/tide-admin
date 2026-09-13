@@ -2,8 +2,8 @@
 /**
  * 用户新增/编辑抽屉。
  * 契约要点：后端创建/更新均为全字段必填（UpdateUserReq），编辑态全量提交、
- * 空值以空字符串回传；password 空串表示不修改密码；roleIds/depts 均为
- * 全量替换语义（后端先清空旧关联再插入，空数组即清空全部关联）。
+ * 空值以空字符串回传；password 空串表示不修改密码；roleIds/depts/positionIds
+ * 均为全量替换语义（后端先清空旧关联再插入，空数组即清空全部关联）。
  * depts 非空时后端要求恰好一个主部门（isPrimary=1）。
  */
 import type { SystemUserApi } from '#/api';
@@ -72,6 +72,7 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemUserApi.SystemUser>({
               nickname: values.nickname ?? '',
               password: values.password ?? '',
               phone: values.phone ?? '',
+              positionIds: values.positionIds ?? [],
               roleIds: values.roleIds ?? [],
               status: values.status,
               username: values.username ?? '',
@@ -85,6 +86,7 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemUserApi.SystemUser>({
               nickname: values.nickname ?? '',
               password: values.password ?? '',
               phone: values.phone ?? '',
+              positionIds: values.positionIds ?? [],
               roleIds: values.roleIds ?? [],
               status: values.status,
               username: values.username ?? '',
@@ -136,6 +138,9 @@ const [Drawer, drawerApi] = useVbenDrawer<null | SystemUserApi.SystemUser>({
           .filter((dept) => dept.isLeader === 1)
           .map((dept) => dept.deptId),
         primaryDeptId: depts.find((dept) => dept.isPrimary === 1)?.deptId,
+        positionIds: (base.positions ?? []).map(
+          (position) => position.positionId,
+        ),
         roleIds: base.roleIds ?? [],
       });
     }

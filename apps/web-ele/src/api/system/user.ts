@@ -21,6 +21,8 @@ export namespace SystemUserApi {
     nickname: string;
     password?: string;
     phone?: string;
+    /** 职位挂载列表（/user/list 与 /user/get 均回填，含职位名） */
+    positions?: UserPositionItem[];
     roleIds?: number[];
     status: CommonStatus;
     username: string;
@@ -47,6 +49,16 @@ export namespace SystemUserApi {
     isPrimary: CommonStatus;
   }
 
+  /**
+   * 用户-职位挂载项（后端 UserPositionResp）：职位无主/负责人维度，纯展示；
+   * 请求侧只提交 positionIds（见 CreateParams/UpdateParams）
+   */
+  export interface UserPositionItem {
+    /** 职位名（后端批量拼装，仅响应返回；职位已软删时为空串） */
+    positionName?: string;
+    positionId: number;
+  }
+
   export interface ListParams extends AuditFilter, PageParams {
     /** 用户名模糊搜索 */
     keyword?: string;
@@ -67,6 +79,8 @@ export namespace SystemUserApi {
     phone?: string;
     /** 可为空数组，后端校验角色存在且启用 */
     roleIds: number[];
+    /** 可为空数组（不挂职位）；后端校验职位存在且未软删，停用职位允许挂载 */
+    positionIds: number[];
     status: CommonStatus;
     username: string;
   }
@@ -75,8 +89,8 @@ export namespace SystemUserApi {
    * 更新用户：后端 UpdateUserReq 除 email/phone/positionIds（serde default）
    * 外全字段必填、全量覆盖（username 后端允许修改，仅前端编辑抽屉禁用），
    * 编辑抽屉须全量提交（空串表示清空，password 空串表示不修改密码）；
-   * roleIds/depts 均为全量替换语义——后端先清空旧关联再插入，空数组即清空
-   * 全部关联。状态开关走独立的 /user/update-status 端点，不经此接口
+   * roleIds/depts/positionIds 均为全量替换语义——后端先清空旧关联再插入，
+   * 空数组即清空全部关联。状态开关走独立的 /user/update-status 端点，不经此接口
    */
   export interface UpdateParams {
     depts: UserDeptItem[];
@@ -87,6 +101,8 @@ export namespace SystemUserApi {
     password: string;
     phone?: string;
     roleIds: number[];
+    /** 全量替换语义，空数组即清空全部职位关联 */
+    positionIds: number[];
     status: CommonStatus;
     username: string;
   }

@@ -110,6 +110,20 @@
     "status": "HTTP Status",
     "title": "Operation Logs"
   },
+  "position": {
+    "deleteConfirmTip": "Delete position \"{0}\"? Rejected when assigned to users",
+    "keyword": "Keyword",
+    "keywordTip": "Fuzzy search by code/name",
+    "list": "Position List",
+    "operation": "Operation",
+    "positionCode": "Position Code",
+    "positionCodeTip": "Globally unique; code stays occupied after soft delete",
+    "positionName": "Position Name",
+    "remark": "Remark",
+    "sort": "Sort",
+    "status": "Status",
+    "title": "Position Management"
+  },
   "session": {
     "agent": "User-Agent",
     "batchDelete": "Batch Delete",
@@ -145,6 +159,8 @@
     "phone": "Phone",
     "primaryDept": "Primary Dept",
     "primaryDeptMark": " (primary)",
+    "positionDisabledMark": " (disabled)",
+    "positions": "Positions",
     "roles": "Roles",
     "rolesPlaceholder": "Select roles",
     "status": "Status",
