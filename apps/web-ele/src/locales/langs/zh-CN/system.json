@@ -110,6 +110,27 @@
     "status": "HTTP 状态",
     "title": "操作日志"
   },
+  "session": {
+    "agent": "User-Agent",
+    "batchDelete": "批量删除",
+    "batchDeleteConfirm": "确认删除选中的 {0} 条会话记录？在线/未过期会话将被跳过",
+    "batchDeleteEmpty": "请先勾选要删除的会话",
+    "createdAt": "登录时间",
+    "expired": "已过期",
+    "expiresAt": "过期时间",
+    "forceLogout": "强制下线",
+    "forceLogoutConfirm": "确认强制下线用户「{0}」的当前会话？",
+    "ip": "IP 地址",
+    "lastActiveAt": "最后活跃",
+    "list": "会话列表",
+    "offline": "离线",
+    "online": "在线",
+    "operation": "操作",
+    "revokeReason": "下线原因",
+    "revoked": "已下线",
+    "status": "状态",
+    "username": "用户名"
+  },
   "user": {
     "deptDisabledMark": "（已停用）",
     "depts": "所属部门",

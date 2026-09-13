@@ -6,7 +6,9 @@
  * - 业务接口全 POST + JSON body；请求头统一注入 Bearer token 与 Accept-Language；
  * - 响应包装 { code, data, message }，code=1 成功 / 0 失败（HTTP 恒 200，
  *   仅认证失败返回 401），successCode 必须为 1（vben 默认 0）；
- * - 后端暂无 refresh token 机制，enableRefreshToken 保持默认关闭。
+ * - 后端已提供 /auth/refresh（refresh token 走 HttpOnly Cookie），已开启
+ *   enableRefreshToken；契约见 tide-admin docs/superpowers/specs/
+ *   2026-09-13-auth-refresh-session-design.md §2
  */
 import type { RequestClientOptions } from '@vben/request';
 
