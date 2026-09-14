@@ -47,6 +47,8 @@ const formSchema = computed((): VbenFormSchema[] => {
       },
       fieldName: 'code',
       label: $t('authentication.code'),
+      // 6 位定长输入：失焦/提交时才校验，避免每敲一位数字就提示长度错误
+      formFieldProps: { validateOn: ['blur'] },
       rules: z.string().length(CODE_LENGTH, {
         message: $t('authentication.codeTip', [CODE_LENGTH]),
       }),

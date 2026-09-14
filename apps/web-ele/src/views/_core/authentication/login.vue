@@ -49,6 +49,9 @@ const formSchema = computed((): VbenFormSchema[] => {
       },
       fieldName: 'captchaValue',
       label: $t('authentication.captcha'),
+      // 4 位定长输入：失焦/提交时才校验，避免每敲一位数字
+      // 就触发一次「请输入 4 位图形验证码」
+      formFieldProps: { validateOn: ['blur'] },
       rules: z
         .string()
         .regex(/^\d{4}$/, { message: $t('authentication.captchaTip') }),
@@ -85,10 +88,21 @@ onMounted(refreshCaptcha);
 </script>
 
 <template>
+  <!--
+    AuthenticationLogin 的这些入口默认全是 true，后端只实现了
+    /auth/login（账号密码 + 图形验证码），手机号登录、扫码登录、注册、
+    找回密码、第三方登录都会跳到没有后端支撑的页面，故全部关掉。
+    后续真正实现了对应流程，把相应的 prop 去掉即可恢复入口。
+  -->
   <AuthenticationLogin
     ref="loginRef"
     :form-schema="formSchema"
     :loading="authStore.loginLoading"
+    :show-code-login="false"
+    :show-forget-password="false"
+    :show-qrcode-login="false"
+    :show-register="false"
+    :show-third-party-login="false"
     @submit="handleLogin"
   />
 </template>

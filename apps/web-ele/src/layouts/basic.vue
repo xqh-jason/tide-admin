@@ -10,9 +10,7 @@ import { computed, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { AuthenticationLoginExpiredModal } from '@vben/common-ui';
-import { VBEN_DOC_URL, VBEN_GITHUB_URL } from '@vben/constants';
 import { useWatermark } from '@vben/hooks';
-import { BookOpenText, CircleHelp, SvgGithubIcon } from '@vben/icons';
 import {
   BasicLayout,
   LockScreen,
@@ -21,8 +19,8 @@ import {
 } from '@vben/layouts';
 import { preferences, usePreferences } from '@vben/preferences';
 import { useAccessStore, useUserStore } from '@vben/stores';
-import { openWindow } from '@vben/utils';
 
+import { BRAND_LOGO, BRAND_LOGO_DARK } from '#/brand';
 import { $t } from '#/locales';
 import { useAuthStore } from '#/store';
 import LoginForm from '#/views/_core/authentication/login.vue';
@@ -40,6 +38,11 @@ const showDot = computed(() =>
   notifications.value.some((item) => !item.isRead),
 );
 
+/**
+ * 用户下拉菜单。
+ * 原先脚手架自带的「文档 / GitHub / 问答」三个入口指向 vben 官方站点，与 Tide Admin 无关，已移除。
+ * 后续如需「帮助中心」等入口，在此追加并指向自有文档站。
+ */
 const menus = computed(() => [
   {
     handler: () => {
@@ -47,33 +50,6 @@ const menus = computed(() => [
     },
     icon: 'lucide:user',
     text: $t('page.auth.profile'),
-  },
-  {
-    handler: () => {
-      openWindow(VBEN_DOC_URL, {
-        target: '_blank',
-      });
-    },
-    icon: BookOpenText,
-    text: $t('ui.widgets.document'),
-  },
-  {
-    handler: () => {
-      openWindow(VBEN_GITHUB_URL, {
-        target: '_blank',
-      });
-    },
-    icon: SvgGithubIcon,
-    text: 'GitHub',
-  },
-  {
-    handler: () => {
-      openWindow(`${VBEN_GITHUB_URL}/issues`, {
-        target: '_blank',
-      });
-    },
-    icon: CircleHelp,
-    text: $t('ui.widgets.qa'),
   },
 ]);
 
@@ -147,6 +123,8 @@ watch(
 <template>
   <BasicLayout
     :avatar
+    :logo-src="BRAND_LOGO"
+    :logo-src-dark="BRAND_LOGO_DARK"
     :text="userStore.userInfo?.realName"
     @clear-preferences-and-logout="handleLogout"
     @logout="handleLogout"
