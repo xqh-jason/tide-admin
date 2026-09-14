@@ -84,10 +84,14 @@ async function onDelete(row: SystemJobApi.Job) {
   gridApi.query();
 }
 
-function onActionClick({ code, row }: OnActionClickParams<SystemJobApi.Job>) {
+async function onActionClick({
+  code,
+  row,
+}: OnActionClickParams<SystemJobApi.Job>) {
   switch (code) {
     case 'delete': {
-      onDelete(row);
+      // await 让 VbenTableAction 的提交态覆盖整个请求，防止连点重复提交
+      await onDelete(row);
       break;
     }
     case 'edit': {
@@ -99,7 +103,7 @@ function onActionClick({ code, row }: OnActionClickParams<SystemJobApi.Job>) {
       break;
     }
     case 'runOnce': {
-      onRunOnce(row);
+      await onRunOnce(row);
       break;
     }
   }

@@ -59,13 +59,14 @@ async function onDelete(row: SystemDictionaryApi.DictionaryDetail) {
   gridApi.query();
 }
 
-function onActionClick({
+async function onActionClick({
   code,
   row,
 }: OnActionClickParams<SystemDictionaryApi.DictionaryDetail>) {
   switch (code) {
     case 'delete': {
-      onDelete(row);
+      // await 让 VbenTableAction 的提交态覆盖整个请求，防止连点重复删除
+      await onDelete(row);
       break;
     }
     case 'edit': {

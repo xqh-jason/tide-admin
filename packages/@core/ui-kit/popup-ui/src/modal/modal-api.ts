@@ -21,6 +21,12 @@ export class ModalApi<TData = unknown> {
   >;
 
   // private prevState!: ModalState;
+  /**
+   * 提交重入锁：onConfirm 的 handler 返回前忽略重复触发，防止连点导致重复提交。
+   * 与 submitting 状态解耦，避免校验失败时闪 loading 或干扰业务的 lock/unlock。
+   */
+  private confirming = false;
+
   private state!: ModalState;
 
   constructor(options: ModalApiOptions = {}) {
@@ -141,9 +147,19 @@ export class ModalApi<TData = unknown> {
 
   /**
    * 确认操作
+   * @description 带重入锁：上一次 onConfirm 未结束前，重复调用直接忽略，
+   * 防止异步校验/提交期间连点触发多次提交
    */
-  onConfirm() {
-    this.api.onConfirm?.();
+  async onConfirm() {
+    if (this.confirming) {
+      return;
+    }
+    this.confirming = true;
+    try {
+      await this.api.onConfirm?.();
+    } finally {
+      this.confirming = false;
+    }
   }
 
   /**

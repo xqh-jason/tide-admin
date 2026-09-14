@@ -13,6 +13,8 @@ import type {
 } from '#/adapter/vxe-table';
 import type { SystemSessionApi } from '#/api';
 
+import { ref } from 'vue';
+
 import { Page } from '@vben/common-ui';
 
 import { ElButton, ElMessage, ElMessageBox } from 'element-plus';
@@ -49,35 +51,54 @@ async function onDelete(row: SystemSessionApi.Session) {
   gridApi.query();
 }
 
+/** 批量删除提交态：请求进行中置 loading 并忽略重复点击，防止连点重复提交 */
+const batchDeleting = ref(false);
+
 /** 批量删除勾选的会话记录：在线/未过期会话由后端静默跳过 */
 async function onBatchDelete() {
+  if (batchDeleting.value) {
+    return;
+  }
   const rows = gridApi.grid.getCheckboxRecords() as SystemSessionApi.Session[];
   if (rows.length === 0) {
     ElMessage.warning($t('system.session.batchDeleteEmpty'));
     return;
   }
-  await ElMessageBox.confirm(
-    $t('system.session.batchDeleteConfirm', [rows.length]),
-    $t('common.delete'),
-    { type: 'warning' },
-  );
-  await deleteSessionBatch(rows.map((row) => row.id));
-  ElMessage.success($t('ui.actionMessage.deleteSuccess'));
-  gridApi.grid.clearCheckboxRow();
-  gridApi.query();
+  try {
+    await ElMessageBox.confirm(
+      $t('system.session.batchDeleteConfirm', [rows.length]),
+      $t('common.delete'),
+      { type: 'warning' },
+    );
+  } catch {
+    // 用户取消确认
+    return;
+  }
+  batchDeleting.value = true;
+  try {
+    await deleteSessionBatch(rows.map((row) => row.id));
+    ElMessage.success($t('ui.actionMessage.deleteSuccess'));
+    gridApi.grid.clearCheckboxRow();
+    gridApi.query();
+  } catch {
+    // 失败提示由 request 拦截器统一处理
+  } finally {
+    batchDeleting.value = false;
+  }
 }
 
-function onActionClick({
+async function onActionClick({
   code,
   row,
 }: OnActionClickParams<SystemSessionApi.Session>) {
   switch (code) {
     case 'delete': {
-      onDelete(row);
+      // await 让 VbenTableAction 的提交态覆盖整个请求，防止连点重复提交
+      await onDelete(row);
       break;
     }
     case 'forceLogout': {
-      onForceLogout(row);
+      await onForceLogout(row);
       break;
     }
   }
@@ -129,6 +150,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
         <ElButton
           v-access:code="'system:session:delete'"
           danger
+          :loading="batchDeleting"
           plain
           @click="onBatchDelete"
         >

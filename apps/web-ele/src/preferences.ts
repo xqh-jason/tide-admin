@@ -21,7 +21,7 @@ export const overridesPreferences = defineOverridesPreferences({
   copyright: {
     companyName: 'Tide',
     companySiteLink: '',
-    date: '2026',
+    date: new Date().getFullYear().toString(),
     enable: true,
     icp: '',
     icpLink: 'https://beian.miit.gov.cn/',

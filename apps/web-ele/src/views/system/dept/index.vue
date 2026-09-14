@@ -46,7 +46,7 @@ async function onDelete(row: SystemDeptApi.SystemDept) {
 }
 
 /** 操作列统一入口（CellOperation onClick 分发），append 为新增下级部门 */
-function onActionClick({
+async function onActionClick({
   code,
   row,
 }: OnActionClickParams<SystemDeptApi.SystemDept>) {
@@ -57,7 +57,8 @@ function onActionClick({
       break;
     }
     case 'delete': {
-      onDelete(row);
+      // await 让 CellOperation 的行级操作锁覆盖整个请求，防止连点重复删除
+      await onDelete(row);
       break;
     }
     case 'edit': {

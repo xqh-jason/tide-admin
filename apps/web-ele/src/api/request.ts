@@ -7,8 +7,7 @@
  * - 响应包装 { code, data, message }，code=1 成功 / 0 失败（HTTP 恒 200，
  *   仅认证失败返回 401），successCode 必须为 1（vben 默认 0）；
  * - 后端已提供 /auth/refresh（refresh token 走 HttpOnly Cookie），已开启
- *   enableRefreshToken；契约见 tide-admin docs/superpowers/specs/
- *   2026-09-13-auth-refresh-session-design.md §2
+ *   enableRefreshToken
  */
 import type { RequestClientOptions } from '@vben/request';
 
@@ -55,9 +54,8 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
   }
 
   /**
-   * 刷新token逻辑
-   * ⚠️ 后端暂无 /auth/refresh 端点；enableRefreshToken 关闭时不会被调用，
-   * 后端补齐 refresh 机制前请勿开启该开关
+   * 刷新 token 逻辑：由 authenticateResponseInterceptor 在收到 401 时调用
+   * （enableRefreshToken 为 true 时启用），refresh token 走 HttpOnly Cookie
    */
   async function doRefreshToken() {
     const accessStore = useAccessStore();
@@ -102,7 +100,8 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
 
   client.addResponseInterceptor(
     errorMessageResponseInterceptor((msg: string, error) => {
-      // 后端失败响应为 { code, data, message }，从 message 提取错误文案
+      // 后端失败响应为 { code, data, message }（HTTP 恒 200），
+      // 错误文案优先取 error，回退 message
       const responseData = error?.response?.data ?? {};
       const errorMessage = responseData?.error ?? responseData?.message ?? '';
       ElMessage.error(errorMessage || msg);
@@ -116,4 +115,9 @@ export const requestClient = createRequestClient(apiURL, {
   responseReturn: 'data',
 });
 
+/**
+ * 不套统一响应契约的客户端：保留 RequestClient 默认的 responseReturn: 'raw'，
+ * 用于 /auth/refresh 等需要读取 HTTP 层 { data, status } 的场景
+ * （见 api/core/auth.ts 的 refreshTokenApi）
+ */
 export const baseRequestClient = new RequestClient({ baseURL: apiURL });

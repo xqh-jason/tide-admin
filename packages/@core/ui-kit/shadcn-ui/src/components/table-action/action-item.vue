@@ -13,6 +13,12 @@ const props = defineProps<{ action: ActionItem }>();
 
 const open = ref(false);
 
+/**
+ * 提交重入锁：确认回调执行期间按钮置 loading 并忽略重复确认，防止连点重复提交。
+ * 约定页面 action 的 popConfirm.confirm 返回 Promise（内部 await 实际请求）。
+ */
+const submitting = ref(false);
+
 const buttonClass = computed(() =>
   cn(
     'gap-1',
@@ -29,13 +35,17 @@ function onClick() {
   props.action.onClick?.();
 }
 
-function onConfirm() {
-  open.value = false;
+async function onConfirm() {
+  if (submitting.value) return;
   const pc = props.action.popConfirm;
-  if (pc?.confirm) {
-    pc.confirm();
-  } else {
-    props.action.onClick?.();
+  open.value = false;
+  submitting.value = true;
+  try {
+    await (pc?.confirm ? pc.confirm() : props.action.onClick?.());
+  } catch {
+    // 失败提示由 request 拦截器统一处理，这里只负责结束提交态
+  } finally {
+    submitting.value = false;
   }
 }
 
@@ -50,8 +60,8 @@ function onCancel() {
     <PopoverTrigger as-child>
       <VbenButton
         :class="buttonClass"
-        :disabled="action.disabled"
-        :loading="action.loading"
+        :disabled="action.disabled || submitting"
+        :loading="action.loading || submitting"
         :size="size"
         class="p-2"
         :variant="variant"

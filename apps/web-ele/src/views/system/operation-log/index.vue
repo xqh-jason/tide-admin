@@ -71,13 +71,14 @@ const [Grid, gridApi] = useVbenVxeGrid({
   } as VxeTableGridOptions<OperationLogApi.OperationLog>,
 });
 
-function onActionClick({
+async function onActionClick({
   code,
   row,
 }: OnActionClickParams<OperationLogApi.OperationLog>) {
   switch (code) {
     case 'delete': {
-      onDelete(row);
+      // await 让 VbenTableAction 的提交态覆盖整个请求，防止连点重复删除
+      await onDelete(row);
       break;
     }
     case 'detail': {

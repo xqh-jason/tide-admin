@@ -39,7 +39,7 @@ export async function loginApi(data: AuthApi.LoginParams) {
  * 刷新 accessToken
  * 后端契约：POST /auth/refresh 公开端点，凭 HttpOnly Cookie 中的 refresh token
  * 换发新 access token；成功响应体是**裸 token 字符串**（非 {code,data} 包裹），
- * 失败返回真 HTTP 401。详见 docs/superpowers/specs/2026-09-13-auth-refresh-session-design.md §2
+ * 失败返回真 HTTP 401
  */
 export async function refreshTokenApi() {
   return baseRequestClient.post<AuthApi.RefreshTokenResult>(

@@ -291,7 +291,8 @@ export function useColumns(
       showOverflow: false,
       slots: { default: 'action' },
       title: $t('system.user.operation'),
-      width: 150,
+      // 编辑 + 踢出全部会话 + 删除三个按钮并排，故较其它页更宽
+      width: 220,
     },
   ];
 }

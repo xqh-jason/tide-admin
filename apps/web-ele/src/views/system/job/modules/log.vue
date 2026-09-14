@@ -52,13 +52,14 @@ async function onBatchDelete() {
   gridApi.query();
 }
 
-function onActionClick({
+async function onActionClick({
   code,
   row,
 }: OnActionClickParams<SystemJobLogApi.JobLog>) {
   switch (code) {
     case 'delete': {
-      onDelete(row);
+      // await 让操作按钮的提交态覆盖整个请求，防止连点重复删除
+      await onDelete(row);
       break;
     }
   }
