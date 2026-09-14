@@ -103,13 +103,14 @@ function onCreate() {
  * 按钮级操作再按 system:dictionary-detail:* 控制），
  * edit/delete 分别受 system:dictionary:update/delete 控制
  */
-function onActionClick({
+async function onActionClick({
   code,
   row,
 }: OnActionClickParams<SystemDictionaryApi.Dictionary>) {
   switch (code) {
     case 'delete': {
-      onDelete(row);
+      // await 让 VbenTableAction 的提交态覆盖整个请求，防止连点重复删除
+      await onDelete(row);
       break;
     }
     case 'edit': {

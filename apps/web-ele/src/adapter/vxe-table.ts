@@ -218,7 +218,26 @@ setupVbenVxeTable({
             return hasAccessByCodes(codes);
           });
 
+        // 行级操作锁：任一操作执行期间，该行按钮置 loading 且忽略重复触发，
+        // 防止连点导致重复提交。约定页面的 attrs.onClick 返回 Promise，
+        // 与 CellSwitch 的行级 loading 保持一致（同样落在 row 上，随行数据重建而失效）
+        const loadingKey = '__operation_loading';
+        async function runAction(code: string) {
+          if (row[loadingKey]) {
+            return;
+          }
+          row[loadingKey] = true;
+          try {
+            await attrs?.onClick?.({ code, row });
+          } catch {
+            // 失败提示由 request 拦截器统一处理，这里只负责结束操作态
+          } finally {
+            row[loadingKey] = false;
+          }
+        }
+
         function renderBtn(opt: Recordable<any>, listen = true) {
+          const pending = row[loadingKey] === true;
           return h(
             ElButton,
             {
@@ -229,9 +248,9 @@ setupVbenVxeTable({
               size: 'small',
               text: undefined,
               type: opt.danger ? 'danger' : 'primary',
-              onClick: listen
-                ? () => attrs?.onClick?.({ code: opt.code, row })
-                : undefined,
+              loading: pending,
+              disabled: pending || opt.disabled,
+              onClick: listen ? () => runAction(opt.code) : undefined,
             },
             {
               default: () => {
@@ -263,7 +282,7 @@ setupVbenVxeTable({
                 ]),
               width: 220,
               onConfirm: () => {
-                attrs?.onClick?.({ code: opt.code, row });
+                runAction(opt.code);
               },
             },
             {

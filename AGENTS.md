@@ -30,7 +30,7 @@ pnpm check:circular         # 循环依赖检查
 - baseURL 为 `/api/v1`（`VITE_GLOB_API_URL`），dev 下 vite proxy 转发到 `http://127.0.0.1:8080`（Salvo 后端）。
 - 业务接口全 POST + JSON body；请求头统一注入 Bearer token 与 Accept-Language。
 - 响应包装 `{ code, data, message }`，`code=1` 成功 / `0` 失败，HTTP 恒 200（仅认证失败 401）。vben 默认 successCode 为 0，此处已改为 1，勿改回。
-- 后端暂无 refresh token 机制，`enableRefreshToken` 保持关闭；未补齐 `/auth/refresh` 前勿开启。
+- 后端已提供 `/auth/refresh`（refresh token 走 HttpOnly Cookie），`enableRefreshToken` 已开启（见 `apps/web-ele/src/preferences.ts`）；401 时先静默刷新，失败才走重新认证。
 
 ## 架构
 
@@ -58,6 +58,16 @@ pnpm check:circular         # 循环依赖检查
 - `views/system/*` — 管理页统一结构：`index.vue`（页面 + vxe-table）+ `data.ts`（列/搜索/表单 schema）+ `modules/form.vue`（新建/编辑抽屉）；审计列与搜索复用 `audit-columns.ts`、`audit-search.ts`。
 - `adapter/` — 将 vben 的 form/vxe-table 适配到 Element Plus 组件（`form.ts`、`vxe-table.ts`、`component/`），页面不直接注册适配器。
 - `store/` — 应用级 Pinia store（auth、dict 字典缓存）。
+
+### 写操作防连点（约定）
+
+由 UI 触发的写操作必须复用既有统一机制，不得在页面另起一套：
+
+- **表单/弹窗提交** — 走 `useVbenDrawer`/`useVbenModal` 的 `onConfirm`，保留 `lock()/unlock()`，且 handler 内必须 `await` 提交请求。`DrawerApi`/`ModalApi` 已内置重入锁（`packages/@core/ui-kit/popup-ui` 的 `*-api.ts`），重复确认会被忽略。
+- **列表行内操作** — 走 `CellOperation` 渲染器（`adapter/vxe-table.ts`，内置行级操作锁）或 `VbenTableAction`（`action-item.vue`，确认按钮内置提交态）；页面的 `onActionClick` 必须为 `async` 且 `await` 写操作，否则锁覆盖不到请求。
+- **工具栏按钮**（批量删除等）— 页面自持提交态 `ref`，绑 `:loading` 并做重入判断。
+- 查询类接口（list/detail/导出）不加防连点。
+- 不要在 `api/request.ts` 做通用请求去重（相同 body 的并发可能是合法的重试/批量）。
 
 ## 其他
 

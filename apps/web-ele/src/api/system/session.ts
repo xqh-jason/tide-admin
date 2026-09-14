@@ -80,3 +80,14 @@ export async function deleteSession(id: number) {
 export async function deleteSessionBatch(ids: number[]) {
   return requestClient.post<number>('/refresh-token/delete-batch', { ids });
 }
+
+/**
+ * 踢出指定用户的全部会话（吊销其所有仍然有效的凭证，需权限码 system:session:force-logout）；
+ * 返回受影响会话数，0 表示该用户当前没有在线会话。
+ * 后端允许管理员对自己操作——踢自己即立刻掉线，需重新登录
+ */
+export async function forceLogoutUserSessions(userId: number) {
+  return requestClient.post<number>('/refresh-token/force-logout-user', {
+    userId,
+  });
+}

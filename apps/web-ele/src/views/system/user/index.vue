@@ -17,7 +17,12 @@ import { Plus } from '@vben/icons';
 import { ElButton, ElMessage } from 'element-plus';
 
 import { useVbenVxeGrid, VbenTableAction } from '#/adapter/vxe-table';
-import { deleteUser, getUserList, updateUserStatus } from '#/api';
+import {
+  deleteUser,
+  forceLogoutUserSessions,
+  getUserList,
+  updateUserStatus,
+} from '#/api';
 import { $t } from '#/locales';
 
 import { auditTimeCodec, useAuditSearchSchema } from '../audit-search';
@@ -53,6 +58,20 @@ async function onDelete(row: SystemUserApi.SystemUser) {
   await deleteUser(row.id);
   ElMessage.success($t('ui.actionMessage.deleteSuccess'));
   gridApi.query();
+}
+
+/**
+ * 踢出该用户全部会话（按 userId 吊销其所有有效凭证，需 system:session:force-logout）；
+ * 提示后端返回的受影响会话数，0 表示该用户当前没有在线会话。
+ * 不刷新用户列表（会话变化不影响用户数据）；踢自己会立即掉线需重新登录
+ */
+async function onForceLogoutAll(row: SystemUserApi.SystemUser) {
+  const affected = await forceLogoutUserSessions(row.id);
+  if (affected === 0) {
+    ElMessage.info($t('system.user.forceLogoutAllEmpty', [row.username]));
+    return;
+  }
+  ElMessage.success($t('system.user.forceLogoutAllSuccess', [affected]));
 }
 
 const [Grid, gridApi] = useVbenVxeGrid({
@@ -91,17 +110,22 @@ function onCreate() {
   formDrawerApi.setData(null).open();
 }
 
-function onActionClick({
+async function onActionClick({
   code,
   row,
 }: OnActionClickParams<SystemUserApi.SystemUser>) {
   switch (code) {
     case 'delete': {
-      onDelete(row);
+      // await 让 VbenTableAction 的提交态覆盖整个请求，防止连点重复提交
+      await onDelete(row);
       break;
     }
     case 'edit': {
       formDrawerApi.setData(row).open();
+      break;
+    }
+    case 'forceLogoutAll': {
+      await onForceLogoutAll(row);
       break;
     }
   }
@@ -122,6 +146,9 @@ function onActionClick({
           {{ $t('ui.actionTitle.create', [$t('system.user.title')]) }}
         </ElButton>
       </template>
+      <!-- 操作列：VbenTableAction 内置权限过滤（auth 字段）。
+           踢出全部会话按 userId 吊销该用户全部有效凭证，后端允许对自己操作，
+           故不像编辑/删除那样排除 admin；与强制下线一致走气泡二次确认 -->
       <template #action="{ row }">
         <VbenTableAction
           :actions="[
@@ -135,6 +162,20 @@ function onActionClick({
                   row: row as SystemUserApi.SystemUser,
                 }),
               text: $t('common.edit'),
+            },
+            {
+              auth: 'system:session:force-logout',
+              popConfirm: {
+                confirm: () =>
+                  onActionClick({
+                    code: 'forceLogoutAll',
+                    row: row as SystemUserApi.SystemUser,
+                  }),
+                title: $t('system.user.forceLogoutAllConfirm', [
+                  (row as SystemUserApi.SystemUser).username,
+                ]),
+              },
+              text: $t('system.user.forceLogoutAll'),
             },
             {
               auth: 'system:user:delete',

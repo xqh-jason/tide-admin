@@ -40,13 +40,14 @@ async function onDelete(row: SystemApiApi.SystemApi) {
 }
 
 /** 操作列统一入口（CellOperation onClick 分发），edit/delete 权限码见 data.ts */
-function onActionClick({
+async function onActionClick({
   code,
   row,
 }: OnActionClickParams<SystemApiApi.SystemApi>) {
   switch (code) {
     case 'delete': {
-      onDelete(row);
+      // await 让 CellOperation 的行级操作锁覆盖整个请求，防止连点重复删除
+      await onDelete(row);
       break;
     }
     case 'edit': {
