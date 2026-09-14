@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" width="640" height="640" role="img" aria-label="Tide Admin">
+  <title>Tide · 潮起</title>
+  <desc>品牌徽标立于潮面之上，四周为潮汐涟漪与层层潮水。</desc>
+  <defs>
+    <linearGradient id="illTile" x1="182" y1="138" x2="458" y2="414" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0A3AA8" />
+      <stop offset="0.52" stop-color="#1063E4" />
+      <stop offset="1" stop-color="#1FB6EE" />
+    </linearGradient>
+    <radialGradient id="illAura" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#3B8CFF" stop-opacity="0.2" />
+      <stop offset="0.55" stop-color="#3B8CFF" stop-opacity="0.07" />
+      <stop offset="1" stop-color="#3B8CFF" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="illTideA" x1="320" y1="400" x2="320" y2="600" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#5AB0FF" />
+      <stop offset="1" stop-color="#3E9BFF" />
+    </linearGradient>
+    <linearGradient id="illTideB" x1="320" y1="440" x2="320" y2="640" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#2F80F5" />
+      <stop offset="1" stop-color="#1F63E0" />
+    </linearGradient>
+    <linearGradient id="illTideC" x1="320" y1="490" x2="320" y2="640" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1A4FD6" />
+      <stop offset="1" stop-color="#123AA6" />
+    </linearGradient>
+    <linearGradient id="illFadeY" x1="0" y1="392" x2="0" y2="640" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0" />
+      <stop offset="0.18" stop-color="#FFFFFF" />
+      <stop offset="0.72" stop-color="#FFFFFF" />
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id="illFadeX" x1="0" y1="0" x2="640" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity="0" />
+      <stop offset="0.2" stop-color="#FFFFFF" />
+      <stop offset="0.8" stop-color="#FFFFFF" />
+      <stop offset="1" stop-color="#FFFFFF" stop-opacity="0" />
+    </linearGradient>
+    <mask id="illMaskY">
+      <rect x="0" y="392" width="640" height="248" fill="url(#illFadeY)" />
+    </mask>
+    <mask id="illMaskX">
+      <rect width="640" height="640" fill="url(#illFadeX)" />
+    </mask>
+    <clipPath id="illBadge">
+      <rect width="64" height="64" rx="17" />
+    </clipPath>
+  </defs>
+
+  <ellipse cx="320" cy="296" rx="292" ry="266" fill="url(#illAura)" />
+
+  <g mask="url(#illMaskX)">
+    <rect
+      x="108"
+      y="64"
+      width="424"
+      height="424"
+      rx="112"
+      fill="none"
+      stroke="#4E9BFF"
+      stroke-opacity="0.14"
+      stroke-width="2.4"
+    />
+    <rect
+      x="142"
+      y="98"
+      width="356"
+      height="356"
+      rx="94"
+      fill="none"
+      stroke="#4E9BFF"
+      stroke-opacity="0.26"
+      stroke-width="2.4"
+    />
+  </g>
+
+  <g mask="url(#illMaskY)">
+    <g mask="url(#illMaskX)">
+      <path
+        d="M-20 452 C 60 412 140 412 220 452 C 300 492 380 492 460 452 C 540 412 620 412 700 452 L 700 700 L -20 700 Z"
+        fill="url(#illTideA)"
+        fill-opacity="0.26"
+      />
+      <path
+        d="M-20 498 C 60 538 140 538 220 498 C 300 458 380 458 460 498 C 540 538 620 538 700 498 L 700 700 L -20 700 Z"
+        fill="url(#illTideB)"
+        fill-opacity="0.34"
+      />
+      <path
+        d="M-20 548 C 60 508 140 508 220 548 C 300 588 380 588 460 548 C 540 508 620 508 700 548 L 700 700 L -20 700 Z"
+        fill="url(#illTideC)"
+        fill-opacity="0.46"
+      />
+      <path
+        d="M-20 548 C 60 508 140 508 220 548 C 300 588 380 588 460 548 C 540 508 620 508 700 548"
+        fill="none"
+        stroke="#9FD2FF"
+        stroke-linecap="round"
+        stroke-opacity="0.5"
+        stroke-width="3"
+      />
+      <path
+        d="M-20 498 C 60 538 140 538 220 498 C 300 458 380 458 460 498 C 540 538 620 538 700 498"
+        fill="none"
+        stroke="#8FC4FF"
+        stroke-linecap="round"
+        stroke-opacity="0.34"
+        stroke-width="2.4"
+      />
+      <g fill="none" stroke="#9FD2FF" stroke-opacity="0.42">
+        <circle cx="150" cy="596" r="8" />
+        <circle cx="188" cy="616" r="4.5" />
+        <circle cx="492" cy="586" r="10" />
+        <circle cx="536" cy="612" r="5.5" />
+      </g>
+    </g>
+  </g>
+
+  <g transform="translate(176 132) scale(4.5)">
+    <rect width="64" height="64" rx="17" fill="url(#illTile)" />
+    <g clip-path="url(#illBadge)">
+      <!-- 与 brand/logo.svg 保持同一笔形：正体矩形 T，全程位于潮线之上 -->
+      <rect x="15" y="10" width="34" height="7.6" rx="3.8" fill="#FFFFFF" />
+      <rect x="28.2" y="12" width="7.6" height="23.8" rx="3.8" fill="#FFFFFF" />
+      <path
+        d="M-4 49.5 Q 7 40.5 18 49.5 Q 29 58.5 40 49.5 Q 51 40.5 62 49.5 Q 73 58.5 84 49.5 L 84 68 L -4 68 Z"
+        fill="#FFFFFF"
+        fill-opacity="0.07"
+      />
+      <path
+        d="M-4 49.5 Q 7 40.5 18 49.5 Q 29 58.5 40 49.5 Q 51 40.5 62 49.5 Q 73 58.5 84 49.5"
+        fill="none"
+        stroke="#FFFFFF"
+        stroke-linecap="round"
+        stroke-opacity="0.92"
+        stroke-width="4.3"
+      />
+    </g>
+  </g>
+</svg>
