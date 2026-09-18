@@ -2,7 +2,7 @@
 
 # tide-admin
 
-基于 [Vue Vben Admin 5.x](https://github.com/vbenjs/vue-vben-admin) 的中后台管理前端，对接 Rust Salvo 后端 [tide-server](https://github.com/xqh-jason/tide-server)
+基于 [Vue Vben Admin 5.x](https://github.com/vbenjs/vue-vben-admin) 二次开发的中后台管理前端，对接 Rust Salvo 后端 [tide-server](https://github.com/xqh-jason/tide-server)
 
 [![license](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE) [![node](https://img.shields.io/badge/node-%5E22.18%20%7C%7C%20%5E24.12-blue.svg)](./package.json) [![pnpm](https://img.shields.io/badge/pnpm-11-orange.svg)](./package.json)
 
@@ -117,4 +117,7 @@ docker compose up -d --build   # 访问 http://localhost:80
 
 本项目基于 [MIT](LICENSE) 协议开源。
 
-脚手架基座为 [Vue Vben Admin](https://github.com/vbenjs/vue-vben-admin)（MIT）， `packages/`、`internal/`、`scripts/` 等路径下的上游代码版权归其原作者所有，详见 [LICENSE](./LICENSE)；`apps/web-ele` 下的业务实现为本项目自有代码。
+本仓库是 [Vue Vben Admin](https://github.com/vbenjs/vue-vben-admin) 的**二次开发（derivative work）**，
+并非上游官方版本；`packages/`、`internal/`、`scripts/` 等路径下的代码整包来自上游，
+版权归原作者所有，`LICENSE` 中同时保留上游与本案的版权声明。
+`apps/web-ele` 下的业务实现为本项目自有代码。

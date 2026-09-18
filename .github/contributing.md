@@ -1,6 +1,6 @@
-# Vben Admin Contributing Guide
+# tide-admin Contributing Guide
 
-Hi! We're really excited that you are interested in contributing to Vben Admin. Before submitting your contribution, please make sure to take a moment and read through the following guidelines:
+Hi! We're really excited that you are interested in contributing to tide-admin. Before submitting your contribution, please make sure to take a moment and read through the following guidelines:
 
 - [Pull Request Guidelines](#pull-request-guidelines)
 
@@ -35,6 +35,11 @@ After cloning the repo, run:
 ```bash
 # install the dependencies of the project
 $ pnpm install
-# start the project
-$ pnpm run dev
+# start the web-ele app
+$ pnpm dev:ele
+# or start the backend first, see the tide-server README
 ```
+
+Note: this repository is a derivative work of [Vue Vben Admin](https://github.com/vbenjs/vue-vben-admin).
+Changes under `packages/`, `internal/` and `scripts/` touch upstream code — please keep such
+changes focused, and prefer extending `apps/web-ele` when the goal is a feature of this project.

@@ -1,5 +1,5 @@
 name: 🐞 Bug Report
-description: Report an issue with Vben Admin to help us make it better.
+description: Report an issue with tide-admin to help us make it better.
 title: 'Bug: '
 labels: ['bug: pending triage']
 
@@ -12,10 +12,9 @@ body:
     id: version
     attributes:
       label: Version
-      description: What version of our software are you running?
+      description: Which version of tide-admin are you running?
       options:
-        - Vben Admin V5
-        - Vben Admin V2
+        - tide-admin (main)
       default: 0
     validations:
       required: true
