@@ -1,5 +1,5 @@
 name: 📚 Documentation
-description: Report an issue with Vben Admin Website to help us make it better.
+description: Report an issue with the tide-admin documentation to help us make it better.
 title: 'Docs: '
 labels: [documentation]
 body:
@@ -35,4 +35,4 @@ body:
     attributes:
       label: Steps to reproduce
       description: Please provide any reproduction steps that may need to be described. E.g. if it happens only when running the dev or build script make sure it's clear which one to use.
-      placeholder: Run `pnpm install` followed by `pnpm run docs:dev`
+      placeholder: Describe the README or JSDoc that is unclear, with the file path.

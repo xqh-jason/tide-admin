@@ -1,18 +1,17 @@
 {
   "name": "@vben/web-ele",
   "version": "5.7.0",
-  "homepage": "https://vben.pro",
-  "bugs": "https://github.com/vbenjs/vue-vben-admin/issues",
+  "homepage": "https://github.com/xqh-jason/tide-admin",
+  "bugs": "https://github.com/xqh-jason/tide-admin/issues",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vbenjs/vue-vben-admin.git",
+    "url": "git+https://github.com/xqh-jason/tide-admin.git",
     "directory": "apps/web-ele"
   },
   "license": "MIT",
   "author": {
-    "name": "vben",
-    "email": "ann.vben@gmail.com",
-    "url": "https://github.com/anncwb"
+    "name": "xqh-jason",
+    "url": "https://github.com/xqh-jason"
   },
   "type": "module",
   "scripts": {
