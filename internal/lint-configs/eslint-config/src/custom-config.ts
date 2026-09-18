@@ -124,13 +124,6 @@ const customConfig: Linter.Config[] = [
       ],
     },
   },
-  // 文档站点代码，不需要太多规则
-  {
-    files: ['docs/**/**'],
-    rules: {
-      'no-console': 'off',
-    },
-  },
   {
     files: ['**/**/playwright.config.ts'],
     rules: {
