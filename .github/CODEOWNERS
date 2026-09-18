@@ -1,10 +1,6 @@
 # default owner
 * xqh-jason
 
-# 上游脚手架（Vue Vben Admin）代码路径，保留原作者作为归属声明
-/packages/ @vbenjs/team-v5
-/internal/ @vbenjs/team-v5
-/scripts/ @vbenjs/team-v5
-
-# 本项目应用代码
+# 上游脚手架（Vue Vben Admin）代码路径（packages/ internal/ scripts/）保留上游版权声明，
+# 见 LICENSE；此处不列上游团队成员为 owner——fork 后 GitHub 会据此向上游团队请求 review 权限。
 /apps/ xqh-jason
