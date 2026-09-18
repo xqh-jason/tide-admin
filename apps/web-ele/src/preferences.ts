@@ -15,7 +15,6 @@ export const overridesPreferences = defineOverridesPreferences({
     mode: 'light',
   },
   // 页脚版权：不展开 appCopyrightPreferences，那里面是 vben 自己的署名与备案号
-  // （companyName: 'Vben' / icp: '闽ICP备19024351号'），直接用会顶着别人的备案信息。
   // 这里显式给出自己的值；icp 留空则备案那一段整体不渲染。
   // companySiteLink 有正式站点时再补，留空时组件会退化成不可跳转的占位链接。
   copyright: {

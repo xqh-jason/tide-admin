@@ -4,7 +4,7 @@ This file provides guidance to Agents when working with code in this repository.
 
 ## 项目概述
 
-Vue Vben Admin 5.x monorepo（pnpm + turbo），作为 Rust Salvo 后端（salvo-vben-admin，独立仓库）的管理前端。唯一应用是 `apps/web-ele`（Vue 3 + Element Plus + Tailwind CSS v4）。后端不再使用 vben 自带的 nitro mock，全部对接真实 Salvo 后端。
+Vue Vben Admin 5.x monorepo（pnpm + turbo），作为 Rust Salvo 后端（[tide-server](https://github.com/xqh-jason/tide-server)，独立仓库）的管理前端。唯一应用是 `apps/web-ele`（Vue 3 + Element Plus + Tailwind CSS v4）。后端不再使用 vben 自带的 nitro mock，全部对接真实 Salvo 后端。
 
 ## 常用命令
 
@@ -72,4 +72,4 @@ pnpm check:circular         # 循环依赖检查
 ## 其他
 
 - 仓库根有 graphify 知识图谱（`graphify-out/`）；代码库结构性问题优先 `graphify query "<question>"`，改代码后 `graphify update .`。
-- `docs/` 为 vben 官方文档站（VitePress），与主应用开发无关。
+- `docs/` 已移除：上游 vben 官方文档站（含其商业服务与联系方式）不再入库。

@@ -1,14 +1,10 @@
-# default onwer
-* anncwb@126.com vince292007@gmail.com netfan@foxmail.com jinmao88@qq.com
+# default owner
+* xqh-jason
 
-# vben core onwer
-/.github/ anncwb@126.com vince292007@gmail.com netfan@foxmail.com jinmao88@qq.com
-/.vscode/ anncwb@126.com vince292007@gmail.com netfan@foxmail.com jinmao88@qq.com
-/packages/ anncwb@126.com vince292007@gmail.com netfan@foxmail.com jinmao88@qq.com
-/packages/@core/ anncwb@126.com vince292007@gmail.com netfan@foxmail.com jinmao88@qq.com
-/internal/ anncwb@126.com vince292007@gmail.com netfan@foxmail.com jinmao88@qq.com
-/scripts/ anncwb@126.com vince292007@gmail.com netfan@foxmail.com jinmao88@qq.com
+# 上游脚手架（Vue Vben Admin）代码路径，保留原作者作为归属声明
+/packages/ @vbenjs/team-v5
+/internal/ @vbenjs/team-v5
+/scripts/ @vbenjs/team-v5
 
-# vben team onwer
-apps/ anncwb@126.com vince292007@gmail.com netfan@foxmail.com @vbenjs/team-v5 jinmao88@qq.com
-docs/ anncwb@126.com vince292007@gmail.com netfan@foxmail.com @vbenjs/team-v5 jinmao88@qq.com
+# 本项目应用代码
+/apps/ xqh-jason

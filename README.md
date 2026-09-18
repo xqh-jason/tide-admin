@@ -2,33 +2,23 @@
 
 # tide-admin
 
-基于 [Vue Vben Admin 5.x](https://github.com/vbenjs/vue-vben-admin) 的中后台管理前端，
-对接 Rust Salvo 后端 [tide-server](https://github.com/xqh-jason/tide-server)
+基于 [Vue Vben Admin 5.x](https://github.com/vbenjs/vue-vben-admin) 的中后台管理前端，对接 Rust Salvo 后端 [tide-server](https://github.com/xqh-jason/tide-server)
 
-[![license](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![node](https://img.shields.io/badge/node-%5E22.18%20%7C%7C%20%5E24.12-blue.svg)](./package.json)
-[![pnpm](https://img.shields.io/badge/pnpm-11-orange.svg)](./package.json)
+[![license](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE) [![node](https://img.shields.io/badge/node-%5E22.18%20%7C%7C%20%5E24.12-blue.svg)](./package.json) [![pnpm](https://img.shields.io/badge/pnpm-11-orange.svg)](./package.json)
 
 </div>
 
 ## ✨ 简介
 
-tide-admin 是一套 RBAC 中后台管理系统的前端实现，采用 pnpm monorepo 组织，
-唯一应用为 `apps/web-ele`（Vue 3 + Element Plus + Tailwind CSS v4）。
-后端为独立仓库 [tide-server](https://github.com/xqh-jason/tide-server)
-（Rust · Salvo · SeaORM · MySQL），前后端通过统一的 POST + JSON 契约通信。
+tide-admin 是一套 RBAC 中后台管理系统的前端实现，采用 pnpm monorepo 组织，唯一应用为 `apps/web-ele`（Vue 3 + Element Plus + Tailwind CSS v4）。后端为独立仓库 [tide-server](https://github.com/xqh-jason/tide-server) （Rust · Salvo · SeaORM · MySQL），前后端通过统一的 POST + JSON 契约通信。
 
 ## ✨ 功能特性
 
-- **认证与会话**：账号密码 + 图形验证码登录；双凭证静默刷新（401 先凭 HttpOnly
-  Cookie 调 `/auth/refresh` 续期，失败才重新认证）；登录过期弹窗/整页两种处理模式
-- **动态路由与权限**：后端菜单模式生成路由，按钮级权限码前端显隐 + 后端接口拦截双保险
-- **系统管理**：用户（多部门挂载 / 主部门 / 负责人）、部门（树表）、角色（菜单 + API 授权）、
-  菜单、API、数据字典（类型 + 字典项）、会话管理（在线/离线/已下线/已过期四态，
-  强制下线与历史清理）
-- **任务与日志**：定时任务（执行日志、立即执行）、操作日志、登录日志
-- **通用能力**：审计字段（创建人 / 更新人 / 时间）统一列与搜索、危险操作二次确认、
-  zh-CN / en-US 国际化、多主题
+- **认证与会话**：账号密码 + 图形验证码登录；双凭证静默刷新（401 先凭 HttpOnly Cookie 调 `/auth/refresh` 续期，失败才重新认证）；登录过期弹窗/整页两种处理模式
+- **动态路由与权限**：后端菜单模式生成路由；`sys_menu.permission` 权限码用于 **前端按钮显隐**，接口鉴权由后端按 `sys_api` + 角色在中间件统一拦截
+- **系统管理**：用户（多部门挂载 / 主部门 / 负责人）、部门（树表）、角色（菜单 + API 授权）、菜单、API、数据字典（类型 + 字典项）、会话管理（在线/离线/已下线/已过期四态，强制下线与历史清理）
+- **任务与日志**：定时任务（执行日志、立即执行）、操作日志、登录日志；操作日志只记录写请求（只读查询不落库），后端保留期可通过 `log_retention` 配置调整
+- **通用能力**：审计字段（创建人 / 更新人 / 时间）统一列与搜索、危险操作二次确认、zh-CN / en-US 国际化、多主题
 - **工程化**：pnpm workspace + Turbo 任务编排，oxlint / eslint / stylelint / lefthook 全链路规范
 
 ## 🧱 技术栈
@@ -54,35 +44,33 @@ pnpm install
 pnpm dev:ele   # http://localhost:5910
 ```
 
-开发模式下 `/api` 请求经 Vite 代理转发至 `http://127.0.0.1:8080`。
-默认账号见后端仓库种子数据（`admin / admin123`，生产环境务必第一时间改密）。
+开发模式下 `/api` 请求经 Vite 代理转发至 `http://127.0.0.1:8080`。默认账号见后端仓库种子数据（`admin / admin123`，生产环境务必第一时间改密）。
 
 ### 常用命令
 
-| 命令              | 说明                                      |
-| ----------------- | ----------------------------------------- |
-| `pnpm dev:ele`    | 启动 web-ele 开发服务器（端口 5910）      |
-| `pnpm build:ele`  | 构建 web-ele 生产包                       |
-| `pnpm check:type` | 全 workspace 类型检查（vue-tsc）          |
-| `pnpm lint`       | oxlint + eslint + stylelint 聚合检查      |
-| `pnpm format`     | 自动修复格式                              |
-| `pnpm test:unit`  | vitest 单元测试                           |
+| 命令              | 说明                                 |
+| ----------------- | ------------------------------------ |
+| `pnpm dev:ele`    | 启动 web-ele 开发服务器（端口 5910） |
+| `pnpm build:ele`  | 构建 web-ele 生产包                  |
+| `pnpm check:type` | 全 workspace 类型检查（vue-tsc）     |
+| `pnpm lint`       | oxlint + eslint + stylelint 聚合检查 |
+| `pnpm format`     | 自动修复格式                         |
+| `pnpm test:unit`  | vitest 单元测试                      |
 
 ## 🛠 环境变量
 
 配置位于 `apps/web-ele/.env*`，常用项：
 
-| 变量                  | 说明                                    |
-| --------------------- | --------------------------------------- |
-| `VITE_GLOB_API_URL`   | 接口前缀，固定 `/api/v1`                |
-| `VITE_PORT`           | 开发服务器端口（5910）                  |
-| `VITE_ROUTER_HISTORY` | 路由模式，生产默认 hash                 |
+| 变量 | 说明 |
+| --- | --- |
+| `VITE_GLOB_API_URL` | 接口前缀，固定 `/api/v1` |
+| `VITE_PORT` | 开发服务器端口（5910） |
+| `VITE_ROUTER_HISTORY` | 路由模式，生产默认 hash |
+| `VITE_APP_STORE_SECURE_KEY` | store 持久化加密密钥，**部署前务必换掉默认占位值** |
 
 ## 🐳 Docker 部署
 
-前端自带多阶段构建 `Dockerfile` 与 `docker/nginx.conf`（gzip、静态资源长缓存、
-`/api` 反代后端服务）。推荐使用后端仓库的 docker-compose 一键编排
-（MySQL + backend + frontend，frontend 构建上下文指向**同级目录**的 tide-admin）：
+前端自带多阶段构建 `Dockerfile` 与 `docker/nginx.conf`（gzip、静态资源长缓存、 `/api` 反代后端服务）。推荐使用后端仓库的 docker-compose 一键编排（MySQL + backend + frontend，frontend 构建上下文指向**同级目录**的 tide-admin）：
 
 ```bash
 git clone https://github.com/xqh-jason/tide-server.git
@@ -104,26 +92,20 @@ docker compose up -d --build   # 访问 http://localhost:80
 │       └── locales       # 国际化（zh-CN / en-US）
 ├── packages/@core        # 与 UI 库无关的框架基础
 ├── packages/effects      # 可复用业务能力（access / request / layouts 等）
-├── internal              # 工程配置（vite-config / tsconfig / lint-configs 等）
-└── docs                  # vben 文档站（VitePress）+ superpowers 设计文档与计划
+└── internal              # 工程配置（vite-config / tsconfig / lint-configs 等）
 ```
 
 ## 📡 接口契约要点
 
-- 业务接口统一 **POST + JSON body**；响应包装 `{ code, data, message }`，
-  `code=1` 成功 / `0` 失败，HTTP 恒 200（仅认证失败 401）
-- 认证失败时请求层先凭 HttpOnly Cookie 静默调 `/auth/refresh` 续期
-  （响应体为裸 token 字符串），刷新失败才触发重新认证
-- 分页请求 `{ page, pageSize }`，响应 `{ total, totalPages, items }`
-- 完整契约与种子数据见 [后端仓库](https://github.com/xqh-jason/tide-server)，
-  联调时可参考其 Swagger UI（`/swagger-ui`）
+- 业务接口统一 **POST + JSON body**；响应包装 `{ code, data, message }`， `code=1` 成功 / `0` 失败，HTTP 恒 200（仅认证失败 401）
+- 认证失败时请求层先凭 HttpOnly Cookie 静默调 `/auth/refresh` 续期（响应体为裸 token 字符串），刷新失败才触发重新认证
+- 分页请求 `{ page, pageSize }`，响应 `{ total, totalPages, items }`；后端列表统一按 `id` 降序返回
+- 完整契约与种子数据见 [后端仓库](https://github.com/xqh-jason/tide-server)，联调时可参考其 Swagger UI（`/swagger-ui`）
 
 ## 🤝 开发规范
 
-- 提交信息遵循 Conventional Commits（commitlint 在 commit-msg 阶段强制校验，
-  scope 取包名枚举）
-- lefthook pre-commit 会对暂存文件执行 oxlint / oxfmt / eslint / stylelint 自动修复，
-  并运行全 workspace 类型检查
+- 提交信息遵循 Conventional Commits（commitlint 在 commit-msg 阶段强制校验，scope 取包名枚举）
+- lefthook pre-commit 会对暂存文件执行 oxlint / oxfmt / eslint / stylelint 自动修复，并运行全 workspace 类型检查
 
 ## 🙏 致谢
 
@@ -133,4 +115,6 @@ docker compose up -d --build   # 访问 http://localhost:80
 
 ## 📄 License
 
-本项目基于 [MIT](LICENSE) 协议开源，脚手架源自 Vue Vben Admin（MIT）。
+本项目基于 [MIT](LICENSE) 协议开源。
+
+脚手架基座为 [Vue Vben Admin](https://github.com/vbenjs/vue-vben-admin)（MIT）， `packages/`、`internal/`、`scripts/` 等路径下的上游代码版权归其原作者所有，详见 [LICENSE](./LICENSE)；`apps/web-ele` 下的业务实现为本项目自有代码。
