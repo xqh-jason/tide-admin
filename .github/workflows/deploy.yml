@@ -6,30 +6,6 @@ on:
       - main
 
 jobs:
-  deploy-docs-ftp:
-    name: Deploy Push Docs Ftp
-    if: github.actor != 'dependabot[bot]' && !contains(github.event.head_commit.message, '[skip ci]') && github.repository == 'vbenjs/vue-vben-admin'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node
-        uses: ./.github/actions/setup-node
-
-      - name: Build
-        run: pnpm build:docs
-
-      - name: Sync Docs files
-        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
-        with:
-          server: ${{ secrets.PRO_FTP_HOST }}
-          username: ${{ secrets.WEBSITE_FTP_ACCOUNT }}
-          password: ${{ secrets.WEBSITE_FTP_PASSWORD }}
-          local-dir: ./docs/.vitepress/dist/
-
   deploy-ele-ftp:
     name: Deploy Push Element Ftp
     if: github.actor != 'dependabot[bot]' && !contains(github.event.head_commit.message, '[skip ci]') && github.repository == 'vbenjs/vue-vben-admin'
@@ -64,7 +40,6 @@ jobs:
   rerun-on-failure:
     name: Rerun on failure
     needs:
-      - deploy-docs-ftp
       - deploy-ele-ftp
     if: failure() && fromJSON(github.run_attempt) < 10
     runs-on: ubuntu-latest
