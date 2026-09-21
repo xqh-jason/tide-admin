@@ -1,6 +1,13 @@
 # default owner
-* xqh-jason
+# 注意：owner 必须写 `@用户名`。写成不带 `@` 的裸名会被 GitHub 当邮箱地址解析，
+# 等于该行没有 owner（`/apps/` 行此前就是这个状态），即使开启「Require review
+# from Code Owners」也不会要求任何人 review。
+* @xqh-jason
 
 # 上游脚手架（Vue Vben Admin）代码路径（packages/ internal/ scripts/）保留上游版权声明，
 # 见 LICENSE；此处不列上游团队成员为 owner——fork 后 GitHub 会据此向上游团队请求 review 权限。
-/apps/ xqh-jason
+/apps/ @xqh-jason
+
+# 业务分支 `hr`（HR 页面）与平台 `main` 之间只允许 main → hr 单向合并
+# （与 tide-server 同款纪律）：`hr → main` 的 PR 会落到上面这行 owner 名下，
+# 必须由 @xqh-jason 显式批准才可能合并。
