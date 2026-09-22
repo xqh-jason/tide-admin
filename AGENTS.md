@@ -6,6 +6,31 @@ This file provides guidance to Agents when working with code in this repository.
 
 Vue Vben Admin 5.x monorepo（pnpm + turbo），作为 Rust Salvo 后端（[tide-server](https://github.com/xqh-jason/tide-server)，独立仓库）的管理前端。唯一应用是 `apps/web-ele`（Vue 3 + Element Plus + Tailwind CSS v4）。后端不再使用 vben 自带的 nitro mock，全部对接真实 Salvo 后端。
 
+## 分支纪律（main / hr）
+
+平台与业务用**两个长期分支 + 单向合并**承载：`main → hr` 允许，`hr → main` **永久禁止**（绝对不允许）。
+
+- `main` — 纯平台（开源消费方 clone/部署拿到的就是它），不含任何人事业务源码。
+- `hr` — 唯一自用部署 = 平台 + 人事域。业务只以**追加**方式落地：新增 `apps/web-ele/src/api/hr/**`、
+  `apps/web-ele/src/views/biz/hr/**`、`apps/web-ele/src/locales/langs/{zh-CN,en-US}/hr.json`；对既有文件的
+  改动限于登记行（如 `apps/web-ele/src/api/index.ts` 的一行导出）。
+
+GitHub 的分支保护只能按 base 分支与状态检查过滤、没有「按源分支过滤」的规则，因此这条纪律由三处硬约束合成：
+
+| 层 | 位置 | 作用 |
+|---|---|---|
+| 分支保护 | `main`（require PR、required check `禁 hr→main 合并`、禁 force push / 禁删除、`enforce_admins: true`） | 挡直接 push 与 force push |
+| CODEOWNERS | `.github/CODEOWNERS`（`* @xqh-jason`） | 任何进 `main` 的 PR 都落到 owner 名下 |
+| CI job | `.github/workflows/ci.yml` 的 `guard-merge-direction`（job 名 `禁 hr→main 合并`） | `head=hr` 且 `base=main` 的 PR 直接失败 |
+
+注意两点：`guard-merge-direction` 刻意 `if: always()` 且 `on.push.branches` 含 `main` / `hr`，让 check 名在每次
+CI 都出现——required status check 只认近期出现过的 check 名；`main` 受保护后**平台修复也要走
+分支 → PR → CI 绿 → 合并**（`enforce_admins: true` 下管理员也无法直接 push），`hr` 保持可直推。
+
+纪律：平台修复**一律先落 `main`** 再合并下来，禁止直接在 `hr` 改平台代码（紧急热修需双写并尽快回流）；
+`main` 每次变更后立即在 `hr` 上 `git merge main`，别攒 —— `AGENTS.md` 这类文档两分支都会改，攒久了必冲突。
+业务代码（`api/hr/**`、`views/biz/hr/**`、`langs/*/hr.json`）永不回灌 `main`。
+
 ## 常用命令
 
 ```bash
