@@ -9,5 +9,6 @@
 /apps/ @xqh-jason
 
 # 业务分支 `hr`（HR 页面）与平台 `main` 之间只允许 main → hr 单向合并
-# （与 tide-server 同款纪律）：`hr → main` 的 PR 会落到上面这行 owner 名下，
-# 必须由 @xqh-jason 显式批准才可能合并。
+# （与 tide-server 同款纪律，见 AGENTS.md §分支纪律）：`hr → main` 的 PR 会被
+# `.github/workflows/ci.yml` 的 `guard-merge-direction`（job 名「禁 hr→main 合并」）
+# 直接判失败，该 check 已挂进 `main` 分支保护的必过检查。
