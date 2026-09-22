@@ -1,0 +1,28 @@
+name: ci
+
+# 单向合并纪律的 policy-as-code 兜底：`hr` 分支永远不得合并回 `main`
+# （见 AGENTS.md §分支纪律）。GitHub 的分支保护只能按 base 分支与状态检查
+# 过滤，没有「按源分支过滤」的规则，所以把这条约束写成 job。
+on:
+  # 刻意覆盖 `main` 与 `hr` 两条长期分支的 push：required status check 只认
+  # 近期出现过的 check 名，若这个 job 只在 `hr → main` 的 PR 上跑，它的名字在
+  # 仓库里从未出现过，就挂不到分支保护的必过检查上（故 job 内还加了 always()）。
+  push:
+    branches: [main, hr]
+  pull_request:
+
+jobs:
+  guard-merge-direction:
+    name: 禁 hr→main 合并
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: 校验合并方向
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ] \
+            && [ "${{ github.base_ref }}" = "main" ] \
+            && [ "${{ github.head_ref }}" = "hr" ]; then
+            echo "::error::hr 分支禁止合并回 main（单向合并纪律：只允许 main → hr）"
+            exit 1
+          fi
+          echo "合并方向检查通过（非 hr→main）"
