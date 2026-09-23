@@ -11,25 +11,19 @@ Vue Vben Admin 5.x monorepo（pnpm + turbo），作为 Rust Salvo 后端（[tide
 平台与业务用**两个长期分支 + 单向合并**承载：`main → hr` 允许，`hr → main` **永久禁止**（绝对不允许）。
 
 - `main` — 纯平台（开源消费方 clone/部署拿到的就是它），不含任何人事业务源码。
-- `hr` — 唯一自用部署 = 平台 + 人事域。业务只以**追加**方式落地：新增 `apps/web-ele/src/api/hr/**`、
-  `apps/web-ele/src/views/biz/hr/**`、`apps/web-ele/src/locales/langs/{zh-CN,en-US}/hr.json`；对既有文件的
-  改动限于登记行（如 `apps/web-ele/src/api/index.ts` 的一行导出）。
+- `hr` — 唯一自用部署 = 平台 + 人事域。业务只以**追加**方式落地：新增 `apps/web-ele/src/api/hr/**`、 `apps/web-ele/src/views/biz/hr/**`、`apps/web-ele/src/locales/langs/{zh-CN,en-US}/hr.json`；对既有文件的改动限于登记行（如 `apps/web-ele/src/api/index.ts` 的一行导出）。
 
 GitHub 的分支保护只能按 base 分支与状态检查过滤、没有「按源分支过滤」的规则，因此这条纪律由三处硬约束合成：
 
 | 层 | 位置 | 作用 |
-|---|---|---|
+| --- | --- | --- |
 | 分支保护 | `main`（require PR、required check `禁 hr→main 合并`、禁 force push / 禁删除、`enforce_admins: true`） | 挡直接 push 与 force push |
 | CODEOWNERS | `.github/CODEOWNERS`（`* @xqh-jason`） | 任何进 `main` 的 PR 都落到 owner 名下 |
 | CI job | `.github/workflows/ci.yml` 的 `guard-merge-direction`（job 名 `禁 hr→main 合并`） | `head=hr` 且 `base=main` 的 PR 直接失败 |
 
-注意两点：`guard-merge-direction` 刻意 `if: always()` 且 `on.push.branches` 含 `main` / `hr`，让 check 名在每次
-CI 都出现——required status check 只认近期出现过的 check 名；`main` 受保护后**平台修复也要走
-分支 → PR → CI 绿 → 合并**（`enforce_admins: true` 下管理员也无法直接 push），`hr` 保持可直推。
+注意两点：`guard-merge-direction` 刻意 `if: always()` 且 `on.push.branches` 含 `main` / `hr`，让 check 名在每次 CI 都出现——required status check 只认近期出现过的 check 名；`main` 受保护后**平台修复也要走分支 → PR → CI 绿 → 合并**（`enforce_admins: true` 下管理员也无法直接 push），`hr` 保持可直推。
 
-纪律：平台修复**一律先落 `main`** 再合并下来，禁止直接在 `hr` 改平台代码（紧急热修需双写并尽快回流）；
-`main` 每次变更后立即在 `hr` 上 `git merge main`，别攒 —— `AGENTS.md` 这类文档两分支都会改，攒久了必冲突。
-业务代码（`api/hr/**`、`views/biz/hr/**`、`langs/*/hr.json`）永不回灌 `main`。
+纪律：平台修复**一律先落 `main`** 再合并下来，禁止直接在 `hr` 改平台代码（紧急热修需双写并尽快回流）； `main` 每次变更后立即在 `hr` 上 `git merge main`，别攒 —— `AGENTS.md` 这类文档两分支都会改，攒久了必冲突。业务代码（`api/hr/**`、`views/biz/hr/**`、`langs/*/hr.json`）永不回灌 `main`。
 
 ## 常用命令
 
@@ -83,6 +77,17 @@ pnpm check:circular         # 循环依赖检查
 - `views/system/*` — 管理页统一结构：`index.vue`（页面 + vxe-table）+ `data.ts`（列/搜索/表单 schema）+ `modules/form.vue`（新建/编辑抽屉）；审计列与搜索复用 `audit-columns.ts`、`audit-search.ts`。
 - `adapter/` — 将 vben 的 form/vxe-table 适配到 Element Plus 组件（`form.ts`、`vxe-table.ts`、`component/`），页面不直接注册适配器。
 - `store/` — 应用级 Pinia store（auth、dict 字典缓存）。
+
+### 人事域（`hr` 分支的业务代码）
+
+人事域只在 `hr` 分支存在（业务代码永不回灌 `main`），结构照搬 `views/system/*`，但有四条本域特有的约定：
+
+- **页面由后端菜单驱动**：13 个页面路径必须与 tide-server `infra/seed.rs` 的 `MENU_SEEDS` 的 `component` 一字不差（`#/views/biz/hr/.../index.vue`）；`api/hr/*.ts` 每个资源一个文件 + `export namespace HrXxxApi`，经 `api/hr/index.ts` 一行导出登记。
+- **写入口一律「本人」**：请假单 / 加班单的 create·update·submit·cancel·delete 都要求单据归属 = 当前登录账号的员工档案（后端 `ensure_*_owner`），故页面这样分工：「请假申请」是 HR 只读视角（列表 + 详情 + 审批进度），「我的请假」才有全操作；加班用单页「查询范围」切换 `overtime/mine` 与 `overtime/list`。取本人档案用 `shared/employee-select.ts` 的 `resolveMyEmployee()`（后端无 by-user 端点，按档案列表匹配 `userId`）。
+- **共享件在 `views/biz/hr/shared/`**（跨页复用，不要在页面里再写一份）：`employee-select.ts`（员工选择器 + 本人档案）、`format.ts`（分钟 → 时长文案）、`options.ts`（审批状态/动作/节点类型等跨页枚举）、 `find-option.ts`、`approval-progress.vue`（审批进度时间线，请假/加班/待办/审批记录四处复用）、 `attachment.ts`（`/file/upload` 附件上传）。
+- **i18n**：命名空间 `hr.<area>.<page>.<key>`（area：`timeOff` / `approval` / `attendance` / `overtime` / `employee`），跨页通用文案统一放 `hr.common.*`。文案里**不要出现裸花括号**（JSON 示例等）——vue-i18n 会把 `{` 当占位符起始符，整个组件编译期报错、页面白屏（附件导入抽屉的示例为此改成组件内静态常量渲染）。
+
+已知缺口（业务侧临时承接，待平台补）：`/file/upload` 的平台级封装（`api/system/file.ts`）不存在，HR 附件上传暂放在 `shared/attachment.ts`；`/hr/approval/record/list` 前端未调用（`instance/get` 已返回全部节点记录）。
 
 ### 写操作防连点（约定）
 

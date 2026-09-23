@@ -36,6 +36,13 @@ export namespace HrEmployeeApi {
     leaveDate: null | string;
     /** 所学专业 */
     major: string;
+    /**
+     * 直属上级员工 ID（`hr_employee.id`，不是 `sys_user.id`；0 = 未设置）。
+     * 这是审批链「直属上级」节点（node_type=1）的**唯一来源**
+     */
+    managerEmployeeId: number;
+    /** 直属上级显示名（后端批量拼装；未设置 / 上级档案不存在为空串） */
+    managerEmployeeName: string;
     /** 转正日期（`yyyy-MM-dd`），未设置为 null */
     regularDate: null | string;
     /** 备注 */
@@ -53,6 +60,8 @@ export namespace HrEmployeeApi {
     employmentStatus?: number;
     /** 模糊搜索关键字（匹配备注 / 紧急联系人）；不传查全部 */
     keyword?: string;
+    /** 直属上级员工 ID 精确过滤（`hr_employee.id`）；不传查全部 */
+    managerEmployeeId?: number;
   }
 
   /**
@@ -90,6 +99,8 @@ export namespace HrEmployeeApi {
     idCard?: string;
     leaveDate?: null | string;
     major?: string;
+    /** 直属上级员工 ID（`hr_employee.id`；0 = 未设置，缺省 0） */
+    managerEmployeeId?: number;
     regularDate?: null | string;
     remark?: string;
     /** 关联已有账号（与 createAccount 二选一） */
@@ -115,6 +126,12 @@ export namespace HrEmployeeApi {
     idCard?: string;
     leaveDate?: null | string;
     major?: string;
+    /**
+     * 直属上级员工 ID 三态：缺省 / `null` = 不修改、`0` = 清空上级、`>0` = 设为该员工
+     * （必须存在且不能是本人）。上级是审批链「直属上级」节点的唯一来源，
+     * 静默清空会让该员工的请假 / 加班单解析不到审批人
+     */
+    managerEmployeeId?: null | number;
     regularDate?: null | string;
     remark?: string;
   }
@@ -130,6 +147,15 @@ export async function getEmployeeList(
     '/hr/employee/list',
     params,
   );
+}
+
+/**
+ * 员工下拉数据源：一次取满（`pageSize` 1000 = 后端 clamp 上限），
+ * 供请假 / 加班 / 排班 / 额度发放等页面的员工选择器复用
+ */
+export async function getAllEmployeesApi(): Promise<HrEmployeeApi.Employee[]> {
+  const { items } = await getEmployeeList({ page: 1, pageSize: 1000 });
+  return items;
 }
 
 /**

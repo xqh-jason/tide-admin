@@ -5,6 +5,10 @@ import type { HrEmployeeApi, SystemRoleApi, SystemUserApi } from '#/api';
 import { getAllRoles, getAllUsersApi } from '#/api';
 import { $t } from '#/locales';
 import { useDictOptions } from '#/store';
+import {
+  employeeSelectOptions,
+  useEmployeeSelectProps,
+} from '#/views/biz/hr/shared/employee-select';
 import { useAuditColumns } from '#/views/system/audit-columns';
 
 /**
@@ -161,6 +165,20 @@ export function useFormSchema(getEditId: () => number): VbenFormSchema[] {
       label: $t('hr.employee.accountRoles'),
     },
     {
+      component: 'ApiSelect',
+      componentProps: {
+        // 直属上级是审批链「直属上级」节点的唯一来源；本人不能选自己（后端也拒绝）
+        ...useEmployeeSelectProps($t('hr.employee.managerTip')),
+        afterFetch: (items: HrEmployeeApi.Employee[]) =>
+          employeeSelectOptions(
+            items.filter((item) => item.id !== getEditId()),
+          ),
+      },
+      fieldName: 'managerEmployeeId',
+      help: $t('hr.employee.managerTip'),
+      label: $t('hr.employee.manager'),
+    },
+    {
       component: 'Select',
       componentProps: {
         clearable: true,
@@ -302,6 +320,12 @@ export function useGridFormSchema(): VbenFormSchema[] {
       fieldName: 'education',
       label: $t('hr.employee.education'),
     },
+    {
+      component: 'ApiSelect',
+      componentProps: useEmployeeSelectProps(),
+      fieldName: 'managerEmployeeId',
+      label: $t('hr.employee.manager'),
+    },
   ];
 }
 
@@ -316,6 +340,11 @@ export function useColumns(
   const educationOptions = useDictOptions('education');
   return [
     { field: 'userName', title: $t('hr.employee.userName'), width: 120 },
+    {
+      field: 'managerEmployeeName',
+      minWidth: 120,
+      title: $t('hr.employee.manager'),
+    },
     {
       cellRender: {
         name: 'CellTag',

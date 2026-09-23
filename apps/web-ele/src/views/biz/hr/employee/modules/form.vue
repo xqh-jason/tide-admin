@@ -69,6 +69,8 @@ const [Drawer, drawerApi] = useVbenDrawer<HrEmployeeApi.Employee | null>({
       idCard: values.idCard ?? '',
       leaveDate: values.leaveDate || null,
       major: values.major ?? '',
+      // 直属上级：空选提交 0（创建 = 未设置；编辑 = 清空上级，后端三态语义）
+      managerEmployeeId: values.managerEmployeeId ?? 0,
       regularDate: values.regularDate || null,
       remark: values.remark ?? '',
     };
